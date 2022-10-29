@@ -3,8 +3,8 @@ from . import views
 
 app_name = "Chat"
 urlpatterns = [
-    path('', views.home, name='main'),
-    path('register/', views.register, name='register'),
-    path('login/', views.login, name='login'),
-    path('logout/', views.logout, name='logout'),
+    path('', views.home, name='home'),
+    path('register/', views.registerUser, name='register'),
+    path('login/', views.loginUser, name='login'),
+    path('logout/', views.logoutUser, name='logout'),
 ]
