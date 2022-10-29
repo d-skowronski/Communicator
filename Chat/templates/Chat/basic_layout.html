@@ -59,20 +59,10 @@
               <h1 class="modal-title fs-5" id="ModalLabel">Login</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form>
+            <form method="POST" action="{% url 'Chat:login' %}">
                 <div class="modal-body">
-                    <div class="mb-3">
-                    <label for="email1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email1" aria-describedby="emailHelp">
-                    </div>
-                    <div class="mb-3">
-                    <label for="password1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password1">
-                    </div>
-                    {% comment %} ///Future feature/// <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Keep logged in</label>
-                    </div> {% endcomment %}
+                    {% csrf_token %}
+                    {{ loginForm }}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
