@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 from django.shortcuts import redirect, render
 from django.urls import reverse
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
 from django.contrib import messages
 # Create your views here.
 
@@ -34,6 +34,7 @@ def home(request):
         context = {}
         return render(request, 'Chat/home.html', context)
     else:
+        registerForm = RegisterForm()
         loginForm = LoginForm()
-        context = {'loginForm': loginForm}
+        context = {'loginForm': loginForm, 'registerForm': registerForm}
         return render(request, 'Chat/main_page.html', context)
