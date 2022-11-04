@@ -1,0 +1,219 @@
+*{
+    margin:0;
+    padding:0;
+    
+}
+body{
+    overflow: hidden;
+}
+.wrapper{
+    display: flex;
+    width: 100%;
+}
+
+.sidebar.active{
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+}
+.sidebar{
+    display: none;
+}
+.content{
+    display: none;
+}
+.content.active{
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+}
+header{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    height: 10vh;
+}
+.name{
+    margin: 1rem;
+}
+.sidebarCollapse{
+    font-size: 2rem;
+    text-align: center;
+}
+.service-name{
+    padding-left: 1rem;
+    display: inline;
+}
+.logo{
+    font-size: 2rem;
+}
+.contact{
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    align-items: center;
+
+}
+.contact:hover{
+    background-color: gainsboro;
+}
+
+.contact img{
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 5rem;
+    
+}
+.contact_info{
+    display: inline-block;
+    margin: 1rem;
+}
+.contact_name{
+}
+.contact_message{
+    color: gray;
+
+}
+.contact_bar{
+    box-shadow: 0px 6px 8px -5px rgba(0,0,0,0.25);
+}
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90vh;
+
+}
+#new_message{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+#new_message textarea{
+    background-color: gainsboro;
+    box-shadow: none;
+    border: none;
+    padding: 0.5rem;
+    padding-top: 0.2rem;
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+    width: 90%;
+    height: 3rem;
+    resize: none;
+}
+#new_message textarea:focus{
+    outline:none
+  }
+#new_message button{
+    font-size: 1.8rem;
+    border: none;
+    background-color: inherit;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 3rem;
+}
+#new_message button:hover{
+    background-color: gainsboro;
+}
+textarea { resize: both; }
+.message_area{
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: gray;
+    height: 800px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+/* https://stackoverflow.com/questions/36130760/use-justify-content-flex-end-and-to-have-vertical-scrollbar */
+.message_area > :first-child {
+    margin-top: auto !important;
+}
+.message{
+    border-top-right-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+    margin: 0.1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: gainsboro;
+    font-size: 1rem;
+}
+.message:first-of-type{
+    border-top-left-radius: 1.5rem;
+    border-bottom-left-radius: 0.5rem;
+}
+.message:last-of-type{
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 1.5rem;
+}
+.message:only-of-type{
+    border-top-left-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+}
+
+.message_wrapper{
+    display: flex;
+    align-items: flex-end;
+    margin-right: 2rem;
+}
+.message_wrapper.you{
+    margin-right: 0;
+    margin-left: 4.5rem;
+    transform: scaleX(-1);
+    
+}
+.message_wrapper img{
+    min-height: 2.5rem;
+    max-height: 2.5rem;
+    min-width: 2.5rem;
+    max-width: 2.5rem;
+    border-radius: 2rem;
+    margin: 0.1rem;
+}
+.message_wrapper.you .message{
+    background-color: rgb(241, 175, 41);  
+}
+.message_wrapper.you .message>*{
+    transform: scaleX(-1);
+}
+.message_group{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+@media (min-width:800px){
+    .sidebar.active{
+        display: block;
+        width: 360px;
+        min-height: 100vh;
+        box-shadow: 7px 1px 8px -5px rgba(0,0,0,0.25);
+    }
+    .sidebar{
+        display: block;
+        width: 360px;
+        min-height: 100vh;
+        box-shadow: 7px 1px 8px -5px rgba(0,0,0,0.25);
+    }
+    .content{
+        display: block;
+        width: 100%;
+        min-height: 100vh;
+    }
+    .content.active{
+        display: block;
+       
+        min-height: 100vh;
+    }
+    .contact_bar .sidebarCollapse{
+        display: none;
+    }
+}

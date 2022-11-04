@@ -1,0 +1,159 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/chat_layout.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <div class="wrapper">
+
+        <nav class="sidebar active">
+
+            <header class="sidebarCollapse">
+                <i class="bi bi-chat-left-fill logo"></i>
+                <div class="service-name">Communicator</div>
+            </header>
+
+            <div class="contact_list">
+                <div class="contact" data-user-id="1">
+                    <img src="https://images.pexels.com/photos/13350289/pexels-photo-13350289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"></img>
+                    <div class="contact_info">
+                        <div class="contact_name">nickname</div>
+                        <div class="contact_message">Hello</div>
+                    </div>
+                </div>
+                <div class="contact" data-user-id="2">
+                    <img src="https://images.pexels.com/photos/13578883/pexels-photo-13578883.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"></img>
+                    <div class="contact_info">
+                        <div class="contact_name">nickname</div>
+                        <div class="contact_message">Hello</div>
+                    </div>
+                </div>
+                <div class="contact" data-user-id="3">
+                    <img src="https://images.pexels.com/photos/3371359/pexels-photo-3371359.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"></img>
+                    <div class="contact_info">
+                        <div class="contact_name">nickname</div>
+                        <div class="contact_message">Hello</div>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+
+        <div class="content" data-user-id="1">
+
+            <header class="contact_bar">
+                <div class="sidebarCollapse">
+                    <i class="bi bi-chat-left-fill logo"></i>
+                </div>
+                <div class="name">
+                    nickname
+                </div>
+            </header>
+
+            <main>
+                <div class="container-fluid message_area">
+                    <div class="message_wrapper">
+                        <img src="https://images.pexels.com/photos/13350289/pexels-photo-13350289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"></img>
+                        <div class="message_group">
+                            <div class="message">
+                                Hello there
+                            </div>
+                            <div class="message">
+                                <div class="text">Hello there name 2eee</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message_wrapper you">
+                        <div class="message_group">
+                            <div class="message">
+                                <div class="text">Hi</div>
+                            </div>
+                            <div class="message">
+                                <div class="text">How are you? I am well today</div>
+                            </div>
+                            <div class="message">
+                                <div class="text">How are you? I am today</div>
+                            </div>
+                        </div>
+                    </div>                    <div class="message_wrapper">
+                        <img src="https://images.pexels.com/photos/13350289/pexels-photo-13350289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"></img>
+                        <div class="message_group">
+                            <div class="message">
+                                <div class="text">Hello there name 2eee</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message_wrapper you">
+                        <div class="message_group">
+                            <div class="message">
+                                <div class="text">Hi</div>
+                            </div>
+                            <div class="message">
+                                <div class="text">How are you? I am well today</div>
+                            </div>
+                            <div class="message">
+                                <div class="text">How are you? I am today</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message_wrapper">
+                        <img src="https://images.pexels.com/photos/13350289/pexels-photo-13350289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"></img>
+                        <div class="message_group">
+                            <div class="message">
+                                Hello there
+                            </div>
+                            <div class="message">
+                                <div class="text">Hello there name 2eeeHello there name 2eeeHello there name 2eeeHello there name 2eeeHello there name 2eee</div>
+                            </div>
+                            <div class="message">
+                                <div class="text">Hello</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="message_wrapper you">
+                        <div class="message_group">
+                            <div class="message">
+                                <div class="text">How are you? I Hello there name 2eeeHello there name 2eeeHello there name 2eeeHello there name 2eeeam today last</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <form id="new_message">
+                    <textarea placeholder="Aa" maxlength="256"></textarea>
+                    <button type="submit" class=""><i class="bi bi-send"></i></button>
+                </form>
+            </main>
+
+        </div>
+    </div>
+
+    </div>
+    <script>
+        Array.from(document.getElementsByClassName("contact")).forEach((element) => {
+            element.addEventListener('click', () => {
+                alert(element.getAttribute('data-user-id'))
+            })
+        });
+        Array.from(document.getElementsByClassName("sidebarCollapse")).forEach((element) => {
+            element.addEventListener('click', () => {
+                document.getElementsByClassName("sidebar")[0].classList.toggle('active')
+                document.getElementsByClassName("content")[0].classList.toggle('active')
+                document.getElementsByClassName('message_area')[0].lastElementChild.scrollIntoView()
+            })
+        });
+    </script>
+</body>
+</html>
