@@ -1,6 +1,6 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from .forms import LoginForm
 from django.contrib import messages
@@ -23,14 +23,17 @@ def loginUser(request):
 
 def logoutUser(request):
     logout(request)
-    return HttpResponseRedirect(reverse('Chat:home'))
-
+    return redirect('Chat:home')
 
 def registerUser(request):
     pass
 
 
 def home(request):
-    loginForm = LoginForm()
-    context = {'loginForm': loginForm}
-    return render(request, 'Chat/main_page.html', context)
+    if request.user.is_authenticated:
+        context = {}
+        return render(request, 'Chat/home.html', context)
+    else:
+        loginForm = LoginForm()
+        context = {'loginForm': loginForm}
+        return render(request, 'Chat/main_page.html', context)
