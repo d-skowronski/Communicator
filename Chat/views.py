@@ -17,13 +17,13 @@ def loginUser(request):
         else:
             messages.info(request, "Username or password incorrect")
     context = {}
-    return render(request, 'Chat/main_page.html', context)    
+    return HttpResponseRedirect(reverse('Chat:home'))
 
 
 
 def logoutUser(request):
     logout(request)
-    return redirect('Chat:home')
+    return HttpResponseRedirect(reverse('Chat:home'))
 
 def registerUser(request):
     if request.method == "POST":
