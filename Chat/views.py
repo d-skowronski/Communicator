@@ -26,7 +26,14 @@ def logoutUser(request):
     return redirect('Chat:home')
 
 def registerUser(request):
-    pass
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Registered!")
+        else:
+            messages.error(request, "Invalid credentials privided")
+    return HttpResponseRedirect(reverse('Chat:home'))
 
 
 def home(request):
