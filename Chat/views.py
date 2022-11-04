@@ -13,8 +13,9 @@ def loginUser(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, "Logged in!")
         else:
-            messages.info(request, "Username or password incorrect")
+            messages.error(request, "Login or password incorrect")
     context = {}
     return HttpResponseRedirect(reverse('Chat:home'))
 
