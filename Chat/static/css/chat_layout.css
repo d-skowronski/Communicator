@@ -3,6 +3,9 @@
     padding:0;
     
 }
+
+
+/* general layout styles */
 body{
     overflow: hidden;
 }
@@ -27,6 +30,33 @@ body{
     width: 100%;
     min-height: 100vh;
 }
+
+/* main part styles*/
+.contact_bar{
+    box-shadow: 0px 6px 8px -5px rgba(0,0,0,0.25);
+}
+main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90vh;
+
+}
+.message_area{
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: gray;
+    height: 100%;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+/* https://stackoverflow.com/questions/36130760/use-justify-content-flex-end-and-to-have-vertical-scrollbar */
+.message_area > :first-child {
+    margin-top: auto !important;
+}
+
+/* styles for headers */
 header{
     display: flex;
     justify-content: start;
@@ -49,43 +79,8 @@ header{
 .logo{
     font-size: 2rem;
 }
-.contact{
-    padding-left: 1rem;
-    padding-right: 1rem;
-    display: flex;
-    align-items: center;
 
-}
-.contact:hover{
-    background-color: gainsboro;
-}
-
-.contact img{
-    height: 3.5rem;
-    width: 3.5rem;
-    border-radius: 5rem;
-    
-}
-.contact_info{
-    display: inline-block;
-    margin: 1rem;
-}
-.contact_name{
-}
-.contact_message{
-    color: gray;
-
-}
-.contact_bar{
-    box-shadow: 0px 6px 8px -5px rgba(0,0,0,0.25);
-}
-main{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 90vh;
-
-}
+/* styles for footers */
 #new_message{
     width: 100%;
     display: flex;
@@ -119,20 +114,36 @@ main{
 #new_message button:hover{
     background-color: gainsboro;
 }
-textarea { resize: both; }
-.message_area{
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: gray;
-    height: 800px;
-    padding: 1rem;
+/* styles for contacts */
+.contact_list{
+    height: 80vh;
+}
+.contact{
+    padding-left: 1rem;
+    padding-right: 1rem;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+
 }
-/* https://stackoverflow.com/questions/36130760/use-justify-content-flex-end-and-to-have-vertical-scrollbar */
-.message_area > :first-child {
-    margin-top: auto !important;
+.contact:hover{
+    background-color: gainsboro;
 }
+.contact img{
+    height: 3.5rem;
+    width: 3.5rem;
+    border-radius: 5rem; 
+}
+.contact_info{
+    display: inline-block;
+    margin: 1rem;
+}
+.contact_name{
+}
+.contact_message{
+    color: gray;
+
+}
+/* styles for messages */
 .message{
     border-top-right-radius: 1.5rem;
     border-bottom-right-radius: 1.5rem;
@@ -158,7 +169,6 @@ textarea { resize: both; }
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
 }
-
 .message_wrapper{
     display: flex;
     align-items: flex-end;
