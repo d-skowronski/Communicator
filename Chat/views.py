@@ -23,6 +23,7 @@ def loginUser(request):
 
 def logoutUser(request):
     logout(request)
+    messages.info(request, "Logged out")
     return HttpResponseRedirect(reverse('Chat:home'))
 
 def registerUser(request):
