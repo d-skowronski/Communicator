@@ -21,7 +21,12 @@
                 <i class="bi bi-chat-left-fill logo"></i>
                 <div class="service-name">Communicator</div>
             </header>
-
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
             <div class="contact_list">
                 <div class="contact" data-user-id="1">
                     <img src="https://images.pexels.com/photos/13350289/pexels-photo-13350289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"></img>
