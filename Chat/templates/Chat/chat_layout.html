@@ -29,7 +29,7 @@
             {% endfor %}
             <div class="contact_list">
                 {% for chat in chats %}
-                <div class="contact" data-user-id="{{chat.chatInstance.id}}">
+                <div class="contact" data-chatRoom-id="{{chat.chatInstance.id}}">
                     <img src="{% get_media_prefix %}{{ chat.displayUser.profilePicture }}" alt="No image">
                     <div class="contact_info">
                         <div class="contact_name">{{chat.displayUser.username}}</div>
@@ -145,7 +145,7 @@
         const message_area = document.getElementById('message_area')
         Array.from(document.getElementsByClassName("contact")).forEach((element) => {
             element.addEventListener('click', () => {
-                alert(element.getAttribute('data-user-id'))
+                alert(element.getAttribute('data-chatRoom-id'))
             })
         });
         Array.from(document.getElementsByClassName("sidebarCollapse")).forEach((element) => {
