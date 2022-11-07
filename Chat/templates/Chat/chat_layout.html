@@ -50,6 +50,9 @@
                     </div>
                 </div>
             </div>
+            <div class="myprofile">
+                hello
+            </div>
 
         </nav>
 
@@ -90,7 +93,9 @@
                                 <div class="text">How are you? I am today</div>
                             </div>
                         </div>
-                    </div>                    <div class="message_wrapper">
+                    </div>                    
+                    
+                    <div class="message_wrapper">
                         <img src="https://images.pexels.com/photos/13350289/pexels-photo-13350289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"></img>
                         <div class="message_group">
                             <div class="message">
@@ -137,7 +142,7 @@
                     
                 </div>
                 <form id="new_message">
-                    <textarea placeholder="Aa" maxlength="256"></textarea>
+                    <textarea placeholder="Aa" name="message" maxlength="256"></textarea>
                     <button type="submit" class=""><i class="bi bi-send"></i></button>
                 </form>
             </main>
@@ -159,6 +164,36 @@
                 document.getElementsByClassName('message_area')[0].lastElementChild.scrollIntoView()
             })
         });
+        let url = `ws://${window.location.host}/ws/socket-server/`
+        const chatSocket = new WebSocket(url)
+        chatSocket.onmessage = function(e){
+            let data = JSON.parse(e.data)
+            console.log('Data: ', data)
+
+            if(data.type == 'chat'){
+                let message_wrapper = document.createElement('div')
+                message_wrapper.innerHTML = `<div class='message_wrapper you'>
+                        <div class='message_group'>
+                            <div class="message">
+                                <div class="text">${data.message}</div>
+                            </div>
+                        </div>
+                    </div>`
+                let message_area = document.getElementsByClassName('message_area')[0]
+                message_area.append(message_wrapper)
+            }
+        }
+
+        let form = document.getElementById('new_message')
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+            let message = e.target.message.value
+            chatSocket.send(JSON.stringify({
+                'message':message
+            }))
+            form.reset()
+        })
+
     </script>
 </body>
 </html>
