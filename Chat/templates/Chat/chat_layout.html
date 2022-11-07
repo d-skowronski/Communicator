@@ -146,7 +146,7 @@
             console.log('Data: ', data)
 
             if(data.type == 'chat'){
-                if(message_area.lastElementChild.getAttribute('data-username') == data.username){
+                if(message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == data.username){
                     message_area.lastElementChild.getElementsByClassName('message_group')[0].innerHTML += `
                         <div class="message">
                             <div class="text">${data.message}</div>
@@ -182,10 +182,12 @@
 
         const username = JSON.parse(document.getElementById('username').innerText)
         const message_area = document.getElementById('message_area')
+
         Array.from(document.getElementsByClassName("contact")).forEach((element) => {
             element.addEventListener('click', () => {
                 let url = `ws://${window.location.host}/ws/chat/${element.getAttribute('data-chatRoom-id')}/`
                 if(url != chatSocket.url){
+                    message_area.innerHTML = ''
                     chatSocket.close()
                     chatSocket = new WebSocket(url)
                     chatSocket.addEventListener('message', process_message)
@@ -196,7 +198,9 @@
             element.addEventListener('click', () => {
                 document.getElementsByClassName("sidebar")[0].classList.toggle('active')
                 document.getElementsByClassName("content")[0].classList.toggle('active')
-                message_area.lastElementChild.scrollIntoView()
+                if(message_area.lastElementChild){
+                    message_area.lastElementChild.scrollIntoView()
+                }
             })
         });
 
