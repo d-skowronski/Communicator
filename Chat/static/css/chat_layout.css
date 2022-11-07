@@ -42,7 +42,7 @@ main{
     height: 90vh;
 
 }
-.message_area{
+#message_area{
     overflow-y: scroll;
     scrollbar-width: thin;
     scrollbar-color: gray;
@@ -52,7 +52,7 @@ main{
     flex-direction: column;
 }
 /* https://stackoverflow.com/questions/36130760/use-justify-content-flex-end-and-to-have-vertical-scrollbar */
-.message_area > :first-child {
+#message_area > :first-child {
     margin-top: auto !important;
 }
 
