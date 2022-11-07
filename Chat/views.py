@@ -4,7 +4,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from .forms import LoginForm, RegisterForm
 from django.contrib import messages
-from .models import User
+from .models import User, ChatRoom
 # Create your views here.
 
 def loginUser(request):
@@ -40,7 +40,12 @@ def registerUser(request):
 
 def home(request):
     if request.user.is_authenticated:
-        context = {'users':User.objects.all()}
+        userChats = ChatRoom.objects.filter(users = request.user)
+        chats = []
+        for chat in userChats:
+            chats.append({'chatInstance': chat, 'displayUser': chat.getDisplayUser(request.user)})
+            
+        context = {'chats':chats}
         return render(request, 'Chat/home.html', context)
     else:
         registerForm = RegisterForm()

@@ -14,6 +14,14 @@ class ChatRoom(models.Model):
     name = models.CharField(max_length=128, default=None, null=True, blank=True)
     users = models.ManyToManyField(User)
     
+    # Return first user from ChatRoom users that is not current_user
+    # If no more users found returns current_user
+    def getDisplayUser(self, current_user):
+        displayUser = self.users.exclude(pk=current_user.pk)[0]
+        if displayUser:
+            return displayUser
+        return current_user
+            
     def usernamesList(self):
         return list(self.users.all().values_list('username', flat=True))
     

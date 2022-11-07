@@ -28,11 +28,11 @@
             </div>
             {% endfor %}
             <div class="contact_list">
-                {% for user in users %}
-                <div class="contact" data-user-id="{{user.id}}">
-                    <img src="{% get_media_prefix %}{{ user.profilePicture }}" alt="No image">
+                {% for chat in chats %}
+                <div class="contact" data-user-id="{{chat.chatInstance.id}}">
+                    <img src="{% get_media_prefix %}{{ chat.displayUser.profilePicture }}" alt="No image">
                     <div class="contact_info">
-                        <div class="contact_name">{{user.username}}</div>
+                        <div class="contact_name">{{chat.displayUser.username}}</div>
                         <div class="contact_message">Hello</div>
                     </div>
                 </div>
