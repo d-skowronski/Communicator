@@ -172,15 +172,16 @@
 
             if(data.type == 'chat'){
                 let message_wrapper = document.createElement('div')
-                message_wrapper.innerHTML = `<div class='message_wrapper you'>
-                        <div class='message_group'>
-                            <div class="message">
-                                <div class="text">${data.message}</div>
-                            </div>
+                message_wrapper.innerHTML = `
+                    <div class='message_group'>
+                        <div class="message">
+                            <div class="text">${data.message}</div>
                         </div>
                     </div>`
+                message_wrapper.classList = 'message_wrapper you'
                 let message_area = document.getElementsByClassName('message_area')[0]
                 message_area.append(message_wrapper)
+                document.getElementsByClassName('message_area')[0].lastElementChild.scrollIntoView()
             }
         }
 
