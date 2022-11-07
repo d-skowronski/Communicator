@@ -39,7 +39,7 @@
                 {% endfor %}
             </div>
             <div class="myprofile">
-                hello
+                logged in as {{ request.user.username }}
             </div>
 
         </nav>
@@ -56,7 +56,7 @@
             </header>
 
             <main>
-                <div class="container-fluid message_area">
+                <div id="message_area" class="container-fluid">
                     <div class="message_wrapper">
                         <img src="https://images.pexels.com/photos/13350289/pexels-photo-13350289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"></img>
                         <div class="message_group">
@@ -120,7 +120,7 @@
                         </div>
                     </div>
 
-                    <div class="message_wrapper you">
+                    <div class="message_wrapper you" data-username="test">
                         <div class="message_group">
                             <div class="message">
                                 <div class="text">How are you? I Hello there name 2eeeHello there name 2eeeHello there name 2eeeHello there name 2eeeam today last</div>
@@ -139,7 +139,10 @@
     </div>
 
     </div>
+    {{ request.user.username|json_script:"username" }}
     <script>
+        const username = JSON.parse(document.getElementById('username').innerText)
+        const message_area = document.getElementById('message_area')
         Array.from(document.getElementsByClassName("contact")).forEach((element) => {
             element.addEventListener('click', () => {
                 alert(element.getAttribute('data-user-id'))
@@ -149,27 +152,47 @@
             element.addEventListener('click', () => {
                 document.getElementsByClassName("sidebar")[0].classList.toggle('active')
                 document.getElementsByClassName("content")[0].classList.toggle('active')
-                document.getElementsByClassName('message_area')[0].lastElementChild.scrollIntoView()
+                message_area.lastElementChild.scrollIntoView()
             })
         });
-        let url = `ws://${window.location.host}/ws/socket-server/`
+
+        let url = `ws://${window.location.host}/ws/chat/1/`
         const chatSocket = new WebSocket(url)
         chatSocket.onmessage = function(e){
             let data = JSON.parse(e.data)
             console.log('Data: ', data)
 
+
+
             if(data.type == 'chat'){
-                let message_wrapper = document.createElement('div')
-                message_wrapper.innerHTML = `
-                    <div class='message_group'>
+                if(message_area.lastElementChild.getAttribute('data-username') == data.username){
+                    message_area.lastElementChild.getElementsByClassName('message_group')[0].innerHTML += `
                         <div class="message">
                             <div class="text">${data.message}</div>
                         </div>
-                    </div>`
-                message_wrapper.classList = 'message_wrapper you'
-                let message_area = document.getElementsByClassName('message_area')[0]
-                message_area.append(message_wrapper)
-                document.getElementsByClassName('message_area')[0].lastElementChild.scrollIntoView()
+                    `
+                }
+                else{
+                    let new_message_wrapper = document.createElement('div')
+                    new_message_wrapper.innerHTML = `
+                        <div class='message_group'>
+                            <div class="message">
+                                <div class="text">${data.message}</div>
+                            </div>
+                        </div>`
+                    new_message_wrapper.setAttribute('data-username', data.username)
+                    new_message_wrapper.classList = 'message_wrapper'
+                    if(data.username == username){
+                        new_message_wrapper.classList.add('you')
+                    }
+                    else{
+                        let img = document.createElement('img')
+                        img.setAttribute('src', data.profilePicture)
+                        new_message_wrapper.insertBefore(img, new_message_wrapper.firstChild)
+                    }
+                    message_area.append(new_message_wrapper)
+                    message_area.lastElementChild.scrollIntoView()
+                }
             }
         }
 
