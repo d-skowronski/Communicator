@@ -9,3 +9,26 @@ class User(AbstractUser):
     username = models.CharField(max_length=32,unique=True)
     def __str__(self):
         return self.username
+    
+class ChatRoom(models.Model):
+    name = models.CharField(max_length=128, default=None, null=True, blank=True)
+    users = models.ManyToManyField(User)
+    
+    def usernamesList(self):
+        return list(self.users.all().values_list('username', flat=True))
+    
+    def __str__(self):
+        if self.name:
+            return self.name
+        return ' '.join(self.usernamesList())
+    
+    
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='messages')
+    room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages')
+    content = models.CharField(max_length=512)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f'Room: {self.room}, Sender: {self.sender}; {self.content}'
+    
