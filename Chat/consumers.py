@@ -2,7 +2,7 @@ import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.conf import settings
-from .models import ChatRoom, Message
+from .models import ChatRoom, Message, User
 from channels.db import database_sync_to_async
 
 class ChatConsumer(WebsocketConsumer):
@@ -30,14 +30,17 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
+        user = self.scope['user']
+        
+        self.add_message(message, user.username)
         
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 "type": "chat_message",
-                "username": self.scope['user'].username,
+                "username": user.username,
                 "message": text_data_json["message"],
-                "profilePicture": self.scope['user'].profilePicture.url
+                "profilePicture": user.profilePicture.url
             }
         )
         
@@ -55,3 +58,7 @@ class ChatConsumer(WebsocketConsumer):
 
     def get_messages(self, count):
         return Message.objects.filter(room = ChatRoom.objects.get(pk=self.room_id)).order_by('date')[:count]
+    
+    def add_message(self, message, username):
+        message = Message.objects.create(room = ChatRoom.objects.get(pk=self.room_id), sender=User.objects.get(username=username), content=message)
+        return message.save()
