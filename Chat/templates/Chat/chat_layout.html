@@ -141,28 +141,9 @@
     </div>
     {{ request.user.username|json_script:"username" }}
     <script>
-        const username = JSON.parse(document.getElementById('username').innerText)
-        const message_area = document.getElementById('message_area')
-        Array.from(document.getElementsByClassName("contact")).forEach((element) => {
-            element.addEventListener('click', () => {
-                alert(element.getAttribute('data-chatRoom-id'))
-            })
-        });
-        Array.from(document.getElementsByClassName("sidebarCollapse")).forEach((element) => {
-            element.addEventListener('click', () => {
-                document.getElementsByClassName("sidebar")[0].classList.toggle('active')
-                document.getElementsByClassName("content")[0].classList.toggle('active')
-                message_area.lastElementChild.scrollIntoView()
-            })
-        });
-
-        let url = `ws://${window.location.host}/ws/chat/1/`
-        const chatSocket = new WebSocket(url)
-        chatSocket.onmessage = function(e){
+        function process_message(e){
             let data = JSON.parse(e.data)
             console.log('Data: ', data)
-
-
 
             if(data.type == 'chat'){
                 if(message_area.lastElementChild.getAttribute('data-username') == data.username){
@@ -195,6 +176,33 @@
                 }
             }
         }
+        let url = `ws://${window.location.host}/ws/chat/${document.getElementsByClassName("contact")[0].getAttribute('data-chatRoom-id')}/`
+        let chatSocket = new WebSocket(url)
+        chatSocket.addEventListener('message', process_message)
+
+        const username = JSON.parse(document.getElementById('username').innerText)
+        const message_area = document.getElementById('message_area')
+        Array.from(document.getElementsByClassName("contact")).forEach((element) => {
+            element.addEventListener('click', () => {
+                let url = `ws://${window.location.host}/ws/chat/${element.getAttribute('data-chatRoom-id')}/`
+                if(url != chatSocket.url){
+                    chatSocket.close()
+                    chatSocket = new WebSocket(url)
+                    chatSocket.addEventListener('message', process_message)
+                }
+            })
+        });
+        Array.from(document.getElementsByClassName("sidebarCollapse")).forEach((element) => {
+            element.addEventListener('click', () => {
+                document.getElementsByClassName("sidebar")[0].classList.toggle('active')
+                document.getElementsByClassName("content")[0].classList.toggle('active')
+                message_area.lastElementChild.scrollIntoView()
+            })
+        });
+
+        
+
+       
 
         let form = document.getElementById('new_message')
         form.addEventListener('submit', (e) => {
