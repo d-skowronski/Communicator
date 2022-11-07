@@ -172,8 +172,9 @@
                         new_message_wrapper.insertBefore(img, new_message_wrapper.firstChild)
                     }
                     message_area.append(new_message_wrapper)
-                    message_area.lastElementChild.scrollIntoView()
+                
                 }
+                message_area.lastElementChild.scrollIntoView()
             }
         }
         let url = `ws://${window.location.host}/ws/chat/${document.getElementsByClassName("contact")[0].getAttribute('data-chatRoom-id')}/`
