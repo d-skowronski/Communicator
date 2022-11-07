@@ -2,6 +2,8 @@ import json
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.conf import settings
+from .models import ChatRoom, Message
+from channels.db import database_sync_to_async
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -9,7 +11,18 @@ class ChatConsumer(WebsocketConsumer):
         self.room_group_name = "chat_%s" % self.room_id
         async_to_sync(self.channel_layer.group_add)(self.room_group_name, self.channel_name)
         self.accept()
+        self.backlog = self.get_messages(10)
         
+        for message in self.backlog:
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "chat_message",
+                    "username": message.sender.username,
+                    "message": message.content,
+                    "profilePicture": message.sender.profilePicture.url,
+                }
+        )
         
     def disconnect(self, close_code):
         pass
@@ -39,3 +52,6 @@ class ChatConsumer(WebsocketConsumer):
             'username': username,
             "profilePicture": profilePicture,
         }))
+
+    def get_messages(self, count):
+        return Message.objects.filter(room = ChatRoom.objects.get(pk=self.room_id)).order_by('date')[:count]
