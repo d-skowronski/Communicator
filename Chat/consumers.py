@@ -54,7 +54,7 @@ class ChatConsumer(WebsocketConsumer):
         }))
 
     def get_messages(self, count):
-        return Message.objects.filter(room = ChatRoom.objects.get(pk=self.room_id)).order_by('date')[:count]
+        return Message.objects.filter(room = ChatRoom.objects.get(pk=self.room_id)).order_by('-date')[:count]
     
     def add_message(self, message, username):
         message = Message.objects.create(room = ChatRoom.objects.get(pk=self.room_id), sender=User.objects.get(username=username), content=message)
