@@ -13,16 +13,13 @@ class ChatConsumer(WebsocketConsumer):
         self.accept()
         self.backlog = self.get_messages(10)
         
-        for message in self.backlog:
-            async_to_sync(self.channel_layer.group_send)(
-                self.room_group_name,
-                {
-                    "type": "chat_message",
-                    "username": message.sender.username,
-                    "message": message.content,
-                    "profilePicture": message.sender.profilePicture.url,
-                }
-        )
+        for message in self.backlog[::-1]:
+            self.send(text_data=json.dumps({
+                'type':'chat',
+                'message': message.content,
+                'username': message.sender.username,
+                "profilePicture": message.sender.profilePicture.url,
+            }))
         
     def disconnect(self, close_code):
         pass
@@ -32,7 +29,7 @@ class ChatConsumer(WebsocketConsumer):
         message = text_data_json["message"]
         user = self.scope['user']
         
-        self.add_message(message, user.username)
+        print(self.add_message(message, user.username))
         
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
