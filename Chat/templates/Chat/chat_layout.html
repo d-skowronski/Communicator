@@ -117,6 +117,7 @@
             element.addEventListener('click', () => {
                 let url = `ws://${window.location.host}/ws/chat/${element.getAttribute('data-chatRoom-id')}/`
                 if(url != chatSocket.url){
+                    document.getElementsByClassName('name')[0].innerText = element.getElementsByClassName('contact_name')[0].innerText
                     message_area.innerHTML = ''
                     chatSocket.close()
                     chatSocket = new WebSocket(url)
