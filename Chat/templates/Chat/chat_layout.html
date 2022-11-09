@@ -134,8 +134,7 @@
 
         Array.from(document.getElementsByClassName("contact")).forEach((element) => {
             element.addEventListener('click', () => {
-                let url = `ws://${window.location.host}/ws/chat/${element.getAttribute('data-chatRoom-id')}/`
-                if(url != chatSocket.url){
+                if(current_room_id != element.getAttribute('data-chatRoom-id')){
                     document.getElementsByClassName('name')[0].innerText = element.getElementsByClassName('contact_name')[0].innerText
                     current_room = element
                     current_room_id = element.getAttribute('data-chatRoom-id')
