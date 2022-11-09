@@ -73,4 +73,5 @@ class ChatConsumer(WebsocketConsumer):
     
     def add_message(self, room, sender, message):
         message = Message.objects.create(room=room, sender=sender, content=message)
-        return message.save()
+        message.save()
+        return message
