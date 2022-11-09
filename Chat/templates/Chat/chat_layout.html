@@ -70,56 +70,75 @@
     </div>
     {{ request.user.username|json_script:"username" }}
     <script>
+        let current_room = document.getElementsByClassName("contact")[0]
+        let current_room_id = current_room.getAttribute('data-chatRoom-id')
+        const username = JSON.parse(document.getElementById('username').innerText)
+        const message_area = document.getElementById('message_area')
+
         function process_message(e){
             let data = JSON.parse(e.data)
             console.log('Data: ', data)
 
             if(data.type == 'chat'){
-                if(message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == data.username){
-                    message_area.lastElementChild.getElementsByClassName('message_group')[0].innerHTML += `
-                        <div class="message">
-                            <div class="text">${data.text}</div>
-                        </div>
-                    `
-                }
-                else{
-                    let new_message_wrapper = document.createElement('div')
-                    new_message_wrapper.innerHTML = `
-                        <div class='message_group'>
-                            <div class="message">
-                                <div class="text">${data.text}</div>
-                            </div>
-                        </div>`
-                    new_message_wrapper.setAttribute('data-username', data.username)
-                    new_message_wrapper.classList = 'message_wrapper'
-                    if(data.username == username){
-                        new_message_wrapper.classList.add('you')
+                if(data.room_id == current_room_id){
+                    current_room.getElementsByClassName("contact_message")[0].innerText = data.text
+                    let message_body = `
+                    <div class="message">
+                        <div class="text">${data.text}</div>
+                    </div>`
+
+                    if(message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == data.username){
+                        message_area.lastElementChild.getElementsByClassName('message_group')[0].innerHTML += message_body
                     }
                     else{
-                        let img = document.createElement('img')
-                        img.setAttribute('src', data.profilePicture)
-                        new_message_wrapper.insertBefore(img, new_message_wrapper.firstChild)
+                        let new_message_wrapper = document.createElement('div')
+                        new_message_wrapper.innerHTML = `
+                            <div class='message_group'>
+                                ${message_body}
+                            </div>`
+                        new_message_wrapper.setAttribute('data-username', data.username)
+                        new_message_wrapper.classList = 'message_wrapper'
+                        if(data.username == username){
+                            new_message_wrapper.classList.add('you')
+                        }
+                        else{
+                            let img = document.createElement('img')
+                            img.setAttribute('src', data.profilePicture)
+                            new_message_wrapper.insertBefore(img, new_message_wrapper.firstChild)
+                        }
+                        message_area.append(new_message_wrapper)
+                    
                     }
-                    message_area.append(new_message_wrapper)
-                
+                    message_area.lastElementChild.scrollIntoView()
                 }
-                message_area.lastElementChild.scrollIntoView()
+                else{
+                    Array.from(document.getElementsByClassName("contact")).forEach((element) => {
+                        if(element.getAttribute('data-chatRoom-id') == data.room_id){
+                            let contact_message = element.getElementsByClassName("contact_message")[0]
+                            contact_message.innerText = data.text
+                            if(!contact_message.classList.contains('fw-bold')){
+                                contact_message.classList.add('fw-bold')
+                            }
+                                
+                        }
+                    })
+                }
             }
         }
-        let currentRoom = document.getElementsByClassName("contact")[0].getAttribute('data-chatRoom-id')
+
+
+        
         let url = `ws://${window.location.host}/ws/chat`
         let chatSocket = new WebSocket(url)
         chatSocket.addEventListener('message', process_message)
-
-        const username = JSON.parse(document.getElementById('username').innerText)
-        const message_area = document.getElementById('message_area')
 
         Array.from(document.getElementsByClassName("contact")).forEach((element) => {
             element.addEventListener('click', () => {
                 let url = `ws://${window.location.host}/ws/chat/${element.getAttribute('data-chatRoom-id')}/`
                 if(url != chatSocket.url){
                     document.getElementsByClassName('name')[0].innerText = element.getElementsByClassName('contact_name')[0].innerText
-                    currentRoom = element.getAttribute('data-chatRoom-id')
+                    current_room = element
+                    current_room_id = element.getAttribute('data-chatRoom-id')
                     message_area.innerHTML = ''
                 }
             })
@@ -144,7 +163,7 @@
             let text = e.target.message.value
             chatSocket.send(JSON.stringify({
                 'text':text,
-                'room_id':currentRoom,
+                'room_id':current_room_id,
             }))
             form.reset()
         })
