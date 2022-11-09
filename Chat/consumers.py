@@ -70,6 +70,6 @@ class ChatConsumer(WebsocketConsumer):
     def get_rooms(self):
         return ChatRoom.objects.filter(users = self.scope['user'])
     
-    def add_message(self, message, username):
-        message = Message.objects.create(room = ChatRoom.objects.get(pk=self.room_id), sender=User.objects.get(username=username), content=message)
+    def add_message(self, room, sender, message):
+        message = Message.objects.create(room=room, sender=sender, content=message)
         return message.save()
