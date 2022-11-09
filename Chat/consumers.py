@@ -42,15 +42,15 @@ class ChatConsumer(WebsocketConsumer):
         print(self.joined_rooms_ids)
         
         if room_id in self.joined_rooms_ids:
-            self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
+            message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
             
             async_to_sync(self.channel_layer.group_send)(
                 room_id,
                 {
                     "type": "chat_message",
-                    "username": user.username,
-                    "text": text,
-                    "profilePicture": user.profilePicture.url
+                    "username": message.sender.username,
+                    "text": message.content,
+                    "profilePicture": message.sender.profilePicture.url
                 }
             )
         
