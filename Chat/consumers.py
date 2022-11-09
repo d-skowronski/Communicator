@@ -36,14 +36,15 @@ class ChatConsumer(WebsocketConsumer):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
         user = self.scope['user']
-        room = text_data_json["room"]
+        room_id = text_data_json["room_id"]
         
         print(self.joined_rooms_ids)
         
         # print(self.add_message(message, user.username))
-        if room in self.joined_rooms_ids:
+        if room_id in self.joined_rooms_ids:
+            
             async_to_sync(self.channel_layer.group_send)(
-                room,
+                room_id,
                 {
                     "type": "chat_message",
                     "username": user.username,

@@ -147,7 +147,7 @@
             let message = e.target.message.value
             chatSocket.send(JSON.stringify({
                 'message':message,
-                'room':currentRoom,
+                'room_id':currentRoom,
             }))
             form.reset()
         })
