@@ -33,34 +33,35 @@ class ChatConsumer(WebsocketConsumer):
         pass
     
     def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message = text_data_json["message"]
+        data = json.loads(text_data)
+        
+        text = data["text"]
         user = self.scope['user']
-        room_id = text_data_json["room_id"]
+        room_id = data["room_id"]
         
         print(self.joined_rooms_ids)
         
         if room_id in self.joined_rooms_ids:
-            self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=message)
+            self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
             
             async_to_sync(self.channel_layer.group_send)(
                 room_id,
                 {
                     "type": "chat_message",
                     "username": user.username,
-                    "message": message,
+                    "text": text,
                     "profilePicture": user.profilePicture.url
                 }
             )
         
     def chat_message(self, event):
-        message = event['message']
+        text = event['text']
         username = event['username']
         profilePicture = event['profilePicture']
         
         self.send(text_data=json.dumps({
             'type':'chat',
-            'message': message,
+            'text': text,
             'username': username,
             "profilePicture": profilePicture,
         }))

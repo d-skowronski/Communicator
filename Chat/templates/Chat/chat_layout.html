@@ -78,7 +78,7 @@
                 if(message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == data.username){
                     message_area.lastElementChild.getElementsByClassName('message_group')[0].innerHTML += `
                         <div class="message">
-                            <div class="text">${data.message}</div>
+                            <div class="text">${data.text}</div>
                         </div>
                     `
                 }
@@ -87,7 +87,7 @@
                     new_message_wrapper.innerHTML = `
                         <div class='message_group'>
                             <div class="message">
-                                <div class="text">${data.message}</div>
+                                <div class="text">${data.text}</div>
                             </div>
                         </div>`
                     new_message_wrapper.setAttribute('data-username', data.username)
@@ -144,9 +144,9 @@
         let form = document.getElementById('new_message')
         form.addEventListener('submit', (e) => {
             e.preventDefault()
-            let message = e.target.message.value
+            let text = e.target.message.value
             chatSocket.send(JSON.stringify({
-                'message':message,
+                'text':text,
                 'room_id':currentRoom,
             }))
             form.reset()
