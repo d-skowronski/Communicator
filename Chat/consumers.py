@@ -10,10 +10,9 @@ class ChatConsumer(WebsocketConsumer):
         self.accept()
         self.joined_rooms = self.get_rooms()
         self.joined_rooms_ids = [str(room.id) for room in self.joined_rooms]
-        for room in self.joined_rooms:
-            print(room.pk)
+        for room in self.joined_rooms_ids:
             async_to_sync(self.channel_layer.group_add)(
-                str(room.pk),
+                room,
                 self.channel_name
             )
         self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
