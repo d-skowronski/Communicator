@@ -15,8 +15,8 @@ class ChatConsumer(WebsocketConsumer):
                 room,
                 self.channel_name
             )
-        self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
-        self.room_group_name = "chat_%s" % self.room_id
+        # self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
+        # self.room_group_name = "chat_%s" % self.room_id
         # async_to_sync(self.channel_layer.group_add)(self.room_group_name, self.channel_name)
         # self.accept()
         # self.backlog = self.get_messages(10)
@@ -38,8 +38,6 @@ class ChatConsumer(WebsocketConsumer):
         text = data["text"]
         user = self.scope['user']
         room_id = data["room_id"]
-        
-        print(self.joined_rooms_ids)
         
         if room_id in self.joined_rooms_ids:
             message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)

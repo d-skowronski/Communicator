@@ -107,7 +107,7 @@
             }
         }
         let currentRoom = document.getElementsByClassName("contact")[0].getAttribute('data-chatRoom-id')
-        let url = `ws://${window.location.host}/ws/chat/${currentRoom}/`
+        let url = `ws://${window.location.host}/ws/chat`
         let chatSocket = new WebSocket(url)
         chatSocket.addEventListener('message', process_message)
 
@@ -121,9 +121,6 @@
                     document.getElementsByClassName('name')[0].innerText = element.getElementsByClassName('contact_name')[0].innerText
                     currentRoom = element.getAttribute('data-chatRoom-id')
                     message_area.innerHTML = ''
-                    chatSocket.close()
-                    chatSocket = new WebSocket(url)
-                    chatSocket.addEventListener('message', process_message)
                 }
             })
         });
