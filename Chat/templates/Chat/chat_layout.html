@@ -65,7 +65,7 @@
             </main>
 
         </div>
-    </div>
+    </div> 
 
     </div>
     {{ request.user.username|json_script:"username" }}
@@ -126,6 +126,13 @@
             }
         }
 
+        function toggle_sidebar(){
+            document.getElementsByClassName("sidebar")[0].classList.toggle('active')
+            document.getElementsByClassName("content")[0].classList.toggle('active')
+            if(message_area.lastElementChild){
+                message_area.lastElementChild.scrollIntoView()
+            }
+        }
 
         
         let url = `ws://${window.location.host}/ws/chat`
@@ -134,7 +141,9 @@
 
         Array.from(document.getElementsByClassName("contact")).forEach((element) => {
             element.addEventListener('click', () => {
+                toggle_sidebar()
                 if(current_room_id != element.getAttribute('data-chatRoom-id')){
+                    
                     document.getElementsByClassName('name')[0].innerText = element.getElementsByClassName('contact_name')[0].innerText
                     current_room = element
                     current_room_id = element.getAttribute('data-chatRoom-id')
@@ -143,13 +152,7 @@
             })
         });
         Array.from(document.getElementsByClassName("sidebarCollapse")).forEach((element) => {
-            element.addEventListener('click', () => {
-                document.getElementsByClassName("sidebar")[0].classList.toggle('active')
-                document.getElementsByClassName("content")[0].classList.toggle('active')
-                if(message_area.lastElementChild){
-                    message_area.lastElementChild.scrollIntoView()
-                }
-            })
+            element.addEventListener('click', toggle_sidebar)
         });
 
         
