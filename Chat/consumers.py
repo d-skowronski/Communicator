@@ -46,6 +46,7 @@ class ChatConsumer(WebsocketConsumer):
                 room_id,
                 {
                     "type": "chat_message",
+                    "room_id": message.room.id,
                     "username": message.sender.username,
                     "text": message.content,
                     "profilePicture": message.sender.profilePicture.url
@@ -53,15 +54,13 @@ class ChatConsumer(WebsocketConsumer):
             )
         
     def chat_message(self, event):
-        text = event['text']
-        username = event['username']
-        profilePicture = event['profilePicture']
         
         self.send(text_data=json.dumps({
             'type':'chat',
-            'text': text,
-            'username': username,
-            "profilePicture": profilePicture,
+            "room_id": event['room_id'],
+            'text': event['text'],
+            'username': event['username'],
+            "profilePicture": event['profilePicture'],
         }))
 
     def get_messages(self, count):
