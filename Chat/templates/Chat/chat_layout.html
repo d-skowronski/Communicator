@@ -66,8 +66,7 @@
         let current_room = null
         let current_room_sidebar_element = null
 
-        function process_message(e){
-            let data = JSON.parse(e.data)
+        function process_message(data){
             console.log('Data: ', data)
 
             if(data.information_type == 'chat_message'){
@@ -100,7 +99,9 @@
                         message_area.append(new_message_wrapper)
                     
                     }
-                    message_area.lastElementChild.scrollIntoView()
+                    if(message_area.lastElementChild.lastElementChild.lastElementChild){
+                        message_area.lastElementChild.lastElementChild.lastElementChild.scrollIntoView()
+                    }
                 }
                 else{
                     Array.from(document.getElementsByClassName("contact")).forEach((element) => {
@@ -120,8 +121,8 @@
         function toggle_sidebar(){
             document.getElementsByClassName("sidebar")[0].classList.toggle('active')
             document.getElementsByClassName("content")[0].classList.toggle('active')
-            if(message_area.lastElementChild){
-                message_area.lastElementChild.scrollIntoView()
+            if(message_area.lastElementChild.lastElementChild.lastElementChild){
+                message_area.lastElementChild.lastElementChild.lastElementChild.scrollIntoView()
             }
         }
 
@@ -130,6 +131,17 @@
             current_room = contact_element.getAttribute('data-chatRoom-id')
             current_room_sidebar_element = contact_element
             message_area.innerHTML = ''
+            messages_url = `/api/messages/?chat_room_id=${current_room}`
+            load_messages(messages_url)
+
+        }
+
+        async function load_messages(url){
+            let response = await fetch(url);
+            if (response.ok) { 
+                messages = await response.json();
+                messages.results.reverse().forEach(process_message)
+            }
         }
 
         async function load_chat_rooms(){
@@ -169,13 +181,12 @@
         let chatRooms = []
         load_chat_rooms()
 
-        {% comment %} let current_room = document.getElementsByClassName("contact")[0]
-        let current_room_id = current_room.getAttribute('data-chatRoom-id') {% endcomment %}
 
-
-        let url = `ws://${window.location.host}/ws/chat`
-        let chatSocket = new WebSocket(url)
-        chatSocket.addEventListener('message', process_message)
+        let web_socket_url = `ws://${window.location.host}/ws/chat`
+        let chatSocket = new WebSocket(web_socket_url)
+        chatSocket.addEventListener('message', (e) => {
+            process_message(JSON.parse(e.data))
+            })
         
         
 
