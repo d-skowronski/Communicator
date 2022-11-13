@@ -28,15 +28,6 @@
             </div>
             {% endfor %}
             <div class="contact_list">
-                {% for chat in chats %}
-                <div class="contact" data-chatRoom-id="{{chat.chatInstance.id}}">
-                    <img src="{% get_media_prefix %}{{ chat.displayUser.profilePicture }}" alt="No image">
-                    <div class="contact_info">
-                        <div class="contact_name">{{chat.displayUser.username}}</div>
-                        <div class="contact_message">Hello</div>
-                    </div>
-                </div>
-                {% endfor %}
             </div>
             <div class="myprofile">
                 logged in as {{ request.user.username }}
@@ -51,7 +42,7 @@
                     <i class="bi bi-chat-left-fill logo"></i>
                 </div>
                 <div class="name">
-                    {{ chats.0.displayUser.username}}
+                    
                 </div>
             </header>
 
@@ -70,10 +61,9 @@
     </div>
     {{ request.user.username|json_script:"username" }}
     <script>
-        let current_room = document.getElementsByClassName("contact")[0]
-        let current_room_id = current_room.getAttribute('data-chatRoom-id')
         const username = JSON.parse(document.getElementById('username').innerText)
         const message_area = document.getElementById('message_area')
+        let current_room = null
 
         function process_message(e){
             let data = JSON.parse(e.data)
@@ -133,24 +123,54 @@
                 message_area.lastElementChild.scrollIntoView()
             }
         }
+        async function load_chat_rooms(){
+            let response = await fetch(`/api/ChatRoom/`, {});
+            if (response.ok) { 
+                chatRooms = await response.json();
+                current_room = chatRooms.results[0].id
+                chatRooms.results.forEach((chatRoom) => {
+                    console.log(chatRoom)
+                    let contact_list = document.getElementsByClassName('contact_list')[0]
 
-        
+                    new_contact = document.createElement('div')
+                    new_contact.innerHTML = `
+                        <img src="${ chatRoom.thumbnail }" alt="No image">
+                        <div class="contact_info">
+                            <div class="contact_name">${chatRoom.name}</div>
+                            <div class="contact_message">Hello</div>
+                        </div>`
+                    new_contact.classList.add('contact')
+                    new_contact.setAttribute('data-chatRoom-id', chatRoom.id)
+                    
+                    new_contact.addEventListener('click', (event) => {
+                        toggle_sidebar()
+                        if(current_room != event.currentTarget.getAttribute('data-chatRoom-id')){
+                            console.log('changing')
+                            document.getElementsByClassName('name')[0].innerText = chatRoom.name
+                            current_room = event.currentTarget.getAttribute('data-chatRoom-id')
+                            message_area.innerHTML = ''
+                        }
+                    })
+                    contact_list.append(new_contact)
+                })
+
+            }
+        }
+        let chatRooms = []
+        load_chat_rooms()
+
+        {% comment %} let current_room = document.getElementsByClassName("contact")[0]
+        let current_room_id = current_room.getAttribute('data-chatRoom-id') {% endcomment %}
+
+
         let url = `ws://${window.location.host}/ws/chat`
         let chatSocket = new WebSocket(url)
         chatSocket.addEventListener('message', process_message)
+        
+        
 
-        Array.from(document.getElementsByClassName("contact")).forEach((element) => {
-            element.addEventListener('click', () => {
-                toggle_sidebar()
-                if(current_room_id != element.getAttribute('data-chatRoom-id')){
-                    
-                    document.getElementsByClassName('name')[0].innerText = element.getElementsByClassName('contact_name')[0].innerText
-                    current_room = element
-                    current_room_id = element.getAttribute('data-chatRoom-id')
-                    message_area.innerHTML = ''
-                }
-            })
-        });
+        
+
         Array.from(document.getElementsByClassName("sidebarCollapse")).forEach((element) => {
             element.addEventListener('click', toggle_sidebar)
         });
@@ -165,7 +185,7 @@
             let text = e.target.message.value
             chatSocket.send(JSON.stringify({
                 'text':text,
-                'room_id':current_room_id,
+                'room_id':current_room,
             }))
             form.reset()
         })
