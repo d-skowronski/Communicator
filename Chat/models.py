@@ -12,7 +12,7 @@ class User(AbstractUser):
     
 class ChatRoom(models.Model):
     name = models.CharField(max_length=128, default=None, null=True, blank=True)
-    users = models.ManyToManyField(User)
+    users = models.ManyToManyField(User, related_name='chat_rooms')
     
     # Return first user from ChatRoom users that is not current_user
     # If no more users found returns current_user
