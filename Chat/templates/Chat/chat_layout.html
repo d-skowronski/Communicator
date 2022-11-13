@@ -204,11 +204,13 @@
         form.addEventListener('submit', (e) => {
             e.preventDefault()
             let text = e.target.message.value
-            chatSocket.send(JSON.stringify({
-                'content':text,
-                'room':current_room,
-            }))
-            form.reset()
+            if(text){
+                chatSocket.send(JSON.stringify({
+                    'content':text,
+                    'room':current_room,
+                }))
+                form.reset()
+            }
         })
 
     </script>

@@ -26,8 +26,7 @@ class ChatConsumer(WebsocketConsumer):
         text = data["content"]
         user = self.scope['user']
         room_id = data["room"]
-        
-        if room_id in self.joined_rooms_ids:
+        if room_id in self.joined_rooms_ids and text:
             message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
             async_to_sync(self.channel_layer.group_send)(
                 room_id,
