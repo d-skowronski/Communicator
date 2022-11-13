@@ -124,13 +124,20 @@
                 message_area.lastElementChild.scrollIntoView()
             }
         }
+
+        function change_chat_room(contact_element){
+            document.getElementsByClassName('name')[0].innerText = contact_element.getAttribute('data-chatRoom-name')
+            current_room = contact_element.getAttribute('data-chatRoom-id')
+            current_room_sidebar_element = contact_element
+            message_area.innerHTML = ''
+        }
+
         async function load_chat_rooms(){
             let response = await fetch(`/api/ChatRoom/`, {});
             if (response.ok) { 
                 chatRooms = await response.json();
                 current_room = chatRooms.results[0].id
-                chatRooms.results.forEach((chatRoom) => {
-                    console.log(chatRoom)
+                chatRooms.results.forEach((chatRoom, index) => {
                     let contact_list = document.getElementsByClassName('contact_list')[0]
 
                     new_contact = document.createElement('div')
@@ -142,18 +149,19 @@
                         </div>`
                     new_contact.classList.add('contact')
                     new_contact.setAttribute('data-chatRoom-id', chatRoom.id)
+                    new_contact.setAttribute('data-chatRoom-name', chatRoom.name)
                     
                     new_contact.addEventListener('click', (event) => {
                         toggle_sidebar()
                         if(current_room != event.currentTarget.getAttribute('data-chatRoom-id')){
-                            console.log('changing')
-                            document.getElementsByClassName('name')[0].innerText = chatRoom.name
-                            current_room = event.currentTarget.getAttribute('data-chatRoom-id')
-                            current_room_sidebar_element = event.currentTarget
-                            message_area.innerHTML = ''
+                            change_chat_room(event.currentTarget)
                         }
                     })
                     contact_list.append(new_contact)
+
+                    if(index==0){
+                        change_chat_room(new_contact)
+                    }
                 })
 
             }
