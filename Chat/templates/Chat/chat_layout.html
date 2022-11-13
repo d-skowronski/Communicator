@@ -65,20 +65,28 @@
         const message_area = document.getElementById('message_area')
         let current_room = null
         let current_room_sidebar_element = null
+        let next_message_load_url = null
 
-        function process_message(data){
+        function process_message(data, insert_at_bottom=false){
             console.log('Data: ', data)
+            console.log(insert_at_bottom)
 
             if(data.information_type == 'chat_message'){
                 if(data.room == current_room){
-                    current_room_sidebar_element.getElementsByClassName("contact_message")[0].innerText = data.content
+                    if(insert_at_bottom){
+                        current_room_sidebar_element.getElementsByClassName("contact_message")[0].innerText = data.content
+                    }
                     let message_body = `
                     <div class="message">
                         <div class="text">${data.content}</div>
                     </div>`
 
-                    if(message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == data.username){
+                    if(insert_at_bottom && message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == data.username){
                         message_area.lastElementChild.getElementsByClassName('message_group')[0].innerHTML += message_body
+                    }
+                    else if(!insert_at_bottom && message_area.firstElementChild && message_area.firstElementChild.getAttribute('data-username') == data.username){
+                        let message_base = message_area.firstElementChild.getElementsByClassName('message_group')[0].innerHTML
+                        message_area.firstElementChild.getElementsByClassName('message_group')[0].innerHTML = message_body + message_base
                     }
                     else{
                         let new_message_wrapper = document.createElement('div')
@@ -96,12 +104,23 @@
                             img.setAttribute('src', data.profilePicture)
                             new_message_wrapper.insertBefore(img, new_message_wrapper.firstChild)
                         }
-                        message_area.append(new_message_wrapper)
+
+                        if(insert_at_bottom){
+                            message_area.append(new_message_wrapper)
+                        }
+                        else{
+                            message_area.insertBefore(new_message_wrapper, message_area.firstChild)
+                        }
+                        
                     
                     }
-                    if(message_area.lastElementChild.lastElementChild.lastElementChild){
+                    if(insert_at_bottom){
+                        if(message_area.lastElementChild.lastElementChild.lastElementChild){
                         message_area.lastElementChild.lastElementChild.lastElementChild.scrollIntoView()
                     }
+                    }
+                    
+                    
                 }
                 else{
                     Array.from(document.getElementsByClassName("contact")).forEach((element) => {
@@ -127,6 +146,7 @@
         }
 
         function change_chat_room(contact_element){
+            next_message_load_url = null
             document.getElementsByClassName('name')[0].innerText = contact_element.getAttribute('data-chatRoom-name')
             current_room = contact_element.getAttribute('data-chatRoom-id')
             current_room_sidebar_element = contact_element
@@ -136,11 +156,19 @@
 
         }
 
-        async function load_messages(url){
+        async function load_messages(url, insert_at_bottom=true){
             let response = await fetch(url);
             if (response.ok) { 
+                let starting_position = message_area.firstElementChild 
                 messages = await response.json();
-                messages.results.reverse().forEach(process_message)
+                next_message_load_url = messages.next
+                messages.results.reverse().forEach((message) => {
+                    process_message(message, insert_at_bottom)
+                })
+                if(starting_position){
+                    starting_position.scrollIntoView()
+                }
+                
             }
         }
 
@@ -181,11 +209,25 @@
         let chatRooms = []
         load_chat_rooms()
 
+        message_area.onscroll = function(e) {
+            if(this.scrollTop == 0){
+                this.scrollTo({
+                    top: 1,
+                  })
+                this.scrollTo({
+                    top: 15,
+                    behavior: 'smooth'
+                  })
+                if(next_message_load_url){
+                    load_messages(next_message_load_url, insert_at_bottom=false)
+                }
+            }
+          };
 
         let web_socket_url = `ws://${window.location.host}/ws/chat`
         let chatSocket = new WebSocket(web_socket_url)
         chatSocket.addEventListener('message', (e) => {
-            process_message(JSON.parse(e.data))
+            process_message(JSON.parse(e.data), insert_at_bottom=true)
             })
         
         
