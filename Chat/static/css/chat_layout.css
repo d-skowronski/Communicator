@@ -88,7 +88,7 @@ header{
     align-items: center;
     padding: 1rem;
 }
-#new_message textarea{
+#new_message input{
     background-color: gainsboro;
     box-shadow: none;
     border: none;
@@ -100,7 +100,7 @@ header{
     height: 3rem;
     resize: none;
 }
-#new_message textarea:focus{
+#new_message input:focus{
     outline:none
   }
 #new_message button{
