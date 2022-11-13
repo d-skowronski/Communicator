@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import authentication, permissions
 from rest_framework import generics
 from ..models import ChatRoom, User
-from .serializers import ChatRoomSerializer, UserSerializer
+from .serializers import ChatRoomSerializer, UserSerializer, MessageSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
 
@@ -43,3 +43,15 @@ class ChatRoomDetail(generics.RetrieveUpdateAPIView):
         
         user = self.request.user
         return user.chat_rooms.all()
+    
+class MessagesList(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        param = self.request.query_params.get('chat_room_id')
+        chatRoom = int(param) if param is not None and param.isdigit() else None
+        print(chatRoom)
+        return user.chat_rooms.get(pk=chatRoom).messages.all().prefetch_related('sender').order_by('-date')

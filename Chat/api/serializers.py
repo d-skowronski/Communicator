@@ -1,10 +1,33 @@
 from rest_framework import serializers
-from ..models import ChatRoom, User
+from ..models import ChatRoom, User, Message
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'profilePicture']
+        
+class MessageSerializer(serializers.ModelSerializer):
+                    # "type": "chat_message",
+                    # "room_id": message.room.id,
+                    # "username": message.sender.username,
+                    # "text": message.content,
+                    # "profilePicture": message.sender.profilePicture.url
+    information_type = serializers.SerializerMethodField()
+    username = serializers.SerializerMethodField()
+    profilePicture = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Message
+        fields = ['information_type', 'room', 'content','username', 'profilePicture']
+    
+    def get_information_type(self, obj):
+        return 'chat_message'
+        
+    def get_username(self, obj):
+        return obj.sender.username
+    
+    def get_profilePicture(self, obj):
+        return obj.sender.profilePicture.url
         
         
 class ChatRoomSerializer(serializers.ModelSerializer):

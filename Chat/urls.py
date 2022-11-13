@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/ChatRoom/<int:pk>/', api_views.ChatRoomDetail.as_view()),
     path('api/user/', api_views.UserList.as_view()),
     path('api/user/<int:pk>/', api_views.UserDetail.as_view()),
+    path('api/messages/', api_views.MessagesList.as_view()),
     path('', views.home, name='home'),
     path('register/', views.registerUser, name='register'),
     path('login/', views.loginUser, name='login'),
