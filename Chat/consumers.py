@@ -1,4 +1,5 @@
 import json
+from django.utils.html import escape, conditional_escape
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
 from django.conf import settings
@@ -23,7 +24,7 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         
-        text = data["content"]
+        text = escape(data["content"])
         user = self.scope['user']
         room_id = data["room"]
         if room_id in self.joined_rooms_ids and text:
