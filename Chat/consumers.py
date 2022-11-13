@@ -15,19 +15,6 @@ class ChatConsumer(WebsocketConsumer):
                 room,
                 self.channel_name
             )
-        # self.room_id = self.scope["url_route"]["kwargs"]["room_id"]
-        # self.room_group_name = "chat_%s" % self.room_id
-        # async_to_sync(self.channel_layer.group_add)(self.room_group_name, self.channel_name)
-        # self.accept()
-        # self.backlog = self.get_messages(10)
-        
-        # for message in self.backlog[::-1]:
-        #     self.send(text_data=json.dumps({
-        #         'type':'chat',
-        #         'message': message.content,
-        #         'username': message.sender.username,
-        #         "profilePicture": message.sender.profilePicture.url,
-        #     }))
         
     def disconnect(self, close_code):
         pass
@@ -35,9 +22,9 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         data = json.loads(text_data)
         
-        text = data["text"]
+        text = data["content"]
         user = self.scope['user']
-        room_id = data["room_id"]
+        room_id = data["room"]
         
         if room_id in self.joined_rooms_ids:
             message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
@@ -46,9 +33,10 @@ class ChatConsumer(WebsocketConsumer):
                 room_id,
                 {
                     "type": "chat_message",
-                    "room_id": message.room.id,
+                    "information_type": "chat_message",
+                    "room": message.room.id,
+                    "content": message.content,
                     "username": message.sender.username,
-                    "text": message.content,
                     "profilePicture": message.sender.profilePicture.url
                 }
             )
@@ -56,9 +44,9 @@ class ChatConsumer(WebsocketConsumer):
     def chat_message(self, event):
         
         self.send(text_data=json.dumps({
-            'type':'chat',
-            "room_id": event['room_id'],
-            'text': event['text'],
+            "information_type": "chat_message",
+            "room": event['room'],
+            'content': event['content'],
             'username': event['username'],
             "profilePicture": event['profilePicture'],
         }))

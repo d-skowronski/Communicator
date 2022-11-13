@@ -7,11 +7,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'profilePicture']
         
 class MessageSerializer(serializers.ModelSerializer):
-                    # "type": "chat_message",
-                    # "room_id": message.room.id,
-                    # "username": message.sender.username,
-                    # "text": message.content,
-                    # "profilePicture": message.sender.profilePicture.url
     information_type = serializers.SerializerMethodField()
     username = serializers.SerializerMethodField()
     profilePicture = serializers.SerializerMethodField()

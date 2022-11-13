@@ -64,17 +64,18 @@
         const username = JSON.parse(document.getElementById('username').innerText)
         const message_area = document.getElementById('message_area')
         let current_room = null
+        let current_room_sidebar_element = null
 
         function process_message(e){
             let data = JSON.parse(e.data)
             console.log('Data: ', data)
 
-            if(data.type == 'chat'){
-                if(data.room_id == current_room_id){
-                    current_room.getElementsByClassName("contact_message")[0].innerText = data.text
+            if(data.information_type == 'chat_message'){
+                if(data.room == current_room){
+                    current_room_sidebar_element.getElementsByClassName("contact_message")[0].innerText = data.content
                     let message_body = `
                     <div class="message">
-                        <div class="text">${data.text}</div>
+                        <div class="text">${data.content}</div>
                     </div>`
 
                     if(message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == data.username){
@@ -103,7 +104,7 @@
                 }
                 else{
                     Array.from(document.getElementsByClassName("contact")).forEach((element) => {
-                        if(element.getAttribute('data-chatRoom-id') == data.room_id){
+                        if(element.getAttribute('data-chatRoom-id') == data.room){
                             let contact_message = element.getElementsByClassName("contact_message")[0]
                             contact_message.innerText = data.text
                             if(!contact_message.classList.contains('fw-bold')){
@@ -148,6 +149,7 @@
                             console.log('changing')
                             document.getElementsByClassName('name')[0].innerText = chatRoom.name
                             current_room = event.currentTarget.getAttribute('data-chatRoom-id')
+                            current_room_sidebar_element = event.currentTarget
                             message_area.innerHTML = ''
                         }
                     })
@@ -184,8 +186,8 @@
             e.preventDefault()
             let text = e.target.message.value
             chatSocket.send(JSON.stringify({
-                'text':text,
-                'room_id':current_room,
+                'content':text,
+                'room':current_room,
             }))
             form.reset()
         })
