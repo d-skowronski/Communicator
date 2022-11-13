@@ -4,6 +4,7 @@ from asgiref.sync import async_to_sync
 from django.conf import settings
 from .models import ChatRoom, Message, User
 from channels.db import database_sync_to_async
+from .api.serializers import MessageSerializer
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -28,28 +29,17 @@ class ChatConsumer(WebsocketConsumer):
         
         if room_id in self.joined_rooms_ids:
             message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
-            
             async_to_sync(self.channel_layer.group_send)(
                 room_id,
                 {
                     "type": "chat_message",
-                    "information_type": "chat_message",
-                    "room": message.room.id,
-                    "content": message.content,
-                    "username": message.sender.username,
-                    "profilePicture": message.sender.profilePicture.url
+                    "message": MessageSerializer(message).data
                 }
             )
         
     def chat_message(self, event):
-        
-        self.send(text_data=json.dumps({
-            "information_type": "chat_message",
-            "room": event['room'],
-            'content': event['content'],
-            'username': event['username'],
-            "profilePicture": event['profilePicture'],
-        }))
+        message = event['message']
+        self.send(text_data=json.dumps(message))
 
     def get_messages(self, count):
         return Message.objects.filter(room = ChatRoom.objects.get(pk=self.room_id)).order_by('-date')[:count]
