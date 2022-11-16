@@ -74,7 +74,11 @@
             if(data.information_type == 'chat_message'){
                 if(data.room == current_room){
                     if(insert_at_bottom){
-                        current_room_sidebar_element.getElementsByClassName("contact_message")[0].innerText = data.content
+                        let text_to_insert = data.content
+                        if(data.username == username){
+                            text_to_insert = "You: " + text_to_insert
+                        } 
+                        current_room_sidebar_element.getElementsByClassName("contact_message")[0].innerText = text_to_insert
                     }
                     let message_body = `
                     <div class="message">
