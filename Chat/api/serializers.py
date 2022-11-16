@@ -29,10 +29,11 @@ class ChatRoomSerializer(serializers.ModelSerializer):
     users = UserSerializer(many=True)
     name = serializers.SerializerMethodField()
     thumbnail = serializers.SerializerMethodField()
+    last_message = serializers.SerializerMethodField()
     
     class Meta:
         model = ChatRoom
-        fields = ['id', 'name', 'thumbnail', 'users']
+        fields = ['id', 'name', 'thumbnail', 'last_message', 'users']
         
     def get_name(self, obj):
         if obj.name:
@@ -43,3 +44,6 @@ class ChatRoomSerializer(serializers.ModelSerializer):
     def get_thumbnail(self, obj):
         request = self.context['request']
         return request.build_absolute_uri(obj.getDisplayUser(request.user).profilePicture.url)
+    
+    def get_last_message(self, obj):
+        return MessageSerializer(obj.messages.last()).data

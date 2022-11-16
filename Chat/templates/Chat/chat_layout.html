@@ -68,18 +68,21 @@
         let next_message_load_url = null
 
         function process_message(data, insert_at_bottom=false){
-            console.log('Data: ', data)
-            console.log(insert_at_bottom)
 
             if(data.information_type == 'chat_message'){
+                if(insert_at_bottom){
+                    Array.from(document.getElementsByClassName("contact")).forEach((element) => {
+                        if(element.getAttribute('data-chatRoom-id') == data.room){
+                            let contact_message = element.getElementsByClassName("contact_message")[0]
+                            let text_to_insert = data.content
+                            if(data.username == username){
+                                text_to_insert = "You: " + text_to_insert
+                            } 
+                            contact_message.innerText = text_to_insert
+                        }
+                    })
+                }
                 if(data.room == current_room){
-                    if(insert_at_bottom){
-                        let text_to_insert = data.content
-                        if(data.username == username){
-                            text_to_insert = "You: " + text_to_insert
-                        } 
-                        current_room_sidebar_element.getElementsByClassName("contact_message")[0].innerText = text_to_insert
-                    }
                     let message_body = `
                     <div class="message">
                         <div class="text">${data.content}</div>
@@ -125,18 +128,6 @@
                     }
                     
                     
-                }
-                else{
-                    Array.from(document.getElementsByClassName("contact")).forEach((element) => {
-                        if(element.getAttribute('data-chatRoom-id') == data.room){
-                            let contact_message = element.getElementsByClassName("contact_message")[0]
-                            contact_message.innerText = data.text
-                            if(!contact_message.classList.contains('fw-bold')){
-                                contact_message.classList.add('fw-bold')
-                            }
-                                
-                        }
-                    })
                 }
             }
         }
@@ -189,7 +180,7 @@
                         <img src="${ chatRoom.thumbnail }" alt="No image">
                         <div class="contact_info">
                             <div class="contact_name">${chatRoom.name}</div>
-                            <div class="contact_message">Hello</div>
+                            <div class="contact_message"></div>
                         </div>`
                     new_contact.classList.add('contact')
                     new_contact.setAttribute('data-chatRoom-id', chatRoom.id)
@@ -202,7 +193,7 @@
                         }
                     })
                     contact_list.append(new_contact)
-
+                    process_message(chatRoom.last_message, insert_at_bottom=true)
                     if(index==0){
                         change_chat_room(new_contact)
                     }
