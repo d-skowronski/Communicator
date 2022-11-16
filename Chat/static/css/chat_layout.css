@@ -115,6 +115,7 @@ header{
     background-color: gainsboro;
 }
 /* styles for contacts */
+
 .contact_list{
     height: 80vh;
     width: inherit;
@@ -158,6 +159,9 @@ header{
     overflow: hidden; 
     white-space: nowrap;
     height: 1.5rem;
+}
+.contact_message.unread{
+    color:rgb(20, 10, 10);
 }
 /* styles for messages */
 .message{

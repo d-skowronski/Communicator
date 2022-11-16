@@ -68,7 +68,7 @@
         let next_message_load_url = null
 
         function process_message(data, insert_at_bottom=false){
-
+            console.log(data)
             if(data.information_type == 'chat_message'){
                 if(insert_at_bottom){
                     Array.from(document.getElementsByClassName("contact")).forEach((element) => {
@@ -79,6 +79,14 @@
                                 text_to_insert = "You: " + text_to_insert
                             } 
                             contact_message.innerText = text_to_insert
+                            if(data.read == false && !contact_message.classList.contains('unread')){
+                                contact_message.classList.toggle('fw-bold')
+                                contact_message.classList.toggle('unread')
+                            }
+                            else if(data.read == true && contact_message.classList.contains('unread')){
+                                contact_message.classList.toggle('fw-bold')
+                                contact_message.classList.toggle('unread')
+                            }
                         }
                     })
                 }
