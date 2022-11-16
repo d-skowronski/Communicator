@@ -215,6 +215,8 @@
                   })
                 if(next_message_load_url){
                     load_messages(next_message_load_url, insert_at_bottom=false)
+                    // Added to prevent multiple fetches to same url while messages are loading
+                    next_message_load_url = null
                 }
             }
           };
