@@ -79,18 +79,24 @@
                                 text_to_insert = "You: " + text_to_insert
                             } 
                             contact_message.innerText = text_to_insert
-                            if(data.read == false && !contact_message.classList.contains('unread')){
-                                contact_message.classList.toggle('fw-bold')
-                                contact_message.classList.toggle('unread')
+                            if(data.read == false){
+                                contact_message.classList.add('fw-bold')
+                                contact_message.classList.add('unread')
                             }
-                            else if(data.read == true && contact_message.classList.contains('unread')){
-                                contact_message.classList.toggle('fw-bold')
-                                contact_message.classList.toggle('unread')
+                            else if(data.read == true){
+                                contact_message.classList.remove('fw-bold')
+                                contact_message.classList.remove('unread')
                             }
                         }
                     })
                 }
                 if(data.room == current_room){
+                    if(data.read == false){
+                        chatSocket.send(JSON.stringify({
+                            'information_type':'message_read',
+                            'id': data.id,
+                        }))
+                    }
                     let message_body = `
                     <div class="message">
                         <div class="text">${data.content}</div>
@@ -137,6 +143,17 @@
                     
                     
                 }
+                
+            }
+            else if(data.information_type == 'message_read'){
+                Array.from(document.getElementsByClassName("contact")).forEach((element) => {
+                    if(element.getAttribute('data-chatRoom-id') == data.room){
+                        let contact_message = element.getElementsByClassName("contact_message")[0]
+                        contact_message.classList.remove('fw-bold')
+                        contact_message.classList.remove('unread')
+                        
+                    }
+                })
             }
         }
 

@@ -6,6 +6,8 @@ from ..models import ChatRoom, User
 from .serializers import ChatRoomSerializer, UserSerializer, MessageSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 class UserList(generics.ListAPIView):
     serializer_class = UserSerializer
@@ -58,9 +60,15 @@ class MessagesList(generics.ListAPIView):
     
     def paginate_queryset(self, *args, **kwargs):
         user = self.request.user
+        channel_layer = get_channel_layer()
         objects = super().paginate_queryset(*args, **kwargs)
         for object in objects:
             users_who_have_read = object.readBy.all()
             if user not in users_who_have_read:
                 object.readBy.add(user)
+                async_to_sync(channel_layer.group_send)(str(object.room.id), {
+                    "type": "message_read", 
+                    "message_object": object,
+                    "read_user": UserSerializer(user).data,
+                    })
         return objects

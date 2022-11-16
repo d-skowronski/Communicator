@@ -6,7 +6,7 @@ from asgiref.sync import async_to_sync
 from django.conf import settings
 from .models import ChatRoom, Message, User
 from channels.db import database_sync_to_async
-from .api.serializers import MessageSerializer
+from .api.serializers import MessageSerializer, UserSerializer
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -24,10 +24,10 @@ class ChatConsumer(WebsocketConsumer):
     
     def receive(self, text_data):
         data = json.loads(text_data)
+        user = self.scope['user']
         
         if data['information_type'] == "chat_message":
             text = escape(data["content"])
-            user = self.scope['user']
             room_id = data["room"]
             if room_id in self.joined_rooms_ids and text:
                 message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
@@ -38,12 +38,35 @@ class ChatConsumer(WebsocketConsumer):
                         "message": message
                     }
                 )
+        elif data['information_type'] == "message_read":
+            message = Message.objects.get(pk = int(data['id']))
+            if message.room in self.joined_rooms:
+                message.readBy.add(user)
+                async_to_sync(self.channel_layer.group_send)(
+                        str(message.room.id),
+                        {
+                            "type": "message_read",
+                            "message_object": message,
+                            "read_user": UserSerializer(user).data
+                        }
+                    )
+            
+            
         
     def chat_message(self, event):
         mock_request = HttpRequest()
         mock_request.user = self.scope['user']
         
         message = MessageSerializer(event['message'], context={'request': mock_request}).data
+        self.send(text_data=json.dumps(message))
+        
+    def message_read(self, event):
+        message = {
+            'information_type': event['type'],
+            "message_id": event['message_object'].id,
+            "room": event['message_object'].room.id,
+            'read_user': event['read_user'],
+        }
         self.send(text_data=json.dumps(message))
 
     def get_messages(self, count):
