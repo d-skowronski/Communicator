@@ -245,6 +245,7 @@
             let text = e.target.message.value
             if(text){
                 chatSocket.send(JSON.stringify({
+                    'information_type':'chat_message',
                     'content':text,
                     'room':current_room,
                 }))

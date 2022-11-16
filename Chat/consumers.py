@@ -1,4 +1,5 @@
 import json
+from django.http import HttpRequest
 from django.utils.html import escape, conditional_escape
 from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
@@ -23,19 +24,22 @@ class ChatConsumer(WebsocketConsumer):
     
     def receive(self, text_data):
         data = json.loads(text_data)
+        mock_request = HttpRequest()
+        mock_request.user = self.scope['user']
         
-        text = escape(data["content"])
-        user = self.scope['user']
-        room_id = data["room"]
-        if room_id in self.joined_rooms_ids and text:
-            message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
-            async_to_sync(self.channel_layer.group_send)(
-                room_id,
-                {
-                    "type": "chat_message",
-                    "message": MessageSerializer(message).data
-                }
-            )
+        if data['information_type'] == "chat_message":
+            text = escape(data["content"])
+            user = self.scope['user']
+            room_id = data["room"]
+            if room_id in self.joined_rooms_ids and text:
+                message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
+                async_to_sync(self.channel_layer.group_send)(
+                    room_id,
+                    {
+                        "type": "chat_message",
+                        "message": MessageSerializer(message, context={'request': mock_request}).data
+                    }
+                )
         
     def chat_message(self, event):
         message = event['message']
