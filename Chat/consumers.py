@@ -24,8 +24,6 @@ class ChatConsumer(WebsocketConsumer):
     
     def receive(self, text_data):
         data = json.loads(text_data)
-        mock_request = HttpRequest()
-        mock_request.user = self.scope['user']
         
         if data['information_type'] == "chat_message":
             text = escape(data["content"])
@@ -37,12 +35,15 @@ class ChatConsumer(WebsocketConsumer):
                     room_id,
                     {
                         "type": "chat_message",
-                        "message": MessageSerializer(message, context={'request': mock_request}).data
+                        "message": message
                     }
                 )
         
     def chat_message(self, event):
-        message = event['message']
+        mock_request = HttpRequest()
+        mock_request.user = self.scope['user']
+        
+        message = MessageSerializer(event['message'], context={'request': mock_request}).data
         self.send(text_data=json.dumps(message))
 
     def get_messages(self, count):
