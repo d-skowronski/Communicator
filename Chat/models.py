@@ -36,7 +36,13 @@ class Message(models.Model):
     room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='messages')
     content = models.CharField(max_length=512)
     date = models.DateTimeField(auto_now_add=True)
+    readBy = models.ManyToManyField(User, related_name='read_messages', blank=True)
     
     def __str__(self):
         return f'Room: {self.room}, Sender: {self.sender}; {self.content}'
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.readBy.all():
+            self.readBy.add(self.sender)
     
