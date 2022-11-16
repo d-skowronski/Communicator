@@ -55,3 +55,12 @@ class MessagesList(generics.ListAPIView):
         chatRoom = int(param) if param is not None and param.isdigit() else None
         print(chatRoom)
         return user.chat_rooms.get(pk=chatRoom).messages.all().prefetch_related('sender').order_by('-date')
+    
+    def paginate_queryset(self, *args, **kwargs):
+        user = self.request.user
+        objects = super().paginate_queryset(*args, **kwargs)
+        for object in objects:
+            users_who_have_read = object.readBy.all()
+            if user not in users_who_have_read:
+                object.readBy.add(user)
+        return objects
