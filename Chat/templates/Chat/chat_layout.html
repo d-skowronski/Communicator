@@ -63,17 +63,120 @@
     <script>
         const username = JSON.parse(document.getElementById('username').innerText)
         const message_area = document.getElementById('message_area')
+        const contact_list = document.getElementsByClassName('contact_list')[0]
+        let room_list = []
+        let message_list = []
         let current_room = null
-        let current_room_sidebar_element = null
         let next_message_load_url = null
+
+        class ChatRoom {
+            recreate_element_innerHTML() {
+                this.chat_room_element.innerHTML = `<img src="${ this.thumbnail }" alt="No image">
+                    <div class="contact_info">
+                        <div class="contact_name">${this.name}</div>
+                        <div class="contact_message">${this.message}</div>
+                    </div>`
+            }
+            constructor(id, name, thumbnail){
+                this.id = id
+                this.name = name
+                this.thumbnail = thumbnail
+                this.message = ''
+                this.chat_room_element = document.createElement('div')
+                this.recreate_element_innerHTML()
+                this.chat_room_element.classList.add('contact')
+                this.chat_room_element.addEventListener('click', (event) => {
+                    toggle_sidebar()
+                    if(current_room.id != this.id){
+                        change_chat_room(this)
+                    }
+                })
+                this.messages = []
+            }
+        }
+
+        class Message {
+            constructor(id, room_id, content, username, profilePicture, read){
+                this.id = id
+                room_list.forEach((room_object) => {
+                    if(room_object.id == room_id){
+                        this.room = room_object
+                    }
+                })
+                this.content = content
+                this.username = username
+                this.profilePicture = profilePicture
+                this.read = read
+            }
+            read_message(){
+                if(this.read == false){
+                        chatSocket.send(JSON.stringify({
+                            'information_type':'message_read',
+                            'id': this.id,
+                        }))
+                    }
+            }
+
+            display_message(at_bottom=true){
+                if(this.room == current_room){
+                    this.read_message()
+                    this.message_body = document.createElement('div')
+                    this.message_body.innerHTML = `<div class="text">${this.content}</div>`
+                    this.message_body.classList.add('message')
+                    if(at_bottom && message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == this.username){
+                        message_area.lastElementChild.getElementsByClassName('message_group')[0].append(this.message_body)
+                    }
+                    else if(!at_bottom && message_area.firstElementChild && message_area.firstElementChild.getAttribute('data-username') == this.username){
+                        let message_group = message_area.firstElementChild.getElementsByClassName('message_group')[0]
+                        message_group.insertBefore(this.message_body, message_group.firstElementChild)
+                    }
+                    else{
+                        let new_message_wrapper = document.createElement('div')
+                        new_message_wrapper.innerHTML = `
+                            <div class='message_group'>
+                            </div>`
+                        new_message_wrapper.firstElementChild.append(this.message_body)
+                        new_message_wrapper.setAttribute('data-username', this.username)
+                        new_message_wrapper.classList = 'message_wrapper'
+                        if(this.username == username){
+                            new_message_wrapper.classList.add('you')
+                        }
+                        else{
+                            let img = document.createElement('img')
+                            img.setAttribute('src', this.profilePicture)
+                            new_message_wrapper.insertBefore(img, new_message_wrapper.firstChild)
+                        }
+
+                        if(at_bottom){
+                            message_area.append(new_message_wrapper)
+                        }
+                        else{
+                            message_area.insertBefore(new_message_wrapper, message_area.firstChild)
+                        }
+                    }
+                    this.message_body.scrollIntoView()
+                }
+            }
+        
+        }
 
         function process_message(data, insert_at_bottom=false){
             console.log(data)
             if(data.information_type == 'chat_message'){
+                message = new Message(data.id, data.room, data.content, data.username, data.profilePicture, data.read)
+                message.display_message(at_bottom=insert_at_bottom)
                 if(insert_at_bottom){
-                    Array.from(document.getElementsByClassName("contact")).forEach((element) => {
-                        if(element.getAttribute('data-chatRoom-id') == data.room){
-                            let contact_message = element.getElementsByClassName("contact_message")[0]
+                    message_list.unshift(message)
+                }
+                else{
+                    message_list.push(message)
+                }
+
+
+                if(insert_at_bottom){
+                    room_list.forEach((room) => {
+                        if(room.id == data.room){
+                            let contact_message = room.chat_room_element.getElementsByClassName("contact_message")[0]
                             let text_to_insert = data.content
                             if(data.username == username){
                                 text_to_insert = "You: " + text_to_insert
@@ -90,65 +193,14 @@
                         }
                     })
                 }
-                if(data.room == current_room){
-                    if(data.read == false){
-                        chatSocket.send(JSON.stringify({
-                            'information_type':'message_read',
-                            'id': data.id,
-                        }))
-                    }
-                    let message_body = `
-                    <div class="message">
-                        <div class="text">${data.content}</div>
-                    </div>`
-
-                    if(insert_at_bottom && message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == data.username){
-                        message_area.lastElementChild.getElementsByClassName('message_group')[0].innerHTML += message_body
-                    }
-                    else if(!insert_at_bottom && message_area.firstElementChild && message_area.firstElementChild.getAttribute('data-username') == data.username){
-                        let message_base = message_area.firstElementChild.getElementsByClassName('message_group')[0].innerHTML
-                        message_area.firstElementChild.getElementsByClassName('message_group')[0].innerHTML = message_body + message_base
-                    }
-                    else{
-                        let new_message_wrapper = document.createElement('div')
-                        new_message_wrapper.innerHTML = `
-                            <div class='message_group'>
-                                ${message_body}
-                            </div>`
-                        new_message_wrapper.setAttribute('data-username', data.username)
-                        new_message_wrapper.classList = 'message_wrapper'
-                        if(data.username == username){
-                            new_message_wrapper.classList.add('you')
-                        }
-                        else{
-                            let img = document.createElement('img')
-                            img.setAttribute('src', data.profilePicture)
-                            new_message_wrapper.insertBefore(img, new_message_wrapper.firstChild)
-                        }
-
-                        if(insert_at_bottom){
-                            message_area.append(new_message_wrapper)
-                        }
-                        else{
-                            message_area.insertBefore(new_message_wrapper, message_area.firstChild)
-                        }
-                        
-                    
-                    }
-                    if(insert_at_bottom){
-                        if(message_area.lastElementChild.lastElementChild.lastElementChild){
-                        message_area.lastElementChild.lastElementChild.lastElementChild.scrollIntoView()
-                    }
-                    }
-                    
-                    
-                }
-                
             }
+                
+                
+            
             else if(data.information_type == 'message_read'){
-                Array.from(document.getElementsByClassName("contact")).forEach((element) => {
-                    if(element.getAttribute('data-chatRoom-id') == data.room){
-                        let contact_message = element.getElementsByClassName("contact_message")[0]
+                room_list.forEach((room) => {
+                    if(room.id == data.room){
+                        let contact_message = room.chat_room_element.getElementsByClassName("contact_message")[0]
                         contact_message.classList.remove('fw-bold')
                         contact_message.classList.remove('unread')
                         
@@ -160,18 +212,18 @@
         function toggle_sidebar(){
             document.getElementsByClassName("sidebar")[0].classList.toggle('active')
             document.getElementsByClassName("content")[0].classList.toggle('active')
-            if(message_area.lastElementChild.lastElementChild.lastElementChild){
+            if(message_area.lastElementChild){
                 message_area.lastElementChild.lastElementChild.lastElementChild.scrollIntoView()
             }
         }
 
-        function change_chat_room(contact_element){
+        function change_chat_room(chat_room_object){
+            current_room = chat_room_object
             next_message_load_url = null
-            document.getElementsByClassName('name')[0].innerText = contact_element.getAttribute('data-chatRoom-name')
-            current_room = contact_element.getAttribute('data-chatRoom-id')
-            current_room_sidebar_element = contact_element
+            document.getElementsByClassName('name')[0].innerText = current_room.name
+            message_list = []
             message_area.innerHTML = ''
-            messages_url = `/api/messages/?chat_room_id=${current_room}`
+            messages_url = `/api/messages/?chat_room_id=${current_room.id}`
             load_messages(messages_url)
 
         }
@@ -179,14 +231,20 @@
         async function load_messages(url, insert_at_bottom=true){
             let response = await fetch(url);
             if (response.ok) { 
-                let starting_position = message_area.firstElementChild 
-                messages = await response.json();
-                next_message_load_url = messages.next
-                messages.results.reverse().forEach((message) => {
+                let starting_position = message_area.getElementsByClassName('message')[0]
+                console.log(starting_position)
+                let messages_data = await response.json();
+                next_message_load_url = messages_data.next
+                let messages = messages_data.results
+                if(insert_at_bottom){
+                    messages = messages_data.results.reverse()
+                }
+                messages.forEach((message) => {
                     process_message(message, insert_at_bottom)
                 })
+                
                 if(starting_position){
-                    starting_position.scrollIntoView()
+                    starting_position.scrollIntoView(alignToTop=true)
                 }
                 
             }
@@ -195,39 +253,45 @@
         async function load_chat_rooms(){
             let response = await fetch(`/api/ChatRoom/`, {});
             if (response.ok) { 
-                chatRooms = await response.json();
-                current_room = chatRooms.results[0].id
-                chatRooms.results.forEach((chatRoom, index) => {
-                    let contact_list = document.getElementsByClassName('contact_list')[0]
-
-                    new_contact = document.createElement('div')
-                    new_contact.innerHTML = `
-                        <img src="${ chatRoom.thumbnail }" alt="No image">
-                        <div class="contact_info">
-                            <div class="contact_name">${chatRoom.name}</div>
-                            <div class="contact_message"></div>
-                        </div>`
-                    new_contact.classList.add('contact')
-                    new_contact.setAttribute('data-chatRoom-id', chatRoom.id)
-                    new_contact.setAttribute('data-chatRoom-name', chatRoom.name)
-                    
-                    new_contact.addEventListener('click', (event) => {
-                        toggle_sidebar()
-                        if(current_room != event.currentTarget.getAttribute('data-chatRoom-id')){
-                            change_chat_room(event.currentTarget)
-                        }
-                    })
-                    contact_list.append(new_contact)
-                    process_message(chatRoom.last_message, insert_at_bottom=true)
+                let chat_room_data = await response.json();
+                chat_room_data.results.forEach((room, index) => {
+                    let new_room = new ChatRoom(room.id, room.name, room.thumbnail)
+                    room_list.push(new_room)
+                    contact_list.append(new_room.chat_room_element)
+                    process_message(room.last_message, insert_at_bottom=true)
                     if(index==0){
-                        change_chat_room(new_contact)
+                        change_chat_room(new_room)
                     }
                 })
 
             }
         }
-        let chatRooms = []
+        
+        Array.from(document.getElementsByClassName("sidebarCollapse")).forEach((element) => {
+            element.addEventListener('click', toggle_sidebar)
+        });
+        
         load_chat_rooms()
+
+        let web_socket_url = `ws://${window.location.host}/ws/chat`
+        let chatSocket = new WebSocket(web_socket_url)
+        chatSocket.addEventListener('message', (e) => {
+            process_message(JSON.parse(e.data), insert_at_bottom=true)
+            })
+        
+        let form = document.getElementById('new_message')
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+            let text = e.target.message.value
+            if(text){
+                chatSocket.send(JSON.stringify({
+                    'information_type':'chat_message',
+                    'content':text,
+                    'room':current_room.id,
+                }))
+                form.reset()
+            }
+        })
 
         message_area.onscroll = function(e) {
             if(this.scrollTop == 0){
@@ -245,39 +309,6 @@
                 }
             }
           };
-
-        let web_socket_url = `ws://${window.location.host}/ws/chat`
-        let chatSocket = new WebSocket(web_socket_url)
-        chatSocket.addEventListener('message', (e) => {
-            process_message(JSON.parse(e.data), insert_at_bottom=true)
-            })
-        
-        
-
-        
-
-        Array.from(document.getElementsByClassName("sidebarCollapse")).forEach((element) => {
-            element.addEventListener('click', toggle_sidebar)
-        });
-
-        
-
-       
-
-        let form = document.getElementById('new_message')
-        form.addEventListener('submit', (e) => {
-            e.preventDefault()
-            let text = e.target.message.value
-            if(text){
-                chatSocket.send(JSON.stringify({
-                    'information_type':'chat_message',
-                    'content':text,
-                    'room':current_room,
-                }))
-                form.reset()
-            }
-        })
-
     </script>
 </body>
 </html>
