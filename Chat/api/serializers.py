@@ -10,11 +10,11 @@ class MessageSerializer(serializers.ModelSerializer):
     information_type = serializers.SerializerMethodField()
     username = serializers.SerializerMethodField()
     profilePicture = serializers.SerializerMethodField()
-    read = serializers.SerializerMethodField()
+    readBy = serializers.SerializerMethodField()
 
     class Meta:
         model = Message
-        fields = ['id', 'information_type', 'room', 'content','username', 'profilePicture', 'read']
+        fields = ['id', 'information_type', 'room', 'content','username', 'profilePicture', 'readBy']
     
     def get_information_type(self, obj):
         return 'chat_message'
@@ -25,8 +25,8 @@ class MessageSerializer(serializers.ModelSerializer):
     def get_profilePicture(self, obj):
         return obj.sender.profilePicture.url
     
-    def get_read(self, obj):
-        return self.context['request'].user in obj.readBy.all()
+    def get_readBy(self, obj):
+        return list(obj.readBy.all().values_list('username', flat=True))
         
         
 class ChatRoomSerializer(serializers.ModelSerializer):

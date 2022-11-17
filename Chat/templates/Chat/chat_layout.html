@@ -68,6 +68,7 @@
         let message_list = []
         let current_room = null
         let next_message_load_url = null
+        let messages_with_read_icon = []
 
         class ChatRoom {
             recreate_element_innerHTML() {
@@ -96,7 +97,7 @@
         }
 
         class Message {
-            constructor(id, room_id, content, username, profilePicture, read){
+            constructor(id, room_id, content, username, profilePicture, readBy){
                 this.id = id
                 room_list.forEach((room_object) => {
                     if(room_object.id == room_id){
@@ -106,15 +107,33 @@
                 this.content = content
                 this.username = username
                 this.profilePicture = profilePicture
-                this.read = read
+                this.readBy = readBy
+                this.readByYou = this.readBy.includes(username)
             }
             read_message(){
-                if(this.read == false){
+                if(this.readByYou == false){
                         chatSocket.send(JSON.stringify({
                             'information_type':'message_read',
                             'id': this.id,
                         }))
                     }
+            }
+            insert_read(pic_url){
+                if(this.username == username){
+                    let img = document.createElement('img')
+                    img.classList.add('read_icon')
+                    img.setAttribute('src', this.profilePicture)
+                    this.message_body.parentNode.insertBefore(img, this.message_body.nextSibling);
+                    messages_with_read_icon.push(this)
+                }
+            }
+
+            remove_read(){
+                let next_element = this.message_body.nextElementSibling
+                if(next_element.tagName == 'IMG'){
+                    next_element.remove()
+                    messages_with_read_icon.pop(this)
+                }
             }
 
             display_message(at_bottom=true){
@@ -129,6 +148,8 @@
                     this.message_body = document.createElement('div')
                     this.message_body.innerHTML = `<div class="text">${this.content}</div>`
                     this.message_body.classList.add('message')
+
+
                     if(at_bottom && message_area.lastElementChild && message_area.lastElementChild.getAttribute('data-username') == this.username){
                         message_area.lastElementChild.getElementsByClassName('message_group')[0].append(this.message_body)
                     }
@@ -146,9 +167,11 @@
                         new_message_wrapper.classList = 'message_wrapper'
                         if(this.username == username){
                             new_message_wrapper.classList.add('you')
+
                         }
                         else{
                             let img = document.createElement('img')
+                            img.classList.add('chat_profile_pic')
                             img.setAttribute('src', this.profilePicture)
                             new_message_wrapper.insertBefore(img, new_message_wrapper.firstChild)
                         }
@@ -160,6 +183,8 @@
                             message_area.insertBefore(new_message_wrapper, message_area.firstChild)
                         }
                     }
+                    
+                    
                     this.message_body.scrollIntoView()
                 }
             }
@@ -169,7 +194,7 @@
         function process_message(data, insert_at_bottom=false){
             console.log(data)
             if(data.information_type == 'chat_message'){
-                message = new Message(data.id, data.room, data.content, data.username, data.profilePicture, data.read)
+                message = new Message(data.id, data.room, data.content, data.username, data.profilePicture, data.readBy)
                 message.display_message(at_bottom=insert_at_bottom)
 
                 // Code to refactor and move to display_message()
@@ -178,15 +203,15 @@
                         if(room.id == data.room){
                             let contact_message = room.chat_room_element.getElementsByClassName("contact_message")[0]
                             let text_to_insert = data.content
-                            if(data.username == username){
+                            if(message.username == username){
                                 text_to_insert = "You: " + text_to_insert
                             } 
                             contact_message.innerText = text_to_insert
-                            if(data.read == false){
+                            if(message.readByYou == false){
                                 contact_message.classList.add('fw-bold')
                                 contact_message.classList.add('unread')
                             }
-                            else if(data.read == true){
+                            else if(message.readByYou == true){
                                 contact_message.classList.remove('fw-bold')
                                 contact_message.classList.remove('unread')
                             }

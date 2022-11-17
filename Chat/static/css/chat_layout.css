@@ -164,6 +164,14 @@ header{
     color:rgb(20, 10, 10);
 }
 /* styles for messages */
+.read_icon{
+    position: relative;
+    max-width: 1rem;
+    min-width: 1rem;
+    max-height: 1rem;
+    min-height: 1rem;
+    border-radius: 0.5rem;
+}
 .message{
     border-top-right-radius: 1.5rem;
     border-bottom-right-radius: 1.5rem;
@@ -200,7 +208,7 @@ header{
     transform: scaleX(-1);
     
 }
-.message_wrapper img{
+.chat_profile_pic{
     min-height: 2.5rem;
     max-height: 2.5rem;
     min-width: 2.5rem;
