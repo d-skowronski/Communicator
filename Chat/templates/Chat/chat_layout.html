@@ -119,6 +119,12 @@
 
             display_message(at_bottom=true){
                 if(this.room == current_room){
+                    if(insert_at_bottom){
+                    message_list.unshift(message)
+                    }
+                    else{
+                        message_list.push(message)
+                    }
                     this.read_message()
                     this.message_body = document.createElement('div')
                     this.message_body.innerHTML = `<div class="text">${this.content}</div>`
@@ -165,14 +171,8 @@
             if(data.information_type == 'chat_message'){
                 message = new Message(data.id, data.room, data.content, data.username, data.profilePicture, data.read)
                 message.display_message(at_bottom=insert_at_bottom)
-                if(insert_at_bottom){
-                    message_list.unshift(message)
-                }
-                else{
-                    message_list.push(message)
-                }
 
-
+                // Code to refactor and move to display_message()
                 if(insert_at_bottom){
                     room_list.forEach((room) => {
                         if(room.id == data.room){
