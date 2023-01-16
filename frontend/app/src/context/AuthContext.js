@@ -41,7 +41,7 @@ export const AuthProvider = ({children}) => {
     async function updateToken() {
         console.log("Token update")
         let body = JSON.stringify({refresh: authTokens?.refresh})
-        if(body != '{}'){
+        if(body !== '{}'){
             const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
                 method: 'POST',
                 body: body,
