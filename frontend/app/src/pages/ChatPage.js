@@ -5,7 +5,8 @@ function ChatPage() {
     const {user, logoutUser} = useContext(AuthContext)
     return (
         <div>
-            ChatPage {user.username}
+            ChatPage {user.username} {user.profile_picture} {user.email}
+
             <button onClick={logoutUser}>Logout</button>
         </div>
     )
