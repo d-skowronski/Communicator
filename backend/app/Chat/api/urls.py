@@ -3,8 +3,8 @@ from . import views
 from rest_framework_simplejwt.views import TokenRefreshView
 
 urlpatterns = [
-    path('chatroom/', views.ChatRoomList.as_view()),
-    path('chatroom/<int:pk>/', views.ChatRoomDetail.as_view()),
+    path('room/', views.RoomList.as_view()),
+    path('room/<int:pk>/', views.RoomDetail.as_view()),
     path('user/', views.UserList.as_view()),
     path('user/<int:pk>/', views.UserDetail.as_view()),
     path('messages/', views.MessagesList.as_view()),

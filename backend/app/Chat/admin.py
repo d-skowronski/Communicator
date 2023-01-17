@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, ChatRoom, Message
+from .models import User, Room, Message
 
 # Register your models here.
 
@@ -10,7 +10,7 @@ class MessageInLine(admin.StackedInline):
     extra = 2
 
 
-class ChatRoomAdmin(admin.ModelAdmin):
+class RoomAdmin(admin.ModelAdmin):
     inlines = [MessageInLine]
 
-admin.site.register(ChatRoom, ChatRoomAdmin)
+admin.site.register(Room, RoomAdmin)
