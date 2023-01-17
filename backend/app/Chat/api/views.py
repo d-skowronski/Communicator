@@ -1,11 +1,8 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import authentication, permissions
 from rest_framework import generics
-from ..models import Room, User
+from ..models import User, Message
 from .serializers import RoomSerializer, UserSerializer, MessageSerializer, MyTokenObtainPairSerializer
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import SessionAuthentication, TokenAuthentication
+from rest_framework.authentication import SessionAuthentication
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -15,13 +12,26 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
+
 class UserList(generics.ListAPIView):
     serializer_class = UserSerializer
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return User.objects.all()
+        q = self.request.query_params.get('q')
+        sharing_rooms = self.request.query_params.get('sharing_rooms')
+
+        qs = User.objects.all()
+        user = self.request.user
+
+        if isinstance(sharing_rooms, str) and sharing_rooms.lower() == 'true':
+            qs = qs.filter(chat_rooms__in=user.chat_rooms.all())
+
+        if(isinstance(q, str)):
+            qs = qs.filter(username__icontains=q)
+
+        return qs.distinct()
 
 
 class UserDetail(generics.RetrieveUpdateAPIView):
@@ -32,6 +42,7 @@ class UserDetail(generics.RetrieveUpdateAPIView):
     def get_queryset(self):
         return User.objects.all()
 
+
 class RoomList(generics.ListAPIView):
     serializer_class = RoomSerializer
     authentication_classes = [JWTAuthentication, SessionAuthentication]
@@ -41,16 +52,16 @@ class RoomList(generics.ListAPIView):
         user = self.request.user
         return user.chat_rooms.all()
 
+
 class RoomDetail(generics.RetrieveUpdateAPIView):
     serializer_class = RoomSerializer
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
-
     def get_queryset(self):
-
         user = self.request.user
         return user.chat_rooms.all()
+
 
 class MessagesList(generics.ListAPIView):
     serializer_class = MessageSerializer
@@ -59,10 +70,16 @@ class MessagesList(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        param = self.request.query_params.get('chat_room_id')
-        Room = int(param) if param is not None and param.isdigit() else None
-        print(Room)
-        return user.chat_rooms.get(pk=Room).messages.all().prefetch_related('sender').order_by('-date')
+        param = self.request.query_params.get('room_id')
+        room_id = int(param) if param is not None and param.isdigit() else None
+
+        qs = Message.objects.filter(room__in=user.chat_rooms.all())
+
+        if room_id:
+            print("ROOM")
+            qs = qs.filter(room_id=room_id)
+
+        return qs.distinct().order_by('-date')
 
     def paginate_queryset(self, *args, **kwargs):
         user = self.request.user
@@ -78,3 +95,15 @@ class MessagesList(generics.ListAPIView):
                     "read_user": UserSerializer(user).data,
                     })
         return objects
+
+class MessagesDetail(generics.RetrieveUpdateAPIView):
+    serializer_class = MessageSerializer
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    # TODO may be needed to add requesting user to read_by
+    def get_queryset(self):
+        user = self.request.user
+
+        qs = Message.objects.filter(room__in=user.chat_rooms.all())
+
+        return qs.distinct()
