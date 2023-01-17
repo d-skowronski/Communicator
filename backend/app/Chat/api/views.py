@@ -9,6 +9,7 @@ from rest_framework.authentication import SessionAuthentication, TokenAuthentica
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
@@ -16,7 +17,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 
 class UserList(generics.ListAPIView):
     serializer_class = UserSerializer
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -25,7 +26,7 @@ class UserList(generics.ListAPIView):
 
 class UserDetail(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -33,7 +34,7 @@ class UserDetail(generics.RetrieveUpdateAPIView):
 
 class ChatRoomList(generics.ListAPIView):
     serializer_class = ChatRoomSerializer
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -42,7 +43,7 @@ class ChatRoomList(generics.ListAPIView):
 
 class ChatRoomDetail(generics.RetrieveUpdateAPIView):
     serializer_class = ChatRoomSerializer
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
 
@@ -53,7 +54,7 @@ class ChatRoomDetail(generics.RetrieveUpdateAPIView):
 
 class MessagesList(generics.ListAPIView):
     serializer_class = MessageSerializer
-    authentication_classes = [SessionAuthentication, TokenAuthentication]
+    authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
