@@ -40,7 +40,7 @@ class Message(models.Model):
     read_by = models.ManyToManyField(User, related_name='read_messages', blank=True)
 
     def __str__(self):
-        return f'Room: {self.room}, Sender: {self.sender}; {self.content}'
+        return f'Room: {self.room}, Sender: {self.sender}; {self.content_text}'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
