@@ -1,0 +1,13 @@
+.chat-window{
+    display: block;
+    min-height: 100vh;
+}
+header{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    height: 10vh;
+    font-size: 2rem;
+}

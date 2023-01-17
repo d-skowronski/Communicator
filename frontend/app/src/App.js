@@ -5,6 +5,7 @@ import ChatPage from './pages/ChatPage'
 import AnonymousRoute from './utils/AnonymousRoute';
 import LoggedInRoute from './utils/LoggedInRoute';
 import { AuthProvider } from './context/AuthContext';
+import './css/App.css'
 
 function App() {
   return (
