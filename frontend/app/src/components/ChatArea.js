@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
-import { getMessagesForRoom } from '../utils/api.js/messages'
+import { getMessagesForRoom } from '../utils/api/messages'
 import Message from './Message'
 
 function ChatArea({ currentRoom }) {
     const messagesQuery = useQuery({
         queryFn: () => getMessagesForRoom(currentRoom.id),
         queryKey: ['messages', `messages-room-${currentRoom.id}`],
-        staleTime: 10000,
+        staleTime: Infinity,
     })
 
     if(messagesQuery.isLoading) {

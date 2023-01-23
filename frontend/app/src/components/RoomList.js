@@ -1,16 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import React, { useEffect } from 'react'
-import { getRooms } from '../api.js/rooms'
-import { getUsersSharedRooms } from '../api.js/users'
 import '../css/RoomList.css'
+import { useQueryAllRooms } from '../utils/queries'
 import RoomSelect from './RoomSelect'
 
 export default function RoomList() {
-    const roomsQuery = useQuery({
-        queryFn: getRooms,
-        queryKey: ['rooms'],
-        staleTime: 10000,
-    })
+    const roomsQuery = useQueryAllRooms()
 
     if (roomsQuery.isLoading) return <div className='room-list'>RoomList loading</div>
     if (roomsQuery.isSuccess) {
