@@ -42,7 +42,7 @@
                     <i class="bi bi-chat-left-fill logo"></i>
                 </div>
                 <div class="name">
-                    
+
                 </div>
             </header>
 
@@ -56,10 +56,10 @@
             </main>
 
         </div>
-    </div> 
+    </div>
 
     </div>
-    {{ request.user.username|json_script:"username" }}
+    {{ request.user.id|json_script:"username" }}
     <script>
         const username = JSON.parse(document.getElementById('username').innerText)
         const message_area = document.getElementById('message_area')
@@ -97,21 +97,21 @@
         }
 
         class Message {
-            constructor(id, room_id, content, username, profilePicture, readBy){
+            constructor(id, room_id, content_text, username, profile_picture, read_by){
                 this.id = id
                 room_list.forEach((room_object) => {
                     if(room_object.id == room_id){
                         this.room = room_object
                     }
                 })
-                this.content = content
+                this.content_text = content_text
                 this.username = username
-                this.profilePicture = profilePicture
-                this.readBy = readBy
-                this.readByYou = this.readBy.includes(username)
+                this.profile_picture = profile_picture
+                this.read_by = read_by
+                this.read_byYou = this.read_by.includes(username)
             }
             read_message(){
-                if(this.readByYou == false){
+                if(this.read_byYou == false){
                         chatSocket.send(JSON.stringify({
                             'information_type':'message_read',
                             'id': this.id,
@@ -122,7 +122,7 @@
                 if(this.username == username){
                     let img = document.createElement('img')
                     img.classList.add('read_icon')
-                    img.setAttribute('src', this.profilePicture)
+                    img.setAttribute('src', this.profile_picture)
                     this.message_body.parentNode.insertBefore(img, this.message_body.nextSibling);
                     messages_with_read_icon.push(this)
                 }
@@ -146,7 +146,7 @@
                     }
                     this.read_message()
                     this.message_body = document.createElement('div')
-                    this.message_body.innerHTML = `<div class="text">${this.content}</div>`
+                    this.message_body.innerHTML = `<div class="text">${this.content_text}</div>`
                     this.message_body.classList.add('message')
 
 
@@ -172,7 +172,7 @@
                         else{
                             let img = document.createElement('img')
                             img.classList.add('chat_profile_pic')
-                            img.setAttribute('src', this.profilePicture)
+                            img.setAttribute('src', this.profile_picture)
                             new_message_wrapper.insertBefore(img, new_message_wrapper.firstChild)
                         }
 
@@ -183,18 +183,18 @@
                             message_area.insertBefore(new_message_wrapper, message_area.firstChild)
                         }
                     }
-                    
-                    
+
+
                     this.message_body.scrollIntoView()
                 }
             }
-        
+
         }
 
         function process_message(data, insert_at_bottom=false){
-            console.log(data)
+            // console.log(data)
             if(data.information_type == 'chat_message'){
-                message = new Message(data.id, data.room, data.content, data.username, data.profilePicture, data.readBy)
+                message = new Message(data.id, data.room, data.content_text, data.sender, data.profile_picture, data.read_by)
                 message.display_message(at_bottom=insert_at_bottom)
 
                 // Code to refactor and move to display_message()
@@ -202,16 +202,16 @@
                     room_list.forEach((room) => {
                         if(room.id == data.room){
                             let contact_message = room.chat_room_element.getElementsByClassName("contact_message")[0]
-                            let text_to_insert = data.content
+                            let text_to_insert = data.content_text
                             if(message.username == username){
                                 text_to_insert = "You: " + text_to_insert
-                            } 
+                            }
                             contact_message.innerText = text_to_insert
-                            if(message.readByYou == false){
+                            if(message.read_byYou == false){
                                 contact_message.classList.add('fw-bold')
                                 contact_message.classList.add('unread')
                             }
-                            else if(message.readByYou == true){
+                            else if(message.read_byYou == true){
                                 contact_message.classList.remove('fw-bold')
                                 contact_message.classList.remove('unread')
                             }
@@ -219,16 +219,16 @@
                     })
                 }
             }
-                
-                
-            
+
+
+
             else if(data.information_type == 'message_read'){
                 room_list.forEach((room) => {
                     if(room.id == data.room){
                         let contact_message = room.chat_room_element.getElementsByClassName("contact_message")[0]
                         contact_message.classList.remove('fw-bold')
                         contact_message.classList.remove('unread')
-                        
+
                     }
                 })
             }
@@ -248,14 +248,14 @@
             document.getElementsByClassName('name')[0].innerText = current_room.name
             message_list = []
             message_area.innerHTML = ''
-            messages_url = `/api/messages/?chat_room_id=${current_room.id}`
+            messages_url = `/api/messages/?room_id=${current_room.id}`
             load_messages(messages_url)
 
         }
 
         async function load_messages(url, insert_at_bottom=true){
             let response = await fetch(url);
-            if (response.ok) { 
+            if (response.ok) {
                 let starting_position = message_area.getElementsByClassName('message')[0]
                 console.log(starting_position)
                 let messages_data = await response.json();
@@ -267,17 +267,17 @@
                 messages.forEach((message) => {
                     process_message(message, insert_at_bottom)
                 })
-                
+
                 if(starting_position){
                     starting_position.scrollIntoView(alignToTop=true)
                 }
-                
+
             }
         }
 
         async function load_chat_rooms(){
-            let response = await fetch(`/api/ChatRoom/`, {});
-            if (response.ok) { 
+            let response = await fetch(`/api/rooms/`, {});
+            if (response.ok) {
                 let chat_room_data = await response.json();
                 chat_room_data.results.forEach((room, index) => {
                     let new_room = new ChatRoom(room.id, room.name, room.thumbnail)
@@ -291,11 +291,11 @@
 
             }
         }
-        
+
         Array.from(document.getElementsByClassName("sidebarCollapse")).forEach((element) => {
             element.addEventListener('click', toggle_sidebar)
         });
-        
+
         load_chat_rooms()
 
         let web_socket_url = `ws://${window.location.host}/ws/chat`
@@ -303,7 +303,7 @@
         chatSocket.addEventListener('message', (e) => {
             process_message(JSON.parse(e.data), insert_at_bottom=true)
             })
-        
+
         let form = document.getElementById('new_message')
         form.addEventListener('submit', (e) => {
             e.preventDefault()
@@ -311,7 +311,7 @@
             if(text){
                 chatSocket.send(JSON.stringify({
                     'information_type':'chat_message',
-                    'content':text,
+                    'content_text':text,
                     'room':current_room.id,
                 }))
                 form.reset()

@@ -27,7 +27,7 @@ class ChatConsumer(WebsocketConsumer):
         user = self.scope['user']
 
         if data['information_type'] == "chat_message":
-            text = escape(data["content"])
+            text = escape(data["content_text"])
             room_id = str(data["room"])
             if room_id in self.joined_rooms_ids and text:
                 message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
@@ -41,7 +41,7 @@ class ChatConsumer(WebsocketConsumer):
         elif data['information_type'] == "message_read":
             message = Message.objects.get(pk = int(data['id']))
             if message.room in self.joined_rooms:
-                message.readBy.add(user)
+                message.read_by.add(user)
                 async_to_sync(self.channel_layer.group_send)(
                         str(message.room.id),
                         {
@@ -76,6 +76,6 @@ class ChatConsumer(WebsocketConsumer):
         return Room.objects.filter(users = self.scope['user'])
 
     def add_message(self, room, sender, message):
-        message = Message.objects.create(room=room, sender=sender, content=message)
+        message = Message.objects.create(room=room, sender=sender, content_text=message)
         message.save()
         return message
