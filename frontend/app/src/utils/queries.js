@@ -1,9 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import {getRooms} from './api/rooms'
 import {getUser} from './api/users'
+import { getMessagesForRoom } from "./api/messages";
 import {useQueryClient} from '@tanstack/react-query'
 
-
+export function useQueryMessagesForRoom(room_id) {
+    return useQuery({
+        queryFn: () => getMessagesForRoom(room_id),
+        queryKey: ['messages', `messages-room-${room_id}`],
+        staleTime: Infinity,
+    })
+}
 
 export function useQueryAllRooms(){
     const roomsQuery = useQuery({
