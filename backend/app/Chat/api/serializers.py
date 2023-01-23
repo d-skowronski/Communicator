@@ -9,7 +9,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         token['username'] = user.username
-        token['profile_picture'] = user.profilePicture.url
+        token['profile_picture'] = user.profile_picture.url
         token['email'] = user.email
 
         return token
