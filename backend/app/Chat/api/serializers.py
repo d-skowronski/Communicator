@@ -35,6 +35,7 @@ class RoomSerializer(serializers.ModelSerializer):
     thumbnail = serializers.SerializerMethodField()
     last_message = serializers.SerializerMethodField()
     information_type = serializers.SerializerMethodField()
+    users = UserSerializer(many=True)
 
     class Meta:
         model = Room
@@ -51,7 +52,7 @@ class RoomSerializer(serializers.ModelSerializer):
         return request.build_absolute_uri(obj.getDisplayUser(request.user).profile_picture.url)
 
     def get_last_message(self, obj):
-        return obj.messages.last().id
+        return MessageSerializer(obj.messages.last(), context=self.context).data
 
     def get_information_type(self, obj):
         return 'chat_room'
