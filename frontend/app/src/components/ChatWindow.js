@@ -1,10 +1,19 @@
 import React from 'react'
-import '../css/ChatWindow.css'
+import ChatArea from './ChatArea'
+import ChatHeader from './ChatHeader'
+import ChatSender from './ChatSender'
+import { useAtom } from 'jotai'
+import { currentRoomAtom } from '../pages/LoggedInPage'
 
 function ChatWindow() {
-  return (
-    <div className='chat-window'>ChatWindow</div>
-  )
+    const [currentRoom] = useAtom(currentRoomAtom)
+    return (
+        <div>
+            <ChatHeader currentRoom={currentRoom}/>
+            <ChatArea currentRoom={currentRoom}/>
+            <ChatSender currentRoom={currentRoom}/>
+        </div>
+    )
 }
 
 export default ChatWindow

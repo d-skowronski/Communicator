@@ -1,20 +1,17 @@
-import React, { useContext } from 'react'
-import AuthContext from '../context/AuthContext'
+import React from 'react'
 import '../css/Sidebar.css'
 import UserBar from './UserBar'
 import "bootstrap-icons/font/bootstrap-icons.css"
+import RoomList from './RoomList'
 
 function Sidebar() {
-  const {user, logoutUser} = useContext(AuthContext)
   return (
     <div className='sidebar'>
       <header>
         <i className='bi bi-chat-left-fill logo'></i>
         <div className='service-name'>Communicator</div>
       </header>
-      <div className='contact-list'>
-        test
-      </div>
+      <RoomList/>
       <UserBar/>
     </div>
   )
