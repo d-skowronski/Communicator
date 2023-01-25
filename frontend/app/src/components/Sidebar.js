@@ -7,7 +7,7 @@ import RoomList from './RoomList'
 function Sidebar() {
   return (
     <div className='sidebar'>
-      <header>
+      <header className='service-name'>
         <i className='bi bi-chat-left-fill logo'></i>
         <div className='service-name'>Communicator</div>
       </header>

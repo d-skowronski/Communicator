@@ -1,8 +1,9 @@
 import React from 'react'
+import '../css/ChatHeader.css'
 
 function ChatHeader({ currentRoom }) {
     return (
-        <div>{currentRoom?.name}</div>
+        <header className='chat-header'>{currentRoom?.name}</header>
     )
 }
 

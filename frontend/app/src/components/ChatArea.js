@@ -1,6 +1,6 @@
 import React from 'react'
 import { useQueryMessagesForRoom } from '../utils/queries'
-import Message from './Message'
+import '../css/ChatArea.css'
 import MessageGroup from './MessageGroup'
 
 function ChatArea({ currentRoom }) {
@@ -28,9 +28,6 @@ function ChatArea({ currentRoom }) {
         }
         messageGroupComponents.push(<MessageGroup key={-1} messages={messageGroup}/>)
 
-        // const messages = messagesQuery.data.results.map(message => (
-        //     <Message key={message.id} message={message} />
-        // ))
         return (
             <div className='chat-area'>{messageGroupComponents.reverse()}</div>
         )

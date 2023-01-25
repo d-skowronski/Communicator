@@ -3,7 +3,7 @@ function getToken() {
 }
 
 export function getMessagesForRoom(room_id) {
-    return fetch(`http://127.0.0.1:8000/api/messages?room_id=${room_id}`, {
+    return fetch(`http://127.0.0.1:8000/api/messages/?room_id=${room_id}`, {
         headers: {
             'Authorization':` Bearer ${getToken()}`
         }

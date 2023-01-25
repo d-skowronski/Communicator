@@ -1,10 +1,10 @@
 import React from 'react'
-import '../css/ChatWindow.css'
+import '../css/Main.css'
 import ChatWindow from './ChatWindow'
 
 function Main() {
   return (
-    <div className='chat-window'>
+    <div className='main'>
       <ChatWindow/>
     </div>
   )

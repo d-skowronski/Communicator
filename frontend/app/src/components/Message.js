@@ -1,8 +1,11 @@
 import React from 'react'
+import '../css/Message.css'
 
 function Message({message}) {
   return (
-    <div>{message.id} {message.content_text}</div>
+    <div className='message'>
+      <div className='text'>{message.content_text}</div>
+    </div>
   )
 }
 
