@@ -16,6 +16,7 @@
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
     margin-right: 1rem;
+    object-fit: cover;
 }
 .room-info{
     width: 100%;
