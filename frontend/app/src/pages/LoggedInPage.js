@@ -32,6 +32,10 @@ function LoggedInPage() {
 }
 
 export default LoggedInPage
+export const websocketAtom = atom()
+export const setWebsocketAtom = atom(null, (get, set, update) => {
+    set(websocketAtom, update)
+})
 export const currentRoomAtom = atom({})
 export const handleCurrentRoomAtom = atom(null, (get, set, update) => {
     set(currentRoomAtom, update)

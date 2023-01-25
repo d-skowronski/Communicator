@@ -1,8 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { useAtom } from 'jotai';
 import { useEffect } from 'react'
+import { setWebsocketAtom } from '../pages/LoggedInPage';
 
 export default function useWebsocket() {
     const queryClient = useQueryClient()
+    const [,setWebsocket] = useAtom(setWebsocketAtom)
 
     useEffect(() => {
         const ws = new WebSocket("ws://127.0.0.1:8000/ws/chat");
@@ -23,6 +26,8 @@ export default function useWebsocket() {
                 )
             }
         }
+        //ws.send in ChatFooter
+        setWebsocket(ws)
 
-    }, [queryClient])
+    }, [queryClient, setWebsocket])
 }
