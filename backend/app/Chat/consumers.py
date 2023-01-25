@@ -10,14 +10,17 @@ from .api.serializers import MessageSerializer, UserSerializer
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
-        self.accept()
-        self.joined_rooms = self.get_rooms()
-        self.joined_rooms_ids = [str(room.id) for room in self.joined_rooms]
-        for room in self.joined_rooms_ids:
-            async_to_sync(self.channel_layer.group_add)(
-                room,
-                self.channel_name
-            )
+        if isinstance(self.scope['user'], User):
+            self.accept()
+            self.joined_rooms = self.get_rooms()
+            self.joined_rooms_ids = [str(room.id) for room in self.joined_rooms]
+            for room in self.joined_rooms_ids:
+                async_to_sync(self.channel_layer.group_add)(
+                    room,
+                    self.channel_name
+                )
+        else:
+            self.close()
 
     def disconnect(self, close_code):
         pass
