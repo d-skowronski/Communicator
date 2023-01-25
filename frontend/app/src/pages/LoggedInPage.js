@@ -8,17 +8,21 @@ import { atom, useAtom } from 'jotai'
 import { useQueryAllRooms } from '../utils/queries'
 import useWebsocket from '../utils/websocket'
 
-function ChatPage() {
+function LoggedInPage() {
+    const [loading, setLoading] = useState(true)
     const {user, logoutUser, authTokens} = useContext(AuthContext)
     useWebsocket()
 
-    const [currentRoom, setCurrentRoom] = useAtom(currentRoomAtom)
+    const [,setCurrentRoom] = useAtom(handleCurrentRoomAtom)
     const roomsQuery = useQueryAllRooms()
+
     if(roomsQuery.isLoading) return <h1>Loading...</h1>
     if(roomsQuery.isSuccess) {
-        if(currentRoom === undefined){
+        // On first component load set current room to first one
+        if(loading) setLoading((prevLoading) => {
             setCurrentRoom(roomsQuery.data.results[0])
-        }
+            return !prevLoading
+        })
         return (
             <div className='wrapper'>
 
@@ -30,5 +34,8 @@ function ChatPage() {
 
 }
 
-export default ChatPage
-export const currentRoomAtom = atom()
+export default LoggedInPage
+export const currentRoomAtom = atom({})
+export const handleCurrentRoomAtom = atom(null, (get, set, update) => {
+    set(currentRoomAtom, update)
+})
