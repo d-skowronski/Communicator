@@ -6,10 +6,11 @@ import AuthContext from '../context/AuthContext'
 import '../css/LoggedInPage.css'
 import { atom, useAtom } from 'jotai'
 import { useQueryAllRooms } from '../utils/queries'
+import useWebsocket from '../utils/websocket'
 
 function ChatPage() {
     const {user, logoutUser, authTokens} = useContext(AuthContext)
-
+    useWebsocket()
 
     const [currentRoom, setCurrentRoom] = useAtom(currentRoomAtom)
     const roomsQuery = useQueryAllRooms()
