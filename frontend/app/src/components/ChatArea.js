@@ -1,6 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
 import React from 'react'
-import { getMessagesForRoom } from '../utils/api/messages'
 import { useQueryMessagesForRoom } from '../utils/queries'
 import Message from './Message'
 

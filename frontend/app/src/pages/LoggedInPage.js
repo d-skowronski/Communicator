@@ -1,8 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Main from '../components/Main'
 import Sidebar from '../components/Sidebar'
-import AuthContext from '../context/AuthContext'
 import '../css/LoggedInPage.css'
 import { atom, useAtom } from 'jotai'
 import { useQueryAllRooms } from '../utils/queries'
@@ -10,7 +8,6 @@ import useWebsocket from '../utils/websocket'
 
 function LoggedInPage() {
     const [loading, setLoading] = useState(true)
-    const {user, logoutUser, authTokens} = useContext(AuthContext)
     useWebsocket()
 
     const [,setCurrentRoom] = useAtom(handleCurrentRoomAtom)
