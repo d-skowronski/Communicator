@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useQueryMessagesForRoom } from '../utils/queries'
 import '../css/ChatArea.css'
 import MessageGroup from './MessageGroup'
 
 function ChatArea({ currentRoom }) {
     const messagesQuery = useQueryMessagesForRoom(currentRoom.id)
+
+    const messagesEndRef = useRef(null);
+    useEffect(() => {
+        messagesEndRef.current.scrollIntoView();
+    }, [messagesQuery.data]);
 
     if(messagesQuery.isLoading) {
         return <div>Loading...</div>
@@ -29,7 +34,10 @@ function ChatArea({ currentRoom }) {
         messageGroupComponents.push(<MessageGroup key={-1} messages={messageGroup}/>)
 
         return (
-            <div className='chat-area'>{messageGroupComponents.reverse()}</div>
+            <div className='chat-area'>
+                {messageGroupComponents.reverse()}
+                <div ref={messagesEndRef} />
+            </div>
         )
     }
 
