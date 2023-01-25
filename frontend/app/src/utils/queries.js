@@ -3,6 +3,7 @@ import {getRooms} from './api/rooms'
 import {getUser} from './api/users'
 import { getMessagesForRoom } from "./api/messages";
 import {useQueryClient} from '@tanstack/react-query'
+import { useState } from "react";
 
 /**
  * Check if any messages for a room
@@ -31,18 +32,24 @@ export function useQueryLastMessage(room_id) {
 
 export function useQueryMessagesForRoom(room_id) {
     const queryClient = useQueryClient()
+
     // 30 is number of messages received from API on each page
     // This will need to be reworked to keep track of received messages
     // when infinite scroll will be implemented and next page will need to be determined
+    const [en, setEn] = useState(true)
     if(queryClient.getQueryData(['messages', `messages-room-${room_id}`])?.results?.length < 30){
         queryClient.invalidateQueries(['messages', `messages-room-${room_id}`])
+        if(en){
+            setEn(false)
+        }
     }
+
 
     return useQuery({
         queryFn: () => getMessagesForRoom(room_id),
         queryKey: ['messages', `messages-room-${room_id}`],
         staleTime: Infinity,
-    })
+    }, {enabled: en})
 }
 
 export function useQueryAllRooms(){
