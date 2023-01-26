@@ -4,21 +4,22 @@ import StartPage from './pages/StartPage'
 import LoggedInPage from './pages/LoggedInPage'
 import AnonymousRoute from './utils/AnonymousRoute';
 import LoggedInRoute from './utils/LoggedInRoute';
-import { AuthProvider } from './context/AuthContext';
 import './css/App.css'
+import useWebsocket from './utils/websocket'
+
 function App() {
+  useWebsocket()
   return (
     <BrowserRouter>
-      <AuthProvider>
         <Routes>
           <Route exact element={<AnonymousRoute/>}>
-            <Route element={<StartPage/>} path="/" exact/>
+            <Route element={<StartPage/>} path="/"/>
           </Route>
           <Route exact element={<LoggedInRoute/>}>
-            <Route element={<LoggedInPage/>} path="/chat"/>
+            <Route element={<LoggedInPage/>} path="/communicator"/>
+            <Route element={<LoggedInPage/>} path="/communicator/:room"/>
           </Route>
         </Routes>
-      </AuthProvider>
     </BrowserRouter>
   );
 }

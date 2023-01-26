@@ -1,17 +1,25 @@
 import React from 'react'
 import '../css/RoomSelect.css'
-import { useAtom } from 'jotai'
-import { handleCurrentRoomAtom } from '../pages/LoggedInPage'
 import { useQueryLastMessage, useQueryUser } from '../utils/queries'
+import { useNavigate } from 'react-router-dom'
+import useCurrentRoom from '../utils/currentRoom'
 
 export default function RoomSelect({room}) {
-    const [,setCurrentRoom] = useAtom(handleCurrentRoomAtom)
+    const navigate = useNavigate()
+    const currentRoom = useCurrentRoom()
 
     const lastMessage = useQueryLastMessage(room.id)
     // Dependency on lastMessage to lastMessageUser needs to be added
     const lastMessageUser = useQueryUser(lastMessage.sender)
+
+    function handleRoomChange(){
+        if(room !== currentRoom){
+            navigate(`/communicator/${room.id}`)
+        }
+    }
+
     return (
-        <div className='room-select' onClick={() => setCurrentRoom(room)}>
+        <div className='room-select' onClick={handleRoomChange}>
             <img src={room.thumbnail} alt=""></img>
             <div className="room-info">
                     <div className="room-name">{room.name}</div>

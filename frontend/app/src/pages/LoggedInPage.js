@@ -1,25 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import Main from '../components/Main'
 import Sidebar from '../components/Sidebar'
 import '../css/LoggedInPage.css'
-import { atom, useAtom } from 'jotai'
+import { atom } from 'jotai'
 import { useQueryAllRooms } from '../utils/queries'
-import useWebsocket from '../utils/websocket'
+import { useNavigate, useParams } from 'react-router-dom'
 
 function LoggedInPage() {
-    const [loading, setLoading] = useState(true)
-    useWebsocket()
-
-    const [,setCurrentRoom] = useAtom(handleCurrentRoomAtom)
+    const navigate = useNavigate()
+    const {room:roomParam} = useParams()
     const roomsQuery = useQueryAllRooms()
+
+    useEffect(() => {
+        if(roomsQuery.data && !roomParam){
+            navigate(`/communicator/${roomsQuery.data.results[0].id}`)
+        }
+    }, [roomsQuery.data])
 
     if(roomsQuery.isLoading) return <h1>Loading...</h1>
     if(roomsQuery.isSuccess) {
-        // On first component load set current room to first one
-        if(loading) setLoading((prevLoading) => {
-            setCurrentRoom(roomsQuery.data.results[0])
-            return !prevLoading
-        })
         return (
             <div className='wrapper'>
 
@@ -27,16 +26,9 @@ function LoggedInPage() {
                 <Main/>
             </div>
         )
-    }
 
+    }
 }
 
+
 export default LoggedInPage
-export const websocketAtom = atom()
-export const setWebsocketAtom = atom(null, (get, set, update) => {
-    set(websocketAtom, update)
-})
-export const currentRoomAtom = atom({})
-export const handleCurrentRoomAtom = atom(null, (get, set, update) => {
-    set(currentRoomAtom, update)
-})
