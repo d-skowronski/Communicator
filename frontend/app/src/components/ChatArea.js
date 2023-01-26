@@ -5,10 +5,9 @@ import MessageGroup from './MessageGroup'
 
 function ChatArea({ currentRoom }) {
     const messagesQuery = useQueryMessagesForRoom(currentRoom.id)
-
     const messagesEndRef = useRef(null);
     useEffect(() => {
-        messagesEndRef.current.scrollIntoView();
+        messagesEndRef.current?.scrollIntoView();
     }, [messagesQuery.data]);
 
     if(messagesQuery.isLoading) {
