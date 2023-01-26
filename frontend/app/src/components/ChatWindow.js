@@ -5,12 +5,12 @@ import ChatFooter from './ChatFooter'
 import '../css/ChatWindow.css'
 import useCurrentRoom from '../utils/currentRoom'
 
-function ChatWindow() {
+function ChatWindow({mainOnlyDisplayed}) {
     const currentRoom = useCurrentRoom()
     if(currentRoom){
         return (
             <div className='chat-window'>
-                <ChatHeader currentRoom={currentRoom}/>
+                <ChatHeader currentRoom={currentRoom} mainOnlyDisplayed={mainOnlyDisplayed}/>
                 <ChatArea currentRoom={currentRoom}/>
                 <ChatFooter currentRoom={currentRoom}/>
             </div>

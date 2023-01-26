@@ -10,6 +10,17 @@
     margin-right: 1rem;
     object-fit: cover;
 }
+.bi-arrow-left{
+    font-size: 1.5rem;
+    margin-right: 0.7rem;
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+    margin-left: -0.3rem;
+    border-radius: 2rem;
+}
+.bi-arrow-left:hover{
+    background-color: lightgray;
+}
 
 @media (max-height:20rem) {
     .room-thumbnail{

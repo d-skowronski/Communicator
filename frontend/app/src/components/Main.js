@@ -2,10 +2,10 @@ import React from 'react'
 import '../css/Main.css'
 import ChatWindow from './ChatWindow'
 
-function Main() {
+function Main({mainOnlyDisplayed}) {
   return (
     <div className='main'>
-      <ChatWindow/>
+      <ChatWindow mainOnlyDisplayed={mainOnlyDisplayed}/>
     </div>
   )
 }
