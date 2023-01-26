@@ -3,7 +3,8 @@
     scrollbar-width: thin;
     scrollbar-color: gray;
     width: 100%;
-    height: 80vh;
+    /* 3rem for chat-header 4rem for chat-footer = 7rem */
+    height: calc(100vh - 7rem);
     padding: 1rem;
     display: flex;
     flex-direction: column;
