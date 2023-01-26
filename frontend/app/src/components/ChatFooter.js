@@ -8,14 +8,16 @@ function ChatFooter({ currentRoom }) {
 
   const [formData, setFormData] = useState('')
   function handleSubmit(event){
-    console.log(websocket)
     event.preventDefault()
-    websocket.send(JSON.stringify({
-        'information_type':'chat_message',
-        'content_text':formData,
-        'room':currentRoom.id,
-      })
-    )
+    const escapedFormData = formData.trim()
+    if(escapedFormData.length > 0){
+      websocket.send(JSON.stringify({
+          'information_type':'chat_message',
+          'content_text':escapedFormData,
+          'room':currentRoom.id,
+        })
+      )
+    }
     setFormData('')
   }
 
