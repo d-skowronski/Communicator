@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import {getRooms} from './api/rooms'
-import {getUser} from './api/users'
-import { getMessagesForRoom } from "./api/messages";
+import {getRooms} from '../api/rooms'
+import {getUser} from '../api/users'
+import { getMessagesForRoom } from "../api/messages";
 import {useQueryClient} from '@tanstack/react-query'
 import { useState } from "react";
 

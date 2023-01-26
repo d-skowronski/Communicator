@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { atom, useAtom } from 'jotai';
 import { useContext, useEffect } from 'react'
-import AuthContext from '../context/AuthContext';
+import AuthContext from '../../context/AuthContext';
 
 export default function useWebsocket() {
     const queryClient = useQueryClient()
