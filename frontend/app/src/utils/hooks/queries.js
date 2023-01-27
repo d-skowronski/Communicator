@@ -16,7 +16,7 @@ import { useState } from "react";
 export function useQueryLastMessage(room_id) {
     const queryClient = useQueryClient()
 
-    let message
+    let message = {}
     if (queryClient.getQueryData(['messages', `messages-room-${room_id}`])?.results === undefined){
         message = queryClient.getQueryData(['rooms'])?.results?.find(room => room.id === room_id)?.last_message
     }
@@ -87,7 +87,13 @@ export function useQueryUser(user_id){
         queryFn: () => getUser(user_id),
         queryKey: ['users', `user-${user_id}`],
         staleTime: Infinity,
+        enabled: !isNaN(user_id)
     })
-    return userQuery.data
+    if(userQuery.data){
+        return userQuery.data
+    }
+    else{
+        return {}
+    }
 }
 

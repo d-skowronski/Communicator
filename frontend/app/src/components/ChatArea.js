@@ -13,7 +13,7 @@ function ChatArea({ currentRoom }) {
     if(messagesQuery.isLoading) {
         return <div>Loading...</div>
     }
-    if(messagesQuery.isSuccess){
+    else if(messagesQuery.isSuccess && messagesQuery.data.count > 0){
         const messages = messagesQuery.data.results
         let messageGroupComponents = []
         let prevMessage = messages[0]
@@ -36,6 +36,12 @@ function ChatArea({ currentRoom }) {
             <div className='chat-area'>
                 {messageGroupComponents.reverse()}
                 <div ref={messagesEndRef} />
+            </div>
+        )
+    }
+    else{
+        return (
+            <div className='chat-area'>
             </div>
         )
     }

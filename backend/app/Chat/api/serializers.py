@@ -52,7 +52,11 @@ class RoomSerializer(serializers.ModelSerializer):
         return request.build_absolute_uri(obj.getDisplayUser(request.user).profile_picture.url)
 
     def get_last_message(self, obj):
-        return MessageSerializer(obj.messages.last(), context=self.context).data
+        message = obj.messages.last()
+        if message:
+            return MessageSerializer(obj.messages.last(), context=self.context).data
+        else:
+            return {}
 
     def get_information_type(self, obj):
         return 'chat_room'

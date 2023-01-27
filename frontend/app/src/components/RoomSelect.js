@@ -10,7 +10,7 @@ export default function RoomSelect({room}) {
 
     const lastMessage = useQueryLastMessage(room.id)
     // Dependency on lastMessage to lastMessageUser needs to be added
-    const lastMessageUser = useQueryUser(lastMessage.sender)
+    const lastMessageUser = useQueryUser(lastMessage?.sender)
 
     function handleRoomChange(){
         if(room !== currentRoom){
@@ -23,7 +23,8 @@ export default function RoomSelect({room}) {
             <img src={room.thumbnail} alt=""></img>
             <div className="room-info">
                     <div className="room-name">{room.name}</div>
-                    <div className="room-message">{lastMessageUser.username}: {lastMessage.content_text}</div>
+                    {lastMessage ?<div className="room-message">{lastMessageUser.username}: {lastMessage.content_text}</div>:<div className="room-message">Say hello!</div>}
+
             </div>
         </div>
     )

@@ -16,6 +16,9 @@ function ChatWindow({mainOnlyDisplayed}) {
             </div>
         )
     }
+    else if(currentRoom === undefined) {
+        return <h1>Start chatting!</h1>
+    }
     else {
         return <h1>No room to display....</h1>
     }
