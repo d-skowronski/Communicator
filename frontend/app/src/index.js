@@ -8,11 +8,11 @@ import { AuthProvider } from './context/AuthContext';
 const queryClient = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <AuthProvider>
-    <QueryClientProvider client={queryClient}>
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
       <App />
-      <ReactQueryDevtools/>
-    </QueryClientProvider>
-  </AuthProvider>
+    </AuthProvider>
+    <ReactQueryDevtools/>
+  </QueryClientProvider>
 );
 

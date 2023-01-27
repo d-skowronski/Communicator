@@ -1,10 +1,12 @@
 import React, { useState, createContext, useEffect } from 'react'
 import jwtDecode from 'jwt-decode'
+import {useQueryClient} from '@tanstack/react-query'
 const AuthContext = createContext()
 
 
 export default AuthContext
 export const AuthProvider = ({children}) => {
+    const queryClient = useQueryClient()
     const [authTokens, setAuthTokens] = useState(() =>
         localStorage.getItem('authTokens') ?
         JSON.parse(localStorage.getItem('authTokens')): null
@@ -37,6 +39,7 @@ export const AuthProvider = ({children}) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
+        queryClient.clear()
     }
 
     async function updateToken() {
