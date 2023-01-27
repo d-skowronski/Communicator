@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { useQueryMessagesForRoom } from '../utils/queries'
+import { useQueryMessagesForRoom } from '../utils/hooks/queries'
 import '../css/ChatArea.css'
 import MessageGroup from './MessageGroup'
 

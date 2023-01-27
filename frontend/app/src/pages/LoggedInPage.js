@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Main from '../components/Main'
 import Sidebar from '../components/Sidebar'
 import '../css/LoggedInPage.css'
-import { useQueryAllRooms } from '../utils/queries'
+import { useQueryAllRooms } from '../utils/hooks/queries'
 import { useNavigate, useParams } from 'react-router-dom'
 import useScreenSize from '../utils/hooks/screenSize'
 

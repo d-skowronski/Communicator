@@ -3,7 +3,7 @@ import ChatArea from './ChatArea'
 import ChatHeader from './ChatHeader'
 import ChatFooter from './ChatFooter'
 import '../css/ChatWindow.css'
-import useCurrentRoom from '../utils/currentRoom'
+import useCurrentRoom from '../utils/hooks/currentRoom'
 
 function ChatWindow({mainOnlyDisplayed}) {
     const currentRoom = useCurrentRoom()

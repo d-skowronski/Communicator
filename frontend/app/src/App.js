@@ -5,7 +5,7 @@ import LoggedInPage from './pages/LoggedInPage'
 import AnonymousRoute from './utils/AnonymousRoute';
 import LoggedInRoute from './utils/LoggedInRoute';
 import './css/App.css'
-import useWebsocket from './utils/websocket'
+import useWebsocket from './utils/hooks/websocket'
 
 function App() {
   useWebsocket()

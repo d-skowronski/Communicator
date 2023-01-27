@@ -1,8 +1,8 @@
 import React from 'react'
 import '../css/RoomSelect.css'
-import { useQueryLastMessage, useQueryUser } from '../utils/queries'
+import { useQueryLastMessage, useQueryUser } from '../utils/hooks/queries'
 import { useNavigate } from 'react-router-dom'
-import useCurrentRoom from '../utils/currentRoom'
+import useCurrentRoom from '../utils/hooks/currentRoom'
 
 export default function RoomSelect({room}) {
     const navigate = useNavigate()

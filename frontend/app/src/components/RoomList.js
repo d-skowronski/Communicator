@@ -1,6 +1,6 @@
 import React from 'react'
 import '../css/RoomList.css'
-import { useQueryAllRooms } from '../utils/queries'
+import { useQueryAllRooms } from '../utils/hooks/queries'
 import RoomSelect from './RoomSelect'
 
 export default function RoomList() {

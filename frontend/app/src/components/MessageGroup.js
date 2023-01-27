@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useQueryUser } from '../utils/queries'
+import { useQueryUser } from '../utils/hooks/queries'
 import Message from './Message'
 import '../css/MessageGroup.css'
 // temporary solution

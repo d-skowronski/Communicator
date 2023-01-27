@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import '../css/ChatFooter.css'
 import { useAtom } from 'jotai'
-import { websocketAtom } from '../utils/websocket'
+import { websocketAtom } from '../utils/hooks/websocket'
 
 function ChatFooter({ currentRoom }) {
   const [websocket,] = useAtom(websocketAtom)
