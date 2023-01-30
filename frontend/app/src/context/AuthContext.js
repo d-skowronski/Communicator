@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect } from 'react'
+import React, { useState, createContext, useEffect, useCallback } from 'react'
 import jwtDecode from 'jwt-decode'
 import {useQueryClient} from '@tanstack/react-query'
 const AuthContext = createContext()
@@ -28,7 +28,6 @@ export const AuthProvider = ({children}) => {
             setAuthTokens(data)
             setUser(jwtDecode(data.access))
             localStorage.setItem('authTokens', JSON.stringify(data))
-            console.log(data)
         }
         else{
             logoutUser()
@@ -36,14 +35,14 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    function logoutUser() {
+    const logoutUser = useCallback(() => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
         queryClient.clear()
-    }
+    }, [queryClient])
 
-    async function updateToken() {
+    const updateToken = useCallback(async function () {
         console.log("Token update")
         let body = JSON.stringify({refresh: authTokens?.refresh})
         if(body !== '{}'){
@@ -67,14 +66,13 @@ export const AuthProvider = ({children}) => {
         if(loading){
             setLoading(false)
         }
-    }
+    },[authTokens, logoutUser, loading])
 
     useEffect(()=>{
         // 4 minutes 30 seconds
         let timeBetweenUpdates = 1000*60*4 + 1000*30
         // In case user has valid refresh token but invalid access token
         if(loading){
-            console.log("HELLO UPDATE")
             updateToken()
         }
         let interval = setInterval(()=> {
@@ -83,14 +81,13 @@ export const AuthProvider = ({children}) => {
             }
         }, timeBetweenUpdates)
         return () => clearInterval(interval)
-    }, [authTokens, loading])
+    }, [authTokens, loading, updateToken])
 
     const contextData = {
         user:user,
         authTokens:authTokens,
         loginUser:loginUser,
         logoutUser:logoutUser,
-        updateToken:updateToken,
     }
 
     return(

@@ -34,7 +34,7 @@ export default function useWebsocket() {
         }
 
         return () => {if(ws) ws.close()}
-    }, [queryClient, setWebsocket, user])
+    }, [queryClient, setWebsocket, user, authTokens])
 }
 
 export const websocketAtom = atom()
