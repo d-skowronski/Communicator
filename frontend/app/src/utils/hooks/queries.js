@@ -3,7 +3,7 @@ import {getRooms} from '../api/rooms'
 import {getUser} from '../api/users'
 import { getMessagesForRoom } from "../api/messages";
 import {useQueryClient} from '@tanstack/react-query'
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 
 /**
@@ -16,7 +16,10 @@ import AuthContext from "../../context/AuthContext";
  */
 export function useQueryLastMessage(room_id) {
     const { authTokens } = useContext(AuthContext)
+    const tokenRef = useRef();
+    tokenRef.token = authTokens.access
     const queryClient = useQueryClient()
+
 
     let message = {}
     if (queryClient.getQueryData(['messages', `messages-room-${room_id}`])?.results === undefined){
@@ -24,7 +27,7 @@ export function useQueryLastMessage(room_id) {
     }
 
     const userQuery = useQuery({
-        queryFn: () => getMessagesForRoom(room_id, authTokens.access),
+        queryFn: () => getMessagesForRoom(room_id, tokenRef.token),
         queryKey: ['messages', `messages-room-${room_id}`],
         staleTime: Infinity,
         initialData: {results: [message]},
@@ -34,6 +37,8 @@ export function useQueryLastMessage(room_id) {
 
 export function useQueryMessagesForRoom(room_id) {
     const { authTokens } = useContext(AuthContext)
+    const tokenRef = useRef();
+    tokenRef.token = authTokens.access
     const queryClient = useQueryClient()
 
     // 30 is number of messages received from API on each page
@@ -47,19 +52,21 @@ export function useQueryMessagesForRoom(room_id) {
         }
     }
 
-
-    return useQuery({
-        queryFn: () => getMessagesForRoom(room_id, authTokens.access),
+    const query = useQuery({
+        queryFn: () => getMessagesForRoom(room_id, tokenRef.token),
         queryKey: ['messages', `messages-room-${room_id}`],
         staleTime: Infinity,
     }, {enabled: en})
+    return query
 }
 
 export function useQueryAllRooms(){
     const { authTokens } = useContext(AuthContext)
+    const tokenRef = useRef();
+    tokenRef.token = authTokens.access
 
     const roomsQuery = useQuery({
-        queryFn: () => getRooms(authTokens.access),
+        queryFn: () => getRooms(tokenRef.token),
         queryKey: ['rooms'],
         staleTime: Infinity,
         retry: false
@@ -81,6 +88,8 @@ export function useQueryAllRooms(){
  */
 export function useQueryUser(user_id){
     const { authTokens } = useContext(AuthContext)
+    const tokenRef = useRef();
+    tokenRef.token = authTokens.access
 
     const queryClient = useQueryClient()
 
@@ -91,7 +100,7 @@ export function useQueryUser(user_id){
     }
 
     const userQuery = useQuery({
-        queryFn: () => getUser(user_id, authTokens.access),
+        queryFn: () => getUser(user_id, tokenRef.token),
         queryKey: ['users', `user-${user_id}`],
         staleTime: Infinity,
         enabled: !isNaN(user_id)
