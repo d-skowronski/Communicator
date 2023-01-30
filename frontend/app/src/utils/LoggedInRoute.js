@@ -6,7 +6,7 @@ function LoggedInRoute() {
     const {user} = useContext(AuthContext)
     return (
         <>
-            {user ? <Outlet/>:<Navigate to='/'/>}
+            {user ? <Outlet/>:<Navigate to='/' replace={true}/>}
         </>
     )
 }

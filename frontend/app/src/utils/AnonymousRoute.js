@@ -6,7 +6,7 @@ function AnonymousRoute() {
     const {user} = useContext(AuthContext)
     return (
         <>
-            {user ? <Navigate to="/communicator"/> : <Outlet/>}
+            {user ? <Navigate to="/communicator" replace={true}/> : <Outlet/>}
         </>
     )
 }

@@ -16,9 +16,9 @@ function LoggedInPage() {
     //Redicrecting in case of invalid currentRoom
     useEffect(() => {
         if(!currentRoom && screenSize === "big" && roomsQuery.data?.count > 0){
-            navigate(`/communicator/${roomsQuery.data.results[0].id}`)
+            navigate(`/communicator/${roomsQuery.data.results[0].id}`, {replace: true})
         } else if(currentRoom === null){
-            navigate('/communicator/')
+            navigate('/communicator/', {replace: true})
         }
     }, [roomsQuery.data, screenSize, currentRoom, navigate])
 
