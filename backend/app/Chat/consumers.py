@@ -7,6 +7,8 @@ from django.conf import settings
 from .models import Room, Message, User
 from channels.db import database_sync_to_async
 from .api.serializers import MessageSerializer, UserSerializer
+from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.utils import aware_utcnow
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -25,36 +27,50 @@ class ChatConsumer(WebsocketConsumer):
     def disconnect(self, close_code):
         pass
 
-    def receive(self, text_data):
-        data = json.loads(text_data)
-        user = self.scope['user']
+    def send(self, *args, **kwargs):
+        try:
+            self.scope['token'].check_exp(current_time=aware_utcnow())
+        except TokenError:
+            print("TOKEN INVALID while sending")
+            self.close()
+        else:
+            return super().send(*args, **kwargs)
 
-        if data['information_type'] == "chat_message":
-            text = escape(data["content_text"]).strip()
-            room_id = str(data["room"])
-            if room_id in self.joined_rooms_ids and len(text) > 0:
-                message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
-                async_to_sync(self.channel_layer.group_send)(
-                    room_id,
-                    {
-                        "type": "chat_message",
-                        "message": message
-                    }
-                )
-        elif data['information_type'] == "message_read":
-            message = Message.objects.get(pk = int(data['id']))
-            if message.room in self.joined_rooms:
-                message.read_by.add(user)
-                async_to_sync(self.channel_layer.group_send)(
-                        str(message.room.id),
+    def receive(self, text_data):
+        try:
+            self.scope['token'].check_exp(current_time=aware_utcnow())
+        except TokenError:
+            print("TOKEN INVALID while receiving")
+            self.close()
+        else:
+            data = json.loads(text_data)
+            user = self.scope['user']
+
+            if data['information_type'] == "chat_message":
+                text = escape(data["content_text"]).strip()
+                room_id = str(data["room"])
+                if room_id in self.joined_rooms_ids and len(text) > 0:
+                    message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
+                    async_to_sync(self.channel_layer.group_send)(
+                        room_id,
                         {
-                            "type": "message_read",
-                            "message_object": message,
-                            "read_user": UserSerializer(user).data
+                            "type": "chat_message",
+                            "message": message
                         }
                     )
 
-
+            elif data['information_type'] == "message_read":
+                message = Message.objects.get(pk = int(data['id']))
+                if message.room in self.joined_rooms:
+                    message.read_by.add(user)
+                    async_to_sync(self.channel_layer.group_send)(
+                            str(message.room.id),
+                            {
+                                "type": "message_read",
+                                "message_object": message,
+                                "read_user": UserSerializer(user).data
+                            }
+                        )
 
     def chat_message(self, event):
         mock_request = HttpRequest()

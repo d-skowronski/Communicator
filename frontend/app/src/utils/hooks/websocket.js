@@ -6,12 +6,12 @@ import AuthContext from '../../context/AuthContext';
 export default function useWebsocket() {
     const queryClient = useQueryClient()
     const [,setWebsocket] = useAtom(setWebsocketAtom)
-    const {user} = useContext(AuthContext)
+    const {user, authTokens} = useContext(AuthContext)
 
     useEffect(() => {
         let ws
         if(user){
-            ws = new WebSocket("ws://127.0.0.1:8000/ws/chat");
+            ws = new WebSocket(`ws://127.0.0.1:8000/ws/chat/?token=${authTokens.access}`);
             console.log("ws ", ws)
             ws.onmessage = (event) => {
                 const data = JSON.parse(event.data)
