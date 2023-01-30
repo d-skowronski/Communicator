@@ -11,8 +11,9 @@ export const AuthProvider = ({children}) => {
         localStorage.getItem('authTokens') ?
         JSON.parse(localStorage.getItem('authTokens')): null
     )
+
     const [user, setUser] = useState(() => authTokens ? jwtDecode(authTokens.access): null)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     async function loginUser(formData){
         const response = await fetch('http://127.0.0.1:8000/api/token/', {
@@ -68,25 +69,28 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    // useEffect(()=>{
-    //     let timeBetweenUpdates = 24*60*1000*60
-    //     // In case user has valid refresh token but invalid access token
-    //     if(loading){
-    //         updateToken()
-    //     }
-    //     let interval = setInterval(()=> {
-    //         if(authTokens){
-    //             updateToken()
-    //         }
-    //     }, timeBetweenUpdates)
-    //     return () => clearInterval(interval)
-    // }, [authTokens, loading])
+    useEffect(()=>{
+        // 4 minutes 30 seconds
+        let timeBetweenUpdates = 1000*60*4 + 1000*30
+        // In case user has valid refresh token but invalid access token
+        if(loading){
+            console.log("HELLO UPDATE")
+            updateToken()
+        }
+        let interval = setInterval(()=> {
+            if(authTokens){
+                updateToken()
+            }
+        }, timeBetweenUpdates)
+        return () => clearInterval(interval)
+    }, [authTokens, loading])
 
     const contextData = {
         user:user,
         authTokens:authTokens,
         loginUser:loginUser,
         logoutUser:logoutUser,
+        updateToken:updateToken,
     }
 
     return(

@@ -1,11 +1,7 @@
-function getToken() {
-    return JSON.parse(localStorage.getItem('authTokens')).access
-}
-
-export function getMessagesForRoom(room_id) {
+export function getMessagesForRoom(room_id, token) {
     return fetch(`http://127.0.0.1:8000/api/messages/?room_id=${room_id}`, {
         headers: {
-            'Authorization':` Bearer ${getToken()}`
+            'Authorization':` Bearer ${token}`
         }
     })
     .then(
@@ -13,10 +9,10 @@ export function getMessagesForRoom(room_id) {
     )
 }
 
-export function getMessage(message_id) {
+export function getMessage(message_id, token) {
     return fetch(`http://127.0.0.1:8000/api/messages/${message_id}`, {
         headers: {
-            'Authorization':` Bearer ${getToken()}`
+            'Authorization':` Bearer ${token}`
         }
     })
     .then(

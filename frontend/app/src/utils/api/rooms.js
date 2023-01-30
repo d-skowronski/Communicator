@@ -1,11 +1,7 @@
-function getToken() {
-    return JSON.parse(localStorage.getItem('authTokens')).access
-}
-
-export function getRooms() {
+export function getRooms(token) {
     return fetch('http://127.0.0.1:8000/api/rooms/', {
         headers: {
-            'Authorization':` Bearer ${getToken()}`
+            'Authorization':` Bearer ${token}`
         }
     })
     .then(

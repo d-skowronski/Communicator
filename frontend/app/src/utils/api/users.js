@@ -1,11 +1,7 @@
-function getToken() {
-    return JSON.parse(localStorage.getItem('authTokens')).access
-}
-
-export function getUsersSharedRooms() {
+export function getUsersSharedRooms(token) {
     return fetch('http://127.0.0.1:8000/api/users?shared_rooms=true', {
         headers: {
-            'Authorization':` Bearer ${getToken()}`
+            'Authorization':` Bearer ${token}`
         }
     })
     .then(
@@ -14,10 +10,10 @@ export function getUsersSharedRooms() {
 }
 
 
-export function getUser(user_id) {
+export function getUser(user_id, token) {
     return fetch(`http://127.0.0.1:8000/api/users/${user_id}`, {
         headers: {
-            'Authorization':` Bearer ${getToken()}`
+            'Authorization':` Bearer ${token}`
         }
     })
     .then(
