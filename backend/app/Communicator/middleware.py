@@ -1,6 +1,4 @@
-import traceback
 from urllib.parse import parse_qs
-
 from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
@@ -19,7 +17,7 @@ class JWTAuthMiddleware:
         - depends on simplejwt library
         - simplejwt AccessToken object in scope (scope['token'])
         - scope token making it possible to check for connection validity in consumer
-        - removed catch-all except, no anonymous users allowed to establish websocket connection
+        - in case of token issues uses anonymous user
     '''
     def __init__(self, app):
         self.app = app
@@ -29,14 +27,15 @@ class JWTAuthMiddleware:
         try:
             if(jwt_token_list := parse_qs(scope["query_string"].decode("utf8")).get('token', None)):
                 jwt_token = jwt_token_list[0]
-                jwt_token_object = self.get_token_object(jwt_token)
+                jwt_token_object = AccessToken(token=jwt_token)
                 user = await self.get_logged_in_user(jwt_token_object.get('user_id'))
                 scope['user'] = user
                 scope['token'] = jwt_token_object
             else:
                 scope['user'] = AnonymousUser()
         except (TokenBackendError, TokenError):
-            traceback.print_exc()
+            scope['user'] = AnonymousUser()
+
         return await self.app(scope, receive, send)
 
     def get_token_object(self, jwt_token):
