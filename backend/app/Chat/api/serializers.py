@@ -1,6 +1,52 @@
 from rest_framework import serializers
 from ..models import Room, User, Message
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.contrib.auth.password_validation import validate_password as password_validator
+
+
+class SignupSerializer(serializers.ModelSerializer):
+    '''
+    Create new user, return access and refresh tokens when successful.
+    Requires password1 and password2 fields. Uses django password validation.
+    '''
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+    def validate(self, attrs):
+        if attrs['password1'] != attrs['password2']:
+            raise serializers.ValidationError({'password1': 'Passwords don\'t match!'})
+        return super().validate(attrs)
+
+    def validate_password1(self, value):
+        password_validator(value)
+        return value
+
+    def create(self, validated_data):
+        user = User(username=validated_data['username'], email=validated_data['email'])
+        user.set_password(validated_data['password1'])
+        user.save()
+        return user
+
+
+    def to_representation(self, instance):
+        '''Return jwt token pair instead of serialized user instance'''
+        # Using:
+        # refresh = RefreshToken.for_user(instance)
+        #    return {
+        #         'refresh': str(refresh),
+        #         'access': str(refresh.access_token),
+        #     }
+        # would also work, however at the expense of extra db hits, using MyTokenObtainPairSerializer
+        # provides more consistency with encoded user fields
+
+        tokens = MyTokenObtainPairSerializer(data={'username': instance.username, 'password': self.validated_data['password1']})
+        tokens.is_valid()
+
+        return tokens.validated_data
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

@@ -1,12 +1,24 @@
 from rest_framework import generics
 from ..models import User, Message
-from .serializers import RoomSerializer, UserSerializer, MessageSerializer, MyTokenObtainPairSerializer
-from rest_framework.permissions import IsAuthenticated
+from .serializers import (
+    RoomSerializer,
+    UserSerializer,
+    MessageSerializer,
+    MyTokenObtainPairSerializer,
+    SignupSerializer
+    )
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authentication import SessionAuthentication
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
+
+class UserSignup(generics.CreateAPIView):
+    '''Create a new user'''
+    serializer_class = SignupSerializer
+    permission_classes = [AllowAny]
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
