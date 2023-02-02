@@ -23,8 +23,8 @@ function StartPage() {
           <div className='start-page-form'>
             <Login/>
           </div>
-          <p className='no-account'>No account? Join!</p>
           <div className='start-page-form'>
+            <p className='no-account'>No account? Join!</p>
             <Signup/>
           </div>
         </div>

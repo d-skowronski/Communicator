@@ -15,11 +15,11 @@ body {
 
 .service {
     display: flex;
-    font-size: 2.5rem;
+    font-size: 2.5em;
 }
 
 .service.medium {
-    font-size: 2rem;
+    font-size: 2em;
 }
 
 input {
