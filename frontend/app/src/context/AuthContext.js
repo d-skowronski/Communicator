@@ -15,8 +15,13 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(() => authTokens ? jwtDecode(authTokens.access): null)
     const [loading, setLoading] = useState(true)
 
-    async function loginUser(formData){
-        const response = await fetch('http://127.0.0.1:8000/api/token/', {
+    async function authenticateUser(formData, signup=false){
+        let url = 'http://127.0.0.1:8000/api/token/'
+        if(signup){
+            url = 'http://127.0.0.1:8000/api/signup/'
+        }
+
+        const response = await fetch(url, {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: { 'Content-Type': 'application/json' },
@@ -24,14 +29,15 @@ export const AuthProvider = ({children}) => {
 
         let data = await response.json()
 
-        if(response.status === 200) {
+        if(response.status === 200 || response.status === 201) {
             setAuthTokens(data)
             setUser(jwtDecode(data.access))
             localStorage.setItem('authTokens', JSON.stringify(data))
+            return {}
         }
         else{
             logoutUser()
-            alert("An error occured")
+            return data
         }
     }
 
@@ -86,7 +92,7 @@ export const AuthProvider = ({children}) => {
     const contextData = {
         user:user,
         authTokens:authTokens,
-        loginUser:loginUser,
+        authenticateUser:authenticateUser,
         logoutUser:logoutUser,
     }
 
