@@ -1,3 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    font-family: 'Poppins';
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+}
+
+.logo{
+    padding-right: 1rem;
+}
+
+.service {
+    display: flex;
+    font-size: 2.5rem;
+}
+
+.service.medium {
+    font-size: 2rem;
+}
+
 input {
     background-color: gainsboro;
     box-shadow: none;
@@ -7,6 +31,11 @@ input {
     border-radius: 1rem;
     margin-right: 0.5em;
     height: 3em;
+}
+
+input:focus{
+    outline: 0;
+    border: 0.10em #f19c2b solid;
 }
 
 button{
@@ -27,7 +56,6 @@ button:hover{
     padding: 0.1em;
     display: flex;
     flex-direction: column;
-    width: 90%;
 }
 
 .form-field label{
@@ -35,14 +63,19 @@ button:hover{
 }
 
 .form-field.error input{
-    border: 0.01em #ff0000 solid;
+    border: 0.10em #ff0000 solid;
     background-color: #ffe6e6;
+}
+
+.form-field input {
+    margin-bottom: 0.1em;
 }
 
 .form-field p {
     color: #ff0000;
 }
 
-.form-field p:last-child{
-    margin-bottom: 1rem;
+.form-field p{
+    margin-bottom: 0.5em;
+    margin-top: -0.2em;
 }

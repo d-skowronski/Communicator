@@ -2,6 +2,8 @@
     display: flex;
     align-items: flex-end;
     margin-right: 2rem;
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
 }
 .message-wrapper.current-user{
     margin-right: 0;

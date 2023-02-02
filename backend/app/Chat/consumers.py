@@ -47,7 +47,7 @@ class ChatConsumer(WebsocketConsumer):
             user = self.scope['user']
 
             if data['information_type'] == "chat_message":
-                text = escape(data["content_text"]).strip()
+                text = data["content_text"].strip()
                 room_id = str(data["room"])
                 if room_id in self.joined_rooms_ids and len(text) > 0:
                     message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)

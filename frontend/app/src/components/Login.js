@@ -27,7 +27,7 @@ function Login() {
                 className={formErrors?.[field.fieldName] ? 'form-field error': 'form-field'}
             >
 
-                <label htmlFor={field.fieldName}>{field.displayName}</label>
+                {/* <label htmlFor={field.fieldName}>{field.displayName}</label> */}
                 <input
                     onChange={handleChange}
                     type={field.fieldType}
