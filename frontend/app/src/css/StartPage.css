@@ -92,6 +92,10 @@ nav {
         margin-bottom: 3rem;
         justify-content: center;
     }
+    .start-page-preview img{
+        max-width: 100%;
+    }
+
     .start-page-form{
         width: 100%
     }
