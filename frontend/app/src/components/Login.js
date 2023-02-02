@@ -1,11 +1,11 @@
-import { React, useContext, useState } from 'react'
+import { React, useContext, useState, useEffect, useRef } from 'react'
 import AuthContext from '../context/AuthContext'
 import '../css/GlobalStyles.css'
 
 function Login() {
     const {authenticateUser} = useContext(AuthContext)
     const [formErrors, setFormErrors] = useState({})
-    const canSubmit = Object.keys(formErrors).length !== 0
+    const buttonRef = useRef(null)
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -43,23 +43,31 @@ function Login() {
     )
 
     function handleSubmit(event){
+        buttonRef.current.disabled = true
         event.preventDefault()
         authenticateUser(formData)
         .then(data => {
-            if(data.detail){
-                setFormErrors({'username': [], 'password': [data.detail]})
-            }
-            else{
-                setFormErrors(data)
-            }
-        })
-        setFormData(prevFormData => {
-            return {
-                ...prevFormData,
-                'password': '',
+            if(Object.keys(data).length > 0) {
+                setFormData(prevFormData => {
+                    return {
+                        ...prevFormData,
+                        'password': '',
+                    }
+                })
+                if(data.detail){
+                    setFormErrors({'username': [], 'password': [data.detail]})
+                }
+                else{
+                    setFormErrors(data)
+                }
             }
         })
     }
+
+    useEffect(() => {
+        buttonRef.current.disabled = Object.keys(formErrors).length !== 0
+    }, [formErrors])
+
 
     function handleChange(event){
         const {name, value} = event.target
@@ -77,7 +85,7 @@ function Login() {
     return (
         <form onSubmit={handleSubmit}>
             {inputElements}
-            <button type='submit' disabled={canSubmit}>Login</button>
+            <button type='submit' ref={buttonRef}>Login</button>
         </form>
     )
 }

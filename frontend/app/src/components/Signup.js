@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import AuthContext from '../context/AuthContext'
 import '../css/GlobalStyles.css'
 
 function Signup() {
     const {authenticateUser} = useContext(AuthContext)
     const [formErrors, setFormErrors] = useState({})
-    const canSubmit = Object.keys(formErrors).length !== 0
+    const buttonRef = useRef(null)
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -47,6 +47,7 @@ function Signup() {
     )
 
     function handleSubmit(event){
+        buttonRef.current.disabled = true
         event.preventDefault()
         authenticateUser(formData, true)
         .then(data => {
@@ -84,6 +85,10 @@ function Signup() {
     }
 
     useEffect(() => {
+        buttonRef.current.disabled = Object.keys(formErrors).length !== 0
+    }, [formErrors])
+
+    useEffect(() => {
         if(formData.password2 && formData.password1 !== formData.password2){
             setFormErrors(prevFormErros => {
                 return {
@@ -109,7 +114,7 @@ function Signup() {
     return (
         <form onSubmit={handleSubmit}>
             {inputElements}
-            <button type='submit' disabled={canSubmit}>Signup</button>
+            <button type='submit' ref={buttonRef}>Signup</button>
         </form>
     )
 }
