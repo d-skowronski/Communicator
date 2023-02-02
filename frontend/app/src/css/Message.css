@@ -10,6 +10,7 @@
     padding-right: 1rem;
     background-color: gainsboro;
     font-size: 1rem;
+    max-width: 100%;
 }
 .message:first-of-type{
     border-top-left-radius: 1.5rem;
@@ -22,4 +23,9 @@
 .message:only-of-type{
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
+}
+
+.text {
+    width: 100%;
+    word-wrap: break-word;
 }

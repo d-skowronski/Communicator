@@ -4,7 +4,7 @@ import ChatWindow from './ChatWindow'
 
 function Main({mainOnlyDisplayed}) {
   return (
-    <div className='main'>
+    <div className={mainOnlyDisplayed ? 'main full':'main'}>
       <ChatWindow mainOnlyDisplayed={mainOnlyDisplayed}/>
     </div>
   )
