@@ -12,7 +12,7 @@ root.render(
     <AuthProvider>
       <App />
     </AuthProvider>
-    <ReactQueryDevtools/>
+    {/* <ReactQueryDevtools/> */}
   </QueryClientProvider>
 );
 
