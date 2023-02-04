@@ -1,5 +1,6 @@
 import React from 'react'
 import '../css/RoomSelect.css'
+import '../css/GlobalStyles.css'
 import { useQueryLastMessage, useQueryUser } from '../utils/hooks/queries'
 import { useNavigate } from 'react-router-dom'
 import useCurrentRoom from '../utils/hooks/currentRoom'
@@ -20,7 +21,7 @@ export default function RoomSelect({room}) {
 
     return (
         <div className='room-select' onClick={handleRoomChange}>
-            <img src={room.thumbnail} alt=""></img>
+            <img className='profile-pic' src={room.thumbnail} alt=""></img>
             <div className="room-info">
                     <div className="room-name">{room.name}</div>
                     {lastMessage ?<div className="room-message">{lastMessageUser.username}: {lastMessage.content_text}</div>:<div className="room-message">Say hello!</div>}

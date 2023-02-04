@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { useQueryUser } from '../utils/hooks/queries'
 import Message from './Message'
 import '../css/MessageGroup.css'
+import '../css/GlobalStyles.css'
 // temporary solution
 import AuthContext from '../context/AuthContext'
 
@@ -23,7 +24,7 @@ function MessageGroup({messages}) {
     else
         return (
             <div className='message-wrapper'>
-                <img className='chat-profile-pic' src={user.profile_picture}></img>
+                <img className='profile-pic' src={user.profile_picture}></img>
                 <div className='message-group'>
                     {messagesToDisplay.reverse()}
                 </div>

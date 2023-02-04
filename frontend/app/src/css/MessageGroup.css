@@ -10,15 +10,7 @@
     margin-left: 6.8rem;
     transform: scaleX(-1);
 }
-.chat-profile-pic{
-    object-fit: cover;
-    min-height: 2.5rem;
-    max-height: 2.5rem;
-    min-width: 2.5rem;
-    max-width: 2.5rem;
-    border-radius: 2rem;
-    margin: 0.1rem;
-}
+
 .message-wrapper.current-user .message{
     background-color: rgb(241, 175, 41);
 }
