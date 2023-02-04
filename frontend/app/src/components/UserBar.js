@@ -13,12 +13,12 @@ function UserBar() {
   return (
     <div className='user-bar'>
         <div className='profile-pic action-overlay' onClick={() => navigate('/communicator/profile')}>
-          <i class="bi bi-info-lg"></i>
+          <i className="bi bi-info-lg"></i>
         </div>
         <img className='profile-pic' src={src}alt=""></img>
         <div className='user-bar-name'>{user.username}</div>
         <button onClick={logoutUser}>
-          <i class="bi bi-box-arrow-right"></i>
+          <i className="bi bi-box-arrow-right"></i>
         </button>
     </div>
   )
