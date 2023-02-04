@@ -5,6 +5,7 @@
     padding-bottom: 0.2rem;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 .room-select:hover{
     background-color: gainsboro;

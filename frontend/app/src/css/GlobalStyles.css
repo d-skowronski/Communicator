@@ -49,6 +49,7 @@ input:focus{
 }
 
 button{
+    cursor: pointer;
     font-size: 1em;
     border: none;
     background-color: gainsboro;
