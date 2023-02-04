@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from ..models import Room, User, Message
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password as password_validator
 
 
@@ -50,10 +51,13 @@ class SignupSerializer(serializers.ModelSerializer):
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    default_error_messages = {
+        "no_active_account": _("Incorrect credentials")
+    }
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-
         token['username'] = user.username
         token['profile_picture'] = user.profile_picture.url
         token['email'] = user.email
