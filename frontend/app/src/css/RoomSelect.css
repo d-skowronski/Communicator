@@ -1,17 +1,11 @@
 .room-select{
-    padding-left: 0.8rem;
-    padding-right: 1rem;
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
     display: flex;
     align-items: center;
-    cursor: pointer;
-}
-.room-select:hover{
-    background-color: gainsboro;
 }
 
-.room-select img {
+.room-select img, button{
     font-size: 1.4rem;
 }
 

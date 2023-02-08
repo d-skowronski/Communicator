@@ -19,6 +19,18 @@ body {
     margin: 0.1em;
 }
 
+.pointer{
+    cursor: pointer;
+}
+
+.hover:hover{
+    background-color: gainsboro;
+}
+
+.grayed-text{
+    color: rgb(92, 91, 91)
+}
+
 .logo{
     padding-right: 1rem;
 }

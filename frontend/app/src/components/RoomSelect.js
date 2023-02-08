@@ -20,7 +20,7 @@ export default function RoomSelect({room}) {
     }
 
     return (
-        <div className='room-select' onClick={handleRoomChange}>
+        <div className='room-select pointer hover' onClick={handleRoomChange}>
             <img className='profile-pic' src={room.thumbnail} alt=""></img>
             <div className="room-info">
                     <div className="room-name">{room.name}</div>

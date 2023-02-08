@@ -21,7 +21,7 @@ function Sidebar({sidebarOnlyDisplayed}) {
         value={userSearch}
         onChange={(event) => setUserSearch(event.target.value)}
       ></input>
-      {userSearch ? <UserSearchList query={userSearch}/>:<RoomList/>}
+      {userSearch ? <UserSearchList query={userSearch} setQuery={setUserSearch}/>:<RoomList/>}
       <UserBar/>
     </div>
   )
