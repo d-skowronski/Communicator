@@ -44,7 +44,7 @@ class SignupSerializer(serializers.ModelSerializer):
         # would also work, however at the expense of extra db hits, using MyTokenObtainPairSerializer
         # provides more consistency with encoded user fields
 
-        tokens = MyTokenObtainPairSerializer(data={'username': instance.username, 'password': self.validated_data['password1']})
+        tokens = MyTokenObtainPairSerializer(data={'username': instance.username, 'password': self.validated_data['password1']}, context=self.context)
         tokens.is_valid()
 
         return tokens.validated_data
