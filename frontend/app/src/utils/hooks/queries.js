@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import {getRooms} from '../api/rooms'
-import {getUser} from '../api/users'
+import {findUsers, getUser} from '../api/users'
 import { getMessagesForRoom } from "../api/messages";
 import {useQueryClient} from '@tanstack/react-query'
 import { useState } from "react";
@@ -100,3 +100,13 @@ export function useQueryUser(user_id){
     }
 }
 
+export function useQueryFindUsers(queryStr, isEnabled=true) {
+    const usersQuery = useQuery({
+        queryFn: () => findUsers(queryStr),
+        queryKey: ['users', `query-${queryStr}`],
+        staleTime: 60 * 1000 * 10,
+        enabled: isEnabled,
+    })
+
+    return usersQuery
+}
