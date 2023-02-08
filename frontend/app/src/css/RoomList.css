@@ -1,6 +1,8 @@
 .room-list{
     width: inherit;
     margin-bottom: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .room-list > *{

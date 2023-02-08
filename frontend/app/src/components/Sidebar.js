@@ -7,7 +7,15 @@ import RoomList from './RoomList'
 import UserSearchList from './UserSearchList'
 
 function Sidebar({sidebarOnlyDisplayed}) {
-  const [userSearch, setUserSearch] = useState('')
+  const [userSearch, setUserSearch] = useState({queryText: '', sendQuery: false})
+
+  function handleChange(event) {
+    setUserSearch({
+      queryText: event.target.value,
+      sendQuery: false
+    })
+  }
+
   return (
     <div className={sidebarOnlyDisplayed ? 'sidebar full':'sidebar'}>
       <header className='service medium'>
@@ -18,10 +26,10 @@ function Sidebar({sidebarOnlyDisplayed}) {
         name='userSearch'
         type='text'
         placeholder='Search for anyone!'
-        value={userSearch}
-        onChange={(event) => setUserSearch(event.target.value)}
+        value={userSearch.queryText}
+        onChange={(event) => handleChange(event)}
       ></input>
-      {userSearch ? <UserSearchList query={userSearch} setQuery={setUserSearch}/>:<RoomList/>}
+      {userSearch.queryText ? <UserSearchList userSearch={userSearch} setUserSearch={setUserSearch}/>:<RoomList/>}
       <UserBar/>
     </div>
   )
