@@ -55,7 +55,7 @@ class UserDetail(generics.RetrieveUpdateAPIView):
         return User.objects.all()
 
 
-class RoomList(generics.ListAPIView):
+class RoomListCreate(generics.ListCreateAPIView):
     serializer_class = RoomSerializer
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
@@ -63,6 +63,10 @@ class RoomList(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         return user.chat_rooms.all()
+
+    def create(self, request, *args, **kwargs):
+        request.data['users_id'].append(self.request.user.id)
+        return super().create(request, *args, **kwargs)
 
 
 class RoomDetail(generics.RetrieveUpdateAPIView):

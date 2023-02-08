@@ -18,9 +18,9 @@ class Room(models.Model):
     # Return first user from Room users that is not current_user
     # If no more users found returns current_user
     def getDisplayUser(self, current_user):
-        displayUser = self.users.exclude(pk=current_user.pk)[0]
+        displayUser = self.users.exclude(pk=current_user.pk)
         if displayUser:
-            return displayUser
+            return displayUser[0]
         return current_user
 
     def usernamesList(self):

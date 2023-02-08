@@ -94,11 +94,28 @@ class RoomSerializer(serializers.ModelSerializer):
     thumbnail = serializers.SerializerMethodField()
     last_message = serializers.SerializerMethodField()
     information_type = serializers.SerializerMethodField()
-    users = UserSerializer(many=True)
+    users = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Room
-        fields = ['id', 'information_type','name', 'thumbnail', 'last_message', 'users']
+        fields = ['id', 'information_type','name', 'thumbnail', 'last_message', 'users', 'users_id']
+        extra_kwargs = {
+            'users_id': {'source': 'users', 'write_only': True}
+        }
+
+    def validate_users_id(self, value):
+        value = set(value)
+        if len(value) < 2:
+            raise serializers.ValidationError(
+                {'users': 'Provide at least one extra user beside yourself'}
+            )
+        return value
+
+    def create(self, validated_data):
+        room = Room()
+        room.save()
+        room.users.add(*validated_data['users'])
+        return room
 
     def get_name(self, obj):
         if obj.name:
