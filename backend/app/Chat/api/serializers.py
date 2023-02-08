@@ -65,9 +65,17 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class UserSerializer(serializers.ModelSerializer):
+    shared_rooms = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'profile_picture']
+        fields = ['id', 'username', 'profile_picture', 'shared_rooms']
+
+    def get_shared_rooms(self, obj):
+        return obj.chat_rooms.filter(
+            pk__in=self.context['request'].user.chat_rooms.values_list('pk', flat=True)
+        ).values_list('pk', flat=True)
+
 
 class MessageSerializer(serializers.ModelSerializer):
     information_type = serializers.SerializerMethodField()
