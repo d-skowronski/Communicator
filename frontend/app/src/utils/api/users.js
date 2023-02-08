@@ -1,24 +1,11 @@
-export function getUsersSharedRooms(token) {
-    return fetch('http://127.0.0.1:8000/api/users?shared_rooms=true', {
-        headers: {
-            'Authorization':` Bearer ${token}`
-        }
-    })
-    .then(
-        (res) => res.json(),
-    )
+import authedAxios from "./authedAxios"
+
+export async function getUsersSharedRooms() {
+    const response = await authedAxios.get(`users?shared_rooms=true`)
+    return response.data
 }
 
-
-export function getUser(user_id, token) {
-    return fetch(`http://127.0.0.1:8000/api/users/${user_id}`, {
-        headers: {
-            'Authorization':` Bearer ${token}`
-        }
-    })
-    .then(
-        (res) => res.json(),
-    )
+export async function getUser(user_id) {
+    const response = await authedAxios.get(`users/${user_id}`)
+    return response.data
 }
-
-
