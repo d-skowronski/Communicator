@@ -55,11 +55,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         "no_active_account": _("Incorrect credentials")
     }
 
-    @classmethod
-    def get_token(cls, user):
+    def get_token(self, user):
+        request = self.context['request']
+
         token = super().get_token(user)
         token['username'] = user.username
-        token['profile_picture'] = user.profile_picture.url
+        token['profile_picture'] = request.build_absolute_uri(user.profile_picture.url)
         token['email'] = user.email
 
         return token
