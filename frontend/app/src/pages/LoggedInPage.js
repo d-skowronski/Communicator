@@ -3,7 +3,7 @@ import Main from '../components/Main'
 import Sidebar from '../components/Sidebar'
 import '../css/LoggedInPage.css'
 import { useQueryAllRooms } from '../utils/hooks/queries'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import useScreenSize from '../utils/hooks/screenSize'
 import useCurrentRoom from '../utils/hooks/currentRoom'
 
@@ -22,7 +22,6 @@ function LoggedInPage() {
         }
     }, [roomsQuery.data, screenSize, currentRoom, navigate])
 
-    if(roomsQuery.isLoading) return <h1>Loading...</h1>
     if(roomsQuery.isSuccess) {
         return (
             <div className='wrapper'>

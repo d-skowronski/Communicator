@@ -70,11 +70,11 @@ function UserSearchList({userSearch, setUserSearch}) {
             <div className='room-list'>
                 <div>Search results:</div>
                 <div>
-                <BarLoader
-                    color="#f19c2b"
-                    height={5}
-                    cssOverride={{width: '100%', marginTop: '0.5rem'}}
-                ></BarLoader>
+                    <BarLoader
+                        color="#f19c2b"
+                        height={5}
+                        cssOverride={{width: '100%', marginTop: '0.5rem'}}
+                    ></BarLoader>
                 </div>
 
             </div>
