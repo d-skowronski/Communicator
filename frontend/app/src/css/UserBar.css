@@ -15,9 +15,13 @@
 
 .user-bar-name {
     padding-left: 0.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .user-bar button {
+    flex-shrink: 0;
     margin-left: auto;
     font-size: 1.3rem;
 }
