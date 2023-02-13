@@ -117,7 +117,7 @@ export function useMutationCreateRoom() {
         mutationFn: createRoom,
         onSuccess: () => {
             queryClient.invalidateQueries(['user-query'])
-            queryClient.invalidateQueries(['rooms'])
+            // queryClient.invalidateQueries(['rooms']) at websocket when room_created message received
         }
     })
 

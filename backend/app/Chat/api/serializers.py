@@ -3,6 +3,8 @@ from ..models import Room, User, Message
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password as password_validator
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 class SignupSerializer(serializers.ModelSerializer):
@@ -78,6 +80,12 @@ class UserSerializer(serializers.ModelSerializer):
         ).values_list('pk', flat=True)
 
 
+class BasicUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'profile_picture']
+
+
 class MessageSerializer(serializers.ModelSerializer):
     information_type = serializers.SerializerMethodField()
 
@@ -115,6 +123,15 @@ class RoomSerializer(serializers.ModelSerializer):
         room = Room()
         room.save()
         room.users.add(*validated_data['users'])
+
+        channel_layer = get_channel_layer()
+        print(validated_data['users'])
+        for user in validated_data['users']:
+            async_to_sync(channel_layer.group_send)(f'user_{user.id}',{
+                "type": "room_created",
+                "room_object": room,
+            })
+
         return room
 
     def get_name(self, obj):

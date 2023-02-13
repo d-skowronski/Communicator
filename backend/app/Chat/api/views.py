@@ -3,6 +3,7 @@ from ..models import User, Message
 from .serializers import (
     RoomSerializer,
     UserSerializer,
+    BasicUserSerializer,
     MessageSerializer,
     MyTokenObtainPairSerializer,
     SignupSerializer
@@ -108,7 +109,7 @@ class MessagesList(generics.ListAPIView):
                 async_to_sync(channel_layer.group_send)(str(object.room.id), {
                     "type": "message_read",
                     "message_object": object,
-                    "read_user": UserSerializer(user).data,
+                    "read_user": BasicUserSerializer(user).data,
                     })
         return objects
 

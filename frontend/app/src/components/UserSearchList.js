@@ -47,10 +47,8 @@ function UserSearchList({userSearch, setUserSearch}) {
                         className='profile-pic'
                         onClick={() => {
                             if(roomsMutation.isIdle){
-                                roomsMutation.mutateAsync([user.id])
-                                    .then(re => console.log(re))
-                                    .then(setUserSearch({queryText: '', sendQuery: false}))
-                                    .then(console.log("async"))
+                                roomsMutation.mutate([user.id])
+                                setUserSearch({queryText: '', sendQuery: false})
                             }
                         }}
                     ><i className="bi bi-person-plus"></i></button>

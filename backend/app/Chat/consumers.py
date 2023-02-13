@@ -6,14 +6,19 @@ from asgiref.sync import async_to_sync
 from django.conf import settings
 from .models import Room, Message, User
 from channels.db import database_sync_to_async
-from .api.serializers import MessageSerializer, UserSerializer
+from .api.serializers import MessageSerializer, BasicUserSerializer
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.utils import aware_utcnow
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
-        if isinstance(self.scope['user'], User):
+        user = self.scope['user']
+        if user.is_authenticated:
             self.accept()
+            async_to_sync(self.channel_layer.group_add)(
+                f'user_{user.id}',
+                self.channel_name
+            )
             self.joined_rooms = self.get_rooms()
             self.joined_rooms_ids = [str(room.id) for room in self.joined_rooms]
             for room in self.joined_rooms_ids:
@@ -31,7 +36,6 @@ class ChatConsumer(WebsocketConsumer):
         try:
             self.scope['token'].check_exp(current_time=aware_utcnow())
         except TokenError:
-            print("TOKEN INVALID while sending")
             self.close()
         else:
             return super().send(*args, **kwargs)
@@ -40,7 +44,6 @@ class ChatConsumer(WebsocketConsumer):
         try:
             self.scope['token'].check_exp(current_time=aware_utcnow())
         except TokenError:
-            print("TOKEN INVALID while receiving")
             self.close()
         else:
             data = json.loads(text_data)
@@ -68,7 +71,7 @@ class ChatConsumer(WebsocketConsumer):
                             {
                                 "type": "message_read",
                                 "message_object": message,
-                                "read_user": UserSerializer(user).data
+                                "read_user": BasicUserSerializer(user).data
                             }
                         )
 
@@ -85,6 +88,13 @@ class ChatConsumer(WebsocketConsumer):
             "message_id": event['message_object'].id,
             "room": event['message_object'].room.id,
             'read_user': event['read_user'],
+        }
+        self.send(text_data=json.dumps(message))
+
+    def room_created(self, event):
+        message = {
+            'information_type': event['type'],
+            'room_id': event['room_object'].id,
         }
         self.send(text_data=json.dumps(message))
 
