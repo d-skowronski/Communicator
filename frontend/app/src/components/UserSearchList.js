@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import '../css/RoomList.css'
 import '../css/RoomSelect.css'
 import '../css/GlobalStyles.css'
-import { useQueryFindUsers } from '../utils/hooks/queries'
+import { useMutationCreateRoom, useQueryFindUsers } from '../utils/hooks/queries'
 import AuthContext from '../context/AuthContext'
 import BarLoader from 'react-spinners/BarLoader'
 
@@ -11,7 +11,7 @@ function UserSearchList({userSearch, setUserSearch}) {
     const {user:currentUser} = useContext(AuthContext)
     const navigate = useNavigate()
     const userQuery = useQueryFindUsers(userSearch.queryText, userSearch.sendQuery)
-
+    const roomsMutation = useMutationCreateRoom()
     // Prevent queries during typing
     useEffect(() => {
         let queryDelay
@@ -26,7 +26,7 @@ function UserSearchList({userSearch, setUserSearch}) {
         return () => {queryDelay && clearTimeout(queryDelay)}
     }, [userSearch.queryText])
 
-    if(userQuery.isSuccess){
+    if(userQuery.isSuccess && !userQuery.isStale){
         let users = userQuery.data.results.filter((user) => {return user.id !== currentUser.user_id})
         let renderUsers = users.map(user => {
             return (
@@ -44,7 +44,15 @@ function UserSearchList({userSearch, setUserSearch}) {
                         }}
                     ><i className="bi bi-chat-left"></i></button>:
                     <button
-                        className='profile-pic add-user'
+                        className='profile-pic'
+                        onClick={() => {
+                            if(roomsMutation.isIdle){
+                                roomsMutation.mutateAsync([user.id])
+                                    .then(re => console.log(re))
+                                    .then(setUserSearch({queryText: '', sendQuery: false}))
+                                    .then(console.log("async"))
+                            }
+                        }}
                     ><i className="bi bi-person-plus"></i></button>
                 }
             </div>

@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import {getRooms} from '../api/rooms'
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {createRoom, getRooms} from '../api/rooms'
 import {findUsers, getUser} from '../api/users'
 import { getMessagesForRoom } from "../api/messages";
 import {useQueryClient} from '@tanstack/react-query'
@@ -103,10 +103,23 @@ export function useQueryUser(user_id){
 export function useQueryFindUsers(queryStr, isEnabled=true) {
     const usersQuery = useQuery({
         queryFn: () => findUsers(queryStr),
-        queryKey: ['users', `query-${queryStr}`],
+        queryKey: ['user-query', `user-query-${queryStr}`],
         staleTime: 60 * 1000 * 10,
-        enabled: isEnabled,
+        enabled: isEnabled
     })
 
     return usersQuery
+}
+
+export function useMutationCreateRoom() {
+    const queryClient = useQueryClient()
+    const roomsMutation = useMutation({
+        mutationFn: createRoom,
+        onSuccess: () => {
+            queryClient.invalidateQueries(['user-query'])
+            queryClient.invalidateQueries(['rooms'])
+        }
+    })
+
+    return roomsMutation
 }

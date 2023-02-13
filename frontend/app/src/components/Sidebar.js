@@ -25,7 +25,7 @@ function Sidebar({sidebarOnlyDisplayed}) {
       <input
         name='userSearch'
         type='text'
-        placeholder='Search for anyone!'
+        placeholder='Search for people'
         value={userSearch.queryText}
         onChange={(event) => handleChange(event)}
       ></input>

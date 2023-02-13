@@ -2,11 +2,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { atom, useAtom } from 'jotai';
 import { useContext, useEffect } from 'react'
 import AuthContext from '../../context/AuthContext';
+import { useQueryAllRooms } from './queries';
 
 export default function useWebsocket() {
     const queryClient = useQueryClient()
     const [,setWebsocket] = useAtom(setWebsocketAtom)
     const {user, authTokens} = useContext(AuthContext)
+    const roomsQuery = useQueryAllRooms()
 
     useEffect(() => {
         let ws
@@ -34,7 +36,7 @@ export default function useWebsocket() {
         }
 
         return () => {if(ws) ws.close()}
-    }, [queryClient, setWebsocket, user, authTokens])
+    }, [queryClient, setWebsocket, user, authTokens, roomsQuery.data])
 }
 
 export const websocketAtom = atom()
