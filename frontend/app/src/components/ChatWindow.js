@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import ChatArea from './ChatArea'
 import ChatHeader from './ChatHeader'
 import ChatFooter from './ChatFooter'
 import '../css/ChatWindow.css'
+import '../css/GlobalStyles.css'
 import useCurrentRoom from '../utils/hooks/currentRoom'
+import AuthContext from '../context/AuthContext'
 
 function ChatWindow({mainOnlyDisplayed}) {
+    const { user:currentUser } = useContext(AuthContext)
     const currentRoom = useCurrentRoom()
     if(currentRoom){
         return (
@@ -17,10 +20,23 @@ function ChatWindow({mainOnlyDisplayed}) {
         )
     }
     else if(currentRoom === undefined) {
-        return <h1>Start chatting!</h1>
+        return (
+            <div className='chat-window'>
+                <div className='helper-text'>
+                    <div className='slogan'>Start chatting!</div>
+                </div>
+            </div>
+        )
     }
     else {
-        return <h1>No room to display....</h1>
+        return (
+            <div className='chat-window'>
+                <div className='helper-text'>
+                    <div className='slogan'>Don't wait, add your first friend</div>
+                </div>
+
+            </div>
+        )
     }
 
 }

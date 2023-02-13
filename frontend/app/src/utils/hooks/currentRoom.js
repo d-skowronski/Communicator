@@ -8,9 +8,9 @@ export default function useCurrentRoom() {
     if (roomsQuery.isSuccess) {
         if(roomParam){
             roomObj = roomsQuery.data.results.find(room => room.id === Number(roomParam))
-            if(roomObj === undefined){
-                return null
-            }
+        }
+        if(roomObj === undefined){
+            return null
         }
     }
     return roomObj

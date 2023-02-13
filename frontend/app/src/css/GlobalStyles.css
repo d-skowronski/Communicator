@@ -116,3 +116,21 @@ button:hover{
     margin-bottom: 0.5em;
     margin-top: -0.2em;
 }
+
+.helper-text{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0.7rem 0rem 0.7rem;
+    height: 100%;
+}
+
+.helper-text p{
+    margin-bottom: 0.5rem;
+}
+
+.helper-text .slogan {
+    font-size: 2rem;
+    width: 50%;
+    margin-top: 20vh;
+    align-self: center;
+}
