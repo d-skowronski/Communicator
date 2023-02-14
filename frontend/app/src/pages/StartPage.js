@@ -30,7 +30,7 @@ function StartPage() {
         </div>
 
         <div className='start-page-preview'>
-          <img src='http://127.0.0.1:8000/media/preview.png' alt='preview'></img>
+          <img src={`${process.env.REACT_APP_BACKEND_URL}media/preview.png`} alt='preview'></img>
         </div>
 
       </div>

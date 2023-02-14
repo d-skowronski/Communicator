@@ -13,7 +13,7 @@ export default function useWebsocket() {
     useEffect(() => {
         let ws
         if(user && roomsQuery.data?.results?.length !== undefined){
-            ws = new WebSocket(`ws://127.0.0.1:8000/ws/chat/?token=${authTokens.access}`);
+            ws = new WebSocket(`${process.env.REACT_APP_WEBSOCKET_URL}chat/?token=${authTokens.access}`);
             console.log("ws ", ws)
             ws.onmessage = (event) => {
                 const data = JSON.parse(event.data)
@@ -41,7 +41,6 @@ export default function useWebsocket() {
 
         return () => {if(ws) ws.close()}
     }, [queryClient, setWebsocket, user, authTokens, roomsQuery.data?.results?.length])
-    console.log(roomsQuery.data?.results?.length)
 }
 
 export const websocketAtom = atom()

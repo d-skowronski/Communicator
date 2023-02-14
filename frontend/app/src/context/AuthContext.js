@@ -1,11 +1,13 @@
 import React, { useState, createContext, useEffect, useCallback } from 'react'
 import jwtDecode from 'jwt-decode'
 import {useQueryClient} from '@tanstack/react-query'
-const AuthContext = createContext()
+import axios from 'axios'
 
+const AuthContext = createContext()
 
 export default AuthContext
 export const AuthProvider = ({children}) => {
+    const APIURL = process.env.REACT_APP_API_URL
     const queryClient = useQueryClient()
     const [authTokens, setAuthTokens] = useState(() =>
         localStorage.getItem('authTokens') ?
@@ -16,10 +18,12 @@ export const AuthProvider = ({children}) => {
     const [loading, setLoading] = useState(true)
 
     async function authenticateUser(formData, signup=false){
-        let url = 'http://127.0.0.1:8000/api/token/'
+        let url = APIURL + 'token/'
         if(signup){
-            url = 'http://127.0.0.1:8000/api/signup/'
+            url = APIURL + 'signup/'
         }
+
+
 
         const response = await fetch(url, {
             method: 'POST',
@@ -52,7 +56,7 @@ export const AuthProvider = ({children}) => {
         console.log("Token update")
         let body = JSON.stringify({refresh: authTokens?.refresh})
         if(body !== '{}'){
-            const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+            const response = await fetch(`${APIURL}token/refresh/`, {
                 method: 'POST',
                 body: body,
                 headers: { 'Content-Type': 'application/json' },

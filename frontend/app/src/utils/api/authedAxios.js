@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const baseURL = 'http://127.0.0.1:8000/api/'
+const APIURL = process.env.REACT_APP_API_URL
 
 const authedAxios = axios.create({
-    baseURL,
+    baseURL: APIURL,
     headers: {
         "Content-type": "application/json"
     },
