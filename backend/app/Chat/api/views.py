@@ -14,6 +14,7 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from .pagiation import DateCursorPagination
 
 
 class UserSignup(generics.CreateAPIView):
@@ -84,6 +85,7 @@ class MessagesList(generics.ListAPIView):
     serializer_class = MessageSerializer
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
+    pagination_class = DateCursorPagination
 
     def get_queryset(self):
         user = self.request.user
