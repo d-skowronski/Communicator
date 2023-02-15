@@ -1,8 +1,10 @@
 .room-list{
     width: inherit;
-    margin-bottom: auto;
+    scrollbar-width: thin;
+    scrollbar-color: gray;
     display: flex;
     flex-direction: column;
+    margin-bottom: auto;
 }
 
 .room-list > *{

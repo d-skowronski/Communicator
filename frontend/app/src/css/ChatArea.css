@@ -3,11 +3,13 @@
     scrollbar-width: thin;
     scrollbar-color: gray;
     width: 100%;
-    /* 3rem for chat-header 4rem for chat-footer = 7rem */
-    height: calc(100vh - 7rem);
-    padding: 1rem;
+    padding: 0 1rem 0 1rem;
     display: flex;
     flex-direction: column;
+}
+
+.main.full .chat-area{
+    min-height: 100%;
 }
 
 /* for messages in chat-area going to the bottom */
