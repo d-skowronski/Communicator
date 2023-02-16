@@ -1,17 +1,28 @@
+.chat-area-wrapper{
+    width: 100%;
+    height: calc(100vh - 4.5rem - 3.5rem);
+}
+
+.main.full .chat-area-wrapper{
+    position: absolute;
+    top: 3.5rem;
+    bottom: 4.5rem;
+    height: auto;
+}
+
 .chat-area{
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: gray;
+    height: 99%;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
     width: 100%;
     padding: 0 1rem 0 1rem;
     display: flex;
-    flex-direction: column;
-    min-height: calc(100vh - 4.5rem - 3.5rem);
+    flex-direction: column-reverse;
 }
 
-.main.full .chat-area{
-    min-height: 100%;
-}
+/* .main.full .chat-area{
+    max-height: (100vh - 4.5rem - 3.5rem);
+} */
 
 /* for messages in chat-area going to the bottom */
 .chat-area> :first-child{

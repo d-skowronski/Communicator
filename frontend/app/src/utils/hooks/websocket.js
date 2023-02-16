@@ -25,9 +25,29 @@ export default function useWebsocket() {
                         ['messages', `messages-room-${message.room}`],
                         (oldData) => {
                             if(oldData) {
-                                return {...oldData, results: [message, ...oldData.results]}
+                                let firstPage = oldData.pages[0]
+                                firstPage.results.unshift(message)
+
+                                // totalOffset is a count of messages received from websocket
+                                // is does NOT serve currently any role in calculating next page
+                                // is is workaround beacuse React Query does not rerender components
+                                // when changes occur deeply, as with adding messages
+                                let totalOffset = oldData.totalOffset ? oldData.totalOffset + 1: 1
+
+                                return {...oldData, totalOffset: totalOffset, pages: [firstPage, ...oldData.pages.slice(1)]}
                             }
-                            else return {results: [message]}
+                        }
+                    )
+                    queryClient.setQueryData(
+                        ['rooms'],
+                        (oldData) => {
+                            let updatedDataResults = oldData.results.map(room => {
+                                if(room.id === message.room) {
+                                    return {...room, last_message: message}
+                                }
+                                return room
+                            })
+                            return {...oldData, results: updatedDataResults}
                         }
                     )
                 }

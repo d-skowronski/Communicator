@@ -1,56 +1,25 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import {createRoom, getRooms} from '../api/rooms'
 import {findUsers, getUser} from '../api/users'
 import { getMessagesForRoom } from "../api/messages";
 import {useQueryClient} from '@tanstack/react-query'
-import { useState } from "react";
 
-/**
- * Check if any messages for a room
- * If not found check in room's field last_message and use as initialData
- * useQuery that subscribes to room's messsages, and if no messages there,
- * use initial data from
- * @param {int} room_id
- * @returns {Object} message
- */
-
-
-export function useQueryLastMessage(room_id) {
-    const queryClient = useQueryClient()
-
-    let message = {}
-    if (queryClient.getQueryData(['messages', `messages-room-${room_id}`])?.results === undefined){
-        message = queryClient.getQueryData(['rooms'])?.results?.find(room => room.id === room_id)?.last_message
-    }
-
-    const userQuery = useQuery({
-        queryFn: () => getMessagesForRoom(room_id),
-        queryKey: ['messages', `messages-room-${room_id}`],
+export function useQueryMessagesForRoom(roomId, isEnabled = true) {
+    const query = useInfiniteQuery({
+        queryFn: ({pageParam = ''}) => getMessagesForRoom(roomId, pageParam),
+        queryKey: ['messages', `messages-room-${roomId}`],
         staleTime: Infinity,
-        initialData: {results: [message]},
+        enabled: isEnabled,
+        getNextPageParam: (lastPage) => {
+            if(lastPage.next){
+                let splittedLink = lastPage.next?.split('/')
+                let params = splittedLink[splittedLink.length - 1]
+                return params
+            }
+            return undefined
+        },
+        onSuccess: (data) => console.log(data)
     })
-    return userQuery.data.results[0]
-}
-
-export function useQueryMessagesForRoom(room_id) {
-    const queryClient = useQueryClient()
-
-    // 30 is number of messages received from API on each page
-    // This will need to be reworked to keep track of received messages
-    // when infinite scroll will be implemented and next page will need to be determined
-    const [en, setEn] = useState(true)
-    if(queryClient.getQueryData(['messages', `messages-room-${room_id}`])?.results?.length < 30){
-        queryClient.invalidateQueries(['messages', `messages-room-${room_id}`])
-        if(en){
-            setEn(false)
-        }
-    }
-
-    const query = useQuery({
-        queryFn: () => getMessagesForRoom(room_id),
-        queryKey: ['messages', `messages-room-${room_id}`],
-        staleTime: Infinity,
-    }, {enabled: en})
     return query
 }
 

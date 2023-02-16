@@ -1,7 +1,11 @@
 import authedAxios from "./authedAxios"
 
-export async function getMessagesForRoom(room_id) {
-    const response = await authedAxios.get(`messages/?room_id=${room_id}`)
+export async function getMessagesForRoom(room_id, params = '') {
+
+    if(params === ''){
+        params = `?room_id=${room_id}`
+    }
+    const response = await authedAxios.get(`messages/` + params)
     return response.data
 }
 
