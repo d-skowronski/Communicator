@@ -106,7 +106,7 @@ class RoomSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = ['id', 'information_type','name', 'thumbnail', 'last_message', 'users', 'users_id']
+        fields = ['id', 'information_type','name', 'thumbnail', 'created', 'last_message', 'users', 'users_id']
         extra_kwargs = {
             'users_id': {'source': 'users', 'write_only': True}
         }

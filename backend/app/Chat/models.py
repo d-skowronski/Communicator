@@ -14,6 +14,7 @@ class Room(models.Model):
     name = models.CharField(max_length=128, default=None, null=True, blank=True)
     users = models.ManyToManyField(User, related_name='chat_rooms')
     thumbnail = models.ImageField(upload_to="profile_pictures", blank=True, null=True, default=None)
+    created = models.DateTimeField(auto_now_add=True)
 
     # Return first user from Room users that is not current_user
     # If no more users found returns current_user
