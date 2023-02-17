@@ -18,7 +18,6 @@ export function useQueryMessagesForRoom(roomId, isEnabled = true) {
             }
             return undefined
         },
-        onSuccess: (data) => console.log(data)
     })
     return query
 }
