@@ -12,7 +12,10 @@ export default function RoomList() {
     if (roomsQuery.isSuccess) {
         let sortedRooms = roomsQuery.data.results
         sortedRooms.sort(function(a, b) {
-            return (a.last_message.date < b.last_message.date) ? 1 : ((a.last_message.date > b.last_message.date) ? -1 : 0);
+            let aCompare = a.last_message.date ?? a.created
+            let bCompare = b.last_message.date ?? b.created
+
+            return (aCompare < bCompare) ? 1 : ((aCompare > bCompare) ? -1 : 0)
         })
         const allRooms = sortedRooms.map(room => (
             <RoomSelect key={room.id} room={room}/>
