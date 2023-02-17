@@ -71,7 +71,7 @@ class ChatConsumer(WebsocketConsumer):
                             {
                                 "type": "message_read",
                                 "message_object": message,
-                                "read_user": BasicUserSerializer(user).data
+                                "read_user": user,
                             }
                         )
 
@@ -85,9 +85,9 @@ class ChatConsumer(WebsocketConsumer):
     def message_read(self, event):
         message = {
             'information_type': event['type'],
-            "message_id": event['message_object'].id,
+            "message": event['message_object'].id,
             "room": event['message_object'].room.id,
-            'read_user': event['read_user'],
+            'read_user': event['read_user'].id,
         }
         self.send(text_data=json.dumps(message))
 

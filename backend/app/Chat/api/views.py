@@ -111,7 +111,7 @@ class MessagesList(generics.ListAPIView):
                 async_to_sync(channel_layer.group_send)(str(object.room.id), {
                     "type": "message_read",
                     "message_object": object,
-                    "read_user": BasicUserSerializer(user).data,
+                    "read_user": user,
                     })
         return objects
 
