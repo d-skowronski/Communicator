@@ -91,7 +91,7 @@ class MessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Message
-        fields = ['id', 'information_type', 'room', 'content_text','sender', 'read_by']
+        fields = ['id', 'information_type', 'room', 'content_text','sender', 'read_by', 'date']
 
     def get_information_type(self, obj):
         return 'chat_message'

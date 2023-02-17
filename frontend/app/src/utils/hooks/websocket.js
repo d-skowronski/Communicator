@@ -14,7 +14,6 @@ export default function useWebsocket() {
         let ws
         if(user && roomsQuery.data?.results?.length !== undefined){
             ws = new WebSocket(`${process.env.REACT_APP_WEBSOCKET_URL}chat/?token=${authTokens.access}`);
-            console.log("ws ", ws)
             ws.onmessage = (event) => {
                 const data = JSON.parse(event.data)
                 console.log("WEBSOCKET INCOMING: ", data)

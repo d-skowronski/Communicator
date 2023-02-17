@@ -10,7 +10,11 @@ export default function RoomList() {
     const { user:currentUser } = useContext(AuthContext)
 
     if (roomsQuery.isSuccess) {
-        const allRooms = roomsQuery.data.results.map(room => (
+        let sortedRooms = roomsQuery.data.results
+        sortedRooms.sort(function(a, b) {
+            return (a.last_message.date < b.last_message.date) ? 1 : ((a.last_message.date > b.last_message.date) ? -1 : 0);
+        })
+        const allRooms = sortedRooms.map(room => (
             <RoomSelect key={room.id} room={room}/>
         ))
         if(allRooms.length > 0){
