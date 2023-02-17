@@ -102,7 +102,7 @@ class RoomSerializer(serializers.ModelSerializer):
     thumbnail = serializers.SerializerMethodField()
     last_message = serializers.SerializerMethodField()
     information_type = serializers.SerializerMethodField()
-    users = UserSerializer(many=True, read_only=True)
+    users = BasicUserSerializer(many=True, read_only=True)
 
     class Meta:
         model = Room
