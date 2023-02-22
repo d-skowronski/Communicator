@@ -6,10 +6,8 @@ import AnonymousRoute from './utils/AnonymousRoute';
 import LoggedInRoute from './utils/LoggedInRoute';
 import './css/App.css'
 import './css/GlobalStyles.css'
-import useWebsocket from './utils/hooks/websocket'
 
 function App() {
-  useWebsocket()
   return (
     <BrowserRouter>
         <Routes>

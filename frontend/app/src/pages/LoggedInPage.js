@@ -6,8 +6,10 @@ import { useQueryAllRooms } from '../utils/hooks/queries'
 import { useNavigate } from 'react-router-dom'
 import useScreenSize from '../utils/hooks/screenSize'
 import useCurrentRoom from '../utils/hooks/currentRoom'
+import useWebsocket from '../utils/hooks/websocket'
 
 function LoggedInPage() {
+    useWebsocket()
     const roomsQuery = useQueryAllRooms()
     const navigate = useNavigate()
     const screenSize = useScreenSize()
