@@ -1,20 +1,16 @@
-from rest_framework import generics
-from ..models import User, Message
-from .serializers import (
-    RoomSerializer,
-    UserSerializer,
-    BasicUserSerializer,
-    MessageSerializer,
-    MyTokenObtainPairSerializer,
-    SignupSerializer
-    )
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.authentication import SessionAuthentication
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import generics
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework_simplejwt.views import TokenObtainPairView
+
+from ..models import Message, User
 from .pagiation import DateCursorPagination
+from .serializers import (MessageSerializer,
+                          MyTokenObtainPairSerializer, RoomSerializer,
+                          SignupSerializer, UserSerializer)
 
 
 class UserSignup(generics.CreateAPIView):
@@ -42,7 +38,7 @@ class UserList(generics.ListAPIView):
         if isinstance(sharing_rooms, str) and sharing_rooms.lower() == 'true':
             qs = qs.filter(chat_rooms__in=user.chat_rooms.all())
 
-        if(isinstance(q, str)):
+        if isinstance(q, str):
             qs = qs.filter(username__icontains=q)
 
         return qs.distinct()
@@ -115,11 +111,12 @@ class MessagesList(generics.ListAPIView):
                     })
         return objects
 
+
 class MessagesDetail(generics.RetrieveUpdateAPIView):
     serializer_class = MessageSerializer
     authentication_classes = [JWTAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    # TODO may be needed to add requesting user to read_by
+
     def get_queryset(self):
         user = self.request.user
 

@@ -8,15 +8,18 @@ from rest_framework_simplejwt.exceptions import TokenBackendError, TokenError
 
 User = get_user_model()
 
+
 class JWTAuthMiddleware:
     '''
-    Based on https://github.com/joshua-hashimoto/django-channels-jwt-auth-middleware
+    Based on
+    https://github.com/joshua-hashimoto/django-channels-jwt-auth-middleware
     v. 1.0.0
 
     Modifications:
         - depends on simplejwt library
         - simplejwt AccessToken object in scope (scope['token'])
-        - scope token making it possible to check for connection validity in consumer
+        - scope token making it possible to check for connection validity in
+          consumer
         - in case of token issues uses anonymous user
     '''
     def __init__(self, app):
@@ -25,10 +28,12 @@ class JWTAuthMiddleware:
     async def __call__(self, scope, receive, send):
         close_old_connections()
         try:
-            if(jwt_token_list := parse_qs(scope["query_string"].decode("utf8")).get('token', None)):
+            if (jwt_token_list := parse_qs(scope["query_string"].decode("utf8")
+                                           ).get('token', None)):
                 jwt_token = jwt_token_list[0]
                 jwt_token_object = AccessToken(token=jwt_token)
-                user = await self.get_logged_in_user(jwt_token_object.get('user_id'))
+                user = await self.get_logged_in_user(
+                    jwt_token_object.get('user_id'))
                 scope['user'] = user
                 scope['token'] = jwt_token_object
             else:

@@ -1,14 +1,12 @@
 import json
-from django.http import HttpRequest
-from django.utils.html import escape, conditional_escape
-from channels.generic.websocket import WebsocketConsumer
 from asgiref.sync import async_to_sync
-from django.conf import settings
-from .models import Room, Message, User
-from channels.db import database_sync_to_async
-from .api.serializers import MessageSerializer, BasicUserSerializer
+from channels.generic.websocket import WebsocketConsumer
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.utils import aware_utcnow
+
+from .api.serializers import MessageSerializer
+from .models import Message, Room
+
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -20,7 +18,9 @@ class ChatConsumer(WebsocketConsumer):
                 self.channel_name
             )
             self.joined_rooms = self.get_rooms()
-            self.joined_rooms_ids = [str(room.id) for room in self.joined_rooms]
+            self.joined_rooms_ids = [
+                str(room.id) for room in self.joined_rooms
+            ]
             for room in self.joined_rooms_ids:
                 async_to_sync(self.channel_layer.group_add)(
                     room,
@@ -53,7 +53,11 @@ class ChatConsumer(WebsocketConsumer):
                 text = data["content_text"].strip()
                 room_id = str(data["room"])
                 if room_id in self.joined_rooms_ids and len(text) > 0:
-                    message = self.add_message(room=self.joined_rooms.get(pk=int(room_id)), sender=user, message=text)
+                    message = self.add_message(
+                        room=self.joined_rooms.get(pk=int(room_id)),
+                        sender=user,
+                        message=text
+                    )
                     async_to_sync(self.channel_layer.group_send)(
                         room_id,
                         {
@@ -63,7 +67,7 @@ class ChatConsumer(WebsocketConsumer):
                     )
 
             elif data['information_type'] == "message_read":
-                message = Message.objects.get(pk = int(data['id']))
+                message = Message.objects.get(pk=int(data['id']))
                 if message.room in self.joined_rooms:
                     message.read_by.add(user)
                     async_to_sync(self.channel_layer.group_send)(
@@ -76,10 +80,7 @@ class ChatConsumer(WebsocketConsumer):
                         )
 
     def chat_message(self, event):
-        mock_request = HttpRequest()
-        mock_request.user = self.scope['user']
-
-        message = MessageSerializer(event['message'], context={'request': mock_request}).data
+        message = MessageSerializer(event['message']).data
         self.send(text_data=json.dumps(message))
 
     def message_read(self, event):
@@ -99,12 +100,17 @@ class ChatConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps(message))
 
     def get_messages(self, count):
-        return Message.objects.filter(room = Room.objects.get(pk=self.room_id)).order_by('-date')[:count]
+        return Message.objects.filter(
+            room=Room.objects.get(pk=self.room_id)).order_by('-date')[:count]
 
     def get_rooms(self):
-        return Room.objects.filter(users = self.scope['user'])
+        return Room.objects.filter(users=self.scope['user'])
 
     def add_message(self, room, sender, message):
-        message = Message.objects.create(room=room, sender=sender, content_text=message)
+        message = Message.objects.create(
+            room=room,
+            sender=sender,
+            content_text=message
+        )
         message.save()
         return message

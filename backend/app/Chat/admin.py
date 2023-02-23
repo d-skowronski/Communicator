@@ -1,6 +1,7 @@
 from django.contrib import admin
-from .models import User, Room, Message
 from django_admin_inline_paginator.admin import TabularInlinePaginated
+
+from .models import Message, Room, User
 
 
 class MessageInLine(TabularInlinePaginated):
