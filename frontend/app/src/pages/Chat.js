@@ -17,16 +17,7 @@ function Chat() {
             </div>
         )
     }
-    else if(currentRoom === undefined) {
-        return (
-            <div className='chat'>
-                <div className='helper-text'>
-                    <div className='slogan'>Start chatting!</div>
-                </div>
-            </div>
-        )
-    }
-    else {
+    else if(currentRoom === null) {
         return (
             <div className='chat'>
                 <div className='helper-text'>
