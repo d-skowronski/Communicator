@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import StartPage from './pages/StartPage'
-import LoggedInPage from './pages/LoggedInPage'
 import AnonymousRoute from './utils/AnonymousRoute';
 import LoggedInRoute from './utils/LoggedInRoute';
 import SmallScreenOnlyRoute from './utils/SmallScreenOnlyRoute'
