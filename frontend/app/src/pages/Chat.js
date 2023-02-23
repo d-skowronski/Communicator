@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import ChatArea from '../components/ChatArea'
 import ChatHeader from '../components/ChatHeader'
 import ChatFooter from '../components/ChatFooter'
-import '../css/ChatWindow.css'
+import '../css/Chat.css'
 import '../css/GlobalStyles.css'
 import useCurrentRoom from '../utils/hooks/currentRoom'
 
@@ -10,7 +10,7 @@ function Chat() {
     const currentRoom = useCurrentRoom()
     if(currentRoom){
         return (
-            <div className='chat-window'>
+            <div className='chat'>
                 <ChatHeader currentRoom={currentRoom}/>
                 <ChatArea currentRoom={currentRoom}/>
                 <ChatFooter currentRoom={currentRoom}/>
@@ -19,7 +19,7 @@ function Chat() {
     }
     else if(currentRoom === undefined) {
         return (
-            <div className='chat-window'>
+            <div className='chat'>
                 <div className='helper-text'>
                     <div className='slogan'>Start chatting!</div>
                 </div>
@@ -28,7 +28,7 @@ function Chat() {
     }
     else {
         return (
-            <div className='chat-window'>
+            <div className='chat'>
                 <div className='helper-text'>
                     <div className='slogan'>Don't wait, add your first friend</div>
                 </div>
