@@ -117,7 +117,7 @@ class MessageSerializer(serializers.ModelSerializer):
             'date'
         ]
 
-    def get_information_type(self):
+    def get_information_type(self, obj):
         return 'chat_message'
 
 
@@ -181,8 +181,7 @@ class RoomSerializer(serializers.ModelSerializer):
         message = obj.messages.last()
         if message:
             return MessageSerializer(
-                obj.messages.last(),
-                context=self.context
+                obj.messages.last()
             ).data
         else:
             return {}
