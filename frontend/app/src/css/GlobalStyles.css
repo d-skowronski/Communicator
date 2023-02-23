@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+body {
+    font-family: 'Poppins';
+}
+
+#root {
+    display: flex;
+    justify-content: center;
+}
+
+header{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.profile-pic{
+    object-fit: cover;
+    min-height: 2.5em;
+    max-height: 2.5em;
+    min-width: 2.5em;
+    max-width: 2.5em;
+    border-radius: 2em;
+    margin: 0.1em;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.hover:hover{
+    background-color: gainsboro;
+}
+
+.grayed-text{
+    color: rgb(92, 91, 91)
+}
+
+.logo{
+    padding-right: 1rem;
+}
+
+.service {
+    display: flex;
+    font-size: 2.5em;
+}
+
+.service.medium {
+    font-size: 2em;
+}
+
+input {
+    background-color: gainsboro;
+    box-shadow: none;
+    border: none;
+    padding: 0.5em;
+    padding-top: 0.2em;
+    border-radius: 1rem;
+    margin-right: 0.5em;
+    height: 3em;
+}
+
+input:focus{
+    outline: 0;
+    border: 0.10em #f19c2b solid;
+}
+
+.action-overlay{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: transparent;
+}
+
+.action-overlay:hover{
+    background-color: rgb(255, 255, 255, 0.4);
+    color: black;
+}
+
+button{
+    cursor: pointer;
+    font-size: 1em;
+    border: none;
+    background-color: gainsboro;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-radius: 2em;
+    height: 2em;
+}
+
+button:hover{
+    background-color: #b0b0b0;
+}
+
+.form-field {
+    padding: 0.1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field label{
+    font-weight: 600;
+}
+
+.form-field.error input{
+    border: 0.10em #ff0000 solid;
+    background-color: #ffe6e6;
+}
+
+.form-field input {
+    margin-bottom: 0.1em;
+}
+
+.form-field p {
+    color: #ff0000;
+}
+
+.form-field p{
+    margin-bottom: 0.5em;
+    margin-top: -0.2em;
+}
+
+.helper-text{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0.7rem 0rem 0.7rem;
+    height: 100%;
+}
+
+.helper-text p{
+    margin-bottom: 0.5rem;
+}
+
+.helper-text .slogan {
+    font-size: 2rem;
+    width: 50%;
+    margin-top: 20vh;
+    align-self: center;
+}

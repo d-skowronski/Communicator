@@ -1,0 +1,11 @@
+.main{
+    height: 100vh;
+    /* 360px is width of sidebar */
+    width: calc(100% - 360px);
+    /* width: 100%; */
+}
+
+.main.full{
+    width: 100%;
+    height: 100%;
+}

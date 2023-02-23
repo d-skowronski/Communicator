@@ -1,0 +1,13 @@
+.room-list{
+    width: inherit;
+    scrollbar-width: thin;
+    scrollbar-color: gray;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: auto;
+}
+
+.room-list > *{
+    padding-left: 0.8rem;
+    padding-right: 1rem;
+}

@@ -1,0 +1,35 @@
+.room-select{
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.room-select img, button{
+    font-size: 1.4rem;
+}
+
+.room-info{
+    width: 100%;
+    margin-left: 0.7rem;
+    margin-right: 1rem;
+    overflow: hidden;
+}
+.room-name{
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 1.5rem;
+}
+.room-message{
+    width: 100%;
+    color: gray;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 1.5rem;
+}
+.room-message.unread{
+    color:rgb(20, 10, 10);
+}
