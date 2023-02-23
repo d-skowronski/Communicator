@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Chat'
+    'Chat',
+    'django_admin_inline_paginator',
 ]
 
 REST_FRAMEWORK = {
