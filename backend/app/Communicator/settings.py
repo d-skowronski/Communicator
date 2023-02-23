@@ -103,8 +103,8 @@ WSGI_APPLICATION = 'Communicator.wsgi.application'
 ASGI_APPLICATION = "Communicator.asgi.application"
 
 CHANNEL_LAYERS = {
-    'default':{
-        'BACKEND':'channels.layers.InMemoryChannelLayer'
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
     }
 }
 # Database
