@@ -70,7 +70,6 @@ export default function useWebsocket() {
                         queryClient.setQueryData(
                             ['rooms'],
                             (oldData) => {
-                                console.log("ROOM UPD ", receivedMessage)
                                 let updatedDataResults = oldData.results.map(room => {
                                     if(room.id === receivedMessage.room) {
                                         return {...room, last_message: receivedMessage}
