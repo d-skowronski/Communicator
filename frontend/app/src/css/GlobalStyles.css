@@ -9,6 +9,17 @@ body {
     justify-content: center;
 }
 
+header{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    font-size: 1rem;
+    width: 100%;
+}
+
 .profile-pic{
     object-fit: cover;
     min-height: 2.5em;
