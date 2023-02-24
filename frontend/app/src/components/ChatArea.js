@@ -4,6 +4,7 @@ import '../css/ChatArea.css'
 import MessageGroup from './MessageGroup'
 import InfiniteScroll from "react-infinite-scroll-component"
 import BeatLoader from "react-spinners/BeatLoader"
+import { atom } from 'jotai'
 
 function ChatArea({ currentRoom }) {
     const messagesQuery = useQueryMessagesForRoom(currentRoom.id)
@@ -81,3 +82,4 @@ function ChatArea({ currentRoom }) {
 }
 
 export default ChatArea
+export const messageWithVisibleDetails = atom(null)

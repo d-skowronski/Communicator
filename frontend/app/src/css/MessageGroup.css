@@ -17,6 +17,9 @@
 .message-wrapper.current-user .message>*{
     transform: scaleX(-1);
 }
+.message-wrapper.current-user .message-details{
+    transform: scaleX(-1);
+}
 .message-group{
     display: flex;
     flex-direction: column;

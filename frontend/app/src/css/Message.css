@@ -3,7 +3,7 @@
     border-bottom-right-radius: 1.5rem;
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 0.5rem;
-    margin: 0.1rem;
+    margin: 0.2rem 0.1rem 0 0.1rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     padding-left: 1rem;
@@ -11,15 +11,19 @@
     background-color: gainsboro;
     font-size: 1rem;
     max-width: 100%;
+    cursor: pointer;
 }
+
 .message:first-of-type{
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 0.5rem;
 }
+
 .message:last-of-type{
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 1.5rem;
 }
+
 .message:only-of-type{
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
@@ -28,4 +32,27 @@
 .text {
     width: 100%;
     word-wrap: break-word;
+}
+
+@keyframes smooth-show{
+    from {height: 0; color: transparent}
+    to {height: fit-content;}
+}
+
+@keyframes smooth-hide{
+    from {height: fit-content;}
+    to {height: 0;}
+}
+
+.message-details{
+    color: gray;
+    animation: smooth-show 0.5s;
+    font-size: 0.8rem;
+    margin-left: 0.1rem;
+}
+
+.message-details.hidden{
+    visibility: hidden;
+    height: 0;
+    animation: smooth-hide 0.5s;
 }
