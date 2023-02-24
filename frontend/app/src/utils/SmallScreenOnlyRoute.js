@@ -7,13 +7,17 @@ function SmallScreenOnlyRoute() {
     const roomsQuery = useQueryAllRooms()
     const screenSize = useScreenSize()
 
-    return (
-        <>
-            {screenSize === 'small' ?
-            <Outlet/> :
-            <Navigate to={`/communicator/${roomsQuery.data.results[0].id}`} replace={true}/>}
-        </>
-    )
+    if(roomsQuery.isSuccess){
+        console.log(roomsQuery)
+        return (
+            <>
+                {screenSize === 'small' ? <Outlet/> : roomsQuery.data.results[0] ?
+                    <Navigate to={`/communicator/${roomsQuery.data.results[0].id}`} replace={true}/>:
+                    <Navigate to={'/communicator/profile'} replace={true}/>
+                }
+            </>
+        )
+    }
 }
 
 export default SmallScreenOnlyRoute
