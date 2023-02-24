@@ -5,31 +5,29 @@ import '../css/MessageGroup.css'
 import '../css/GlobalStyles.css'
 // temporary solution
 import AuthContext from '../context/AuthContext'
+import { getDisplayDate } from '../utils/helperFunctions'
 
-function MessageGroup({messages}) {
+function MessageGroup({messages, timeSeparated}) {
     const { user:currentUser } = useContext(AuthContext)
     const messagesToDisplay = messages.map(message => (
         <Message key={message.id} message={message}/>
     ))
     const user = useQueryUser(messages[0].sender)
+    const isCurrentUser = currentUser.user_id === user.id
 
-    if(currentUser.user_id === user.id)
-        return (
-            <div className='message-wrapper current-user'>
+    return (
+        <>
+            <div
+                className={isCurrentUser ? 'message-wrapper current-user': 'message-wrapper'}
+            >
+                {!isCurrentUser && <img className='profile-pic' src={user.profile_picture}></img>}
                 <div className='message-group'>
                     {messagesToDisplay.reverse()}
                 </div>
             </div>
-        )
-    else
-        return (
-            <div className='message-wrapper'>
-                <img className='profile-pic' src={user.profile_picture}></img>
-                <div className='message-group'>
-                    {messagesToDisplay.reverse()}
-                </div>
-            </div>
-        )
+            {timeSeparated && <div className='grayed-text time-separator'>{getDisplayDate(messages[messages.length - 1].date)}</div>}
+        </>
+    )
 }
 
 export default MessageGroup

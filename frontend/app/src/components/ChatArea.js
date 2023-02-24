@@ -35,18 +35,34 @@ function ChatArea({ currentRoom }) {
         let prevMessage = messages[0]
         let messageGroup = []
 
+        // Time between messages in ms, when new chat group with time header should be created
+        const separationTime = 900000
+        let addTimeHeader = false
+
         for(let i = 0; i < messages.length; i++){
             let currentMessage = messages[i]
-            if(prevMessage.sender === currentMessage.sender){
+
+            if(Math.abs(new Date(prevMessage.date) - new Date(currentMessage.date)) > separationTime){
+                addTimeHeader = true
+            }
+            else if(prevMessage.sender === currentMessage.sender){
+
                 messageGroup.push(currentMessage)
             }
-            else{
-                messageGroupComponents.push(<MessageGroup key={i} messages={messageGroup}/>)
+
+            if(prevMessage.sender !== currentMessage.sender
+                || addTimeHeader){
+                messageGroupComponents.push(<MessageGroup
+                    key={i}
+                    messages={messageGroup}
+                    timeSeparated={addTimeHeader}
+                />)
+                addTimeHeader = false
                 messageGroup = [currentMessage]
             }
             prevMessage = currentMessage
         }
-        messageGroupComponents.push(<MessageGroup key={-1} messages={messageGroup}/>)
+        messageGroupComponents.push(<MessageGroup key={-1} messages={messageGroup} timeSeparated={false}/>)
         return (
             <div className='chat-area-wrapper'>
                 <div className='chat-area' id="chat-area">
