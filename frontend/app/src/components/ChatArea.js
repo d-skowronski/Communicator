@@ -55,7 +55,7 @@ function ChatArea({ currentRoom }) {
                         inverse={true}
                         style={{ display: 'flex', flexDirection: 'column-reverse' }}
                         scrollableTarget='chat-area'
-                        scrollableTarget="chat-area"
+                        endMessage={<div className='chat-end-message'>Chat created at {new Date(currentRoom.created).toDateString()}</div>}
                         loader={
                             <BeatLoader
                                 color="#f19c2b"

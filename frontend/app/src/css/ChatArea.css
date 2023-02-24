@@ -20,11 +20,8 @@
     flex-direction: column-reverse;
 }
 
-/* .main.full .chat-area{
-    max-height: (100vh - 4.5rem - 3.5rem);
-} */
-
-/* for messages in chat-area going to the bottom */
-.chat-area> :first-child{
-    margin-top: auto;
+.chat-end-message{
+    color: rgb(85, 85, 85);
+    align-self: center;
+    margin: 1.5rem 0 3rem 0;
 }
