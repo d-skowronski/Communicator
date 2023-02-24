@@ -12,9 +12,9 @@
 .room-info{
     width: 100%;
     margin-left: 0.7rem;
-    margin-right: 1rem;
     overflow: hidden;
 }
+
 .room-name{
     width: 100%;
     text-overflow: ellipsis;
@@ -23,13 +23,22 @@
     height: 1.5rem;
 }
 .room-message{
+    display: flex;
     width: 100%;
     color: gray;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
     height: 1.5rem;
+    font-size: 0.9rem;
 }
 .room-message.unread{
     color:rgb(20, 10, 10);
+}
+.room-message .text{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.room-message .date-time{
+    flex-shrink: 0;
+    padding-left: 0.3rem;
 }

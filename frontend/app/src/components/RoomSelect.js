@@ -5,6 +5,7 @@ import '../css/GlobalStyles.css'
 import { useQueryUser } from '../utils/hooks/queries'
 import { useNavigate } from 'react-router-dom'
 import useCurrentRoom from '../utils/hooks/currentRoom'
+import { getDisplayDate } from '../utils/helperFunctions'
 
 export default function RoomSelect({room}) {
     const navigate = useNavigate()
@@ -20,9 +21,11 @@ export default function RoomSelect({room}) {
     let messageDiv = <div></div>
     if(room.last_message && Object.keys(room.last_message).length > 0){
         const lastMessageRead = room.last_message.read_by.includes(currentUser.user_id)
+        const displayName = lastMessageUser.id === currentUser.user_id ? 'You': lastMessageUser.username
         messageDiv =
             <div className={lastMessageRead ? "room-message": "room-message unread"}>
-                {lastMessageUser.username}: {room.last_message.content_text}
+                <div className='text'>{displayName}: {room.last_message.content_text}</div>
+                <div className='date-time'>&#x2022; {getDisplayDate(room.last_message.date, false)}</div>
             </div>
     }
     else{

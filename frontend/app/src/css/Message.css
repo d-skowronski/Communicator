@@ -29,7 +29,7 @@
     border-bottom-left-radius: 1.5rem;
 }
 
-.text {
+.message .text {
     width: 100%;
     word-wrap: break-word;
 }
