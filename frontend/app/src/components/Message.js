@@ -1,6 +1,7 @@
 import { useAtom } from 'jotai'
 import React, { useState, useEffect } from 'react'
 import '../css/Message.css'
+import '../css/GlobalStyles.css'
 import { messageWithVisibleDetails } from './ChatArea'
 import { getDisplayDate } from '../utils/helperFunctions'
 
@@ -14,7 +15,7 @@ function Message({message}) {
   useEffect(() => {
     let animationOffset
     if(details == message.id){
-      setDetailsClasses('message-details')
+      setDetailsClasses('message-details grayed-text')
     }
     else if(details !== message.id && detailsClasses){
       setDetailsClasses('message-details hidden')

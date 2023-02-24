@@ -45,7 +45,6 @@
 }
 
 .message-details{
-    color: gray;
     animation: smooth-show 0.5s;
     font-size: 0.8rem;
     margin-left: 0.1rem;
