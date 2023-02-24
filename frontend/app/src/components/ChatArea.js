@@ -1,25 +1,12 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { useQueryMessagesForRoom } from '../utils/hooks/queries'
 import '../css/ChatArea.css'
 import MessageGroup from './MessageGroup'
-import { useInView } from "react-intersection-observer";
 import InfiniteScroll from "react-infinite-scroll-component"
 import BeatLoader from "react-spinners/BeatLoader"
 
 function ChatArea({ currentRoom }) {
     const messagesQuery = useQueryMessagesForRoom(currentRoom.id)
-
-    const messagesEndRef = useRef(null);
-    // useEffect(() => {
-    //     messagesEndRef.current?.scrollIntoView();
-    // }, [messagesQuery.data]);
-
-    const { ref, inView } = useInView()
-    useEffect(() => {
-        if (inView) {
-          messagesQuery.fetchNextPage()
-        }
-      }, [inView])
 
     let messages = []
     if(messagesQuery.isSuccess) {
@@ -41,7 +28,6 @@ function ChatArea({ currentRoom }) {
         </div>
         )
     }
-    // && messagesQuery.data.count > 0
     else if(messages.length > 0){
         let messageGroupComponents = []
         let prevMessage = messages[0]
@@ -68,6 +54,7 @@ function ChatArea({ currentRoom }) {
                         hasMore={messagesQuery.hasNextPage}
                         inverse={true}
                         style={{ display: 'flex', flexDirection: 'column-reverse' }}
+                        scrollableTarget='chat-area'
                         scrollableTarget="chat-area"
                         loader={
                             <BeatLoader
@@ -83,14 +70,6 @@ function ChatArea({ currentRoom }) {
             </div>
 
         )
-        // return (
-        //     <div className='chat-area'>
-
-
-        //         {/* <div ref={messagesEndRef} />
-        //         <button onClick={() => messagesQuery.fetchNextPage()}>hello</button> */}
-        //     </div>
-        // )
     }
     else{
         return (
