@@ -13,28 +13,28 @@ export function getDisplayDate(isoDate) {
     const requestedDate = new Date(isoDate)
     const currentDate = new Date()
     const dayInMiliseconds = 86400000
-    let displayDate = ''
+    let options = {}
 
-    if(Math.abs(currentDate - requestedDate) < dayInMiliseconds * 6){
-        displayDate += new Intl.DateTimeFormat(
-            "en-US",
-            { weekday: 'short'}
-        ).format(requestedDate)
+    if(Math.abs(currentDate - requestedDate) < dayInMiliseconds){
+        // Skip other conditions when it is the same day as requestedDate
+    }
+    else if(Math.abs(currentDate - requestedDate) < dayInMiliseconds * 6){
+        options.weekday = 'short'
     }
     else if(currentDate.getFullYear() !== requestedDate.getFullYear()){
-        displayDate += new Intl.DateTimeFormat(
-            "en-US",
-            {day: '2-digit', month: 'short', year: 'numeric'}
-        ).format(requestedDate)
+        options.month = 'short'
+        options.year = 'numeric'
     }
     else{
-        displayDate += new Intl.DateTimeFormat(
-            "en-US",
-            { day: '2-digit', month: 'short'}
-        ).format(requestedDate)
+        options.day = '2-digit'
+        options.month = 'short'
     }
 
-    displayDate += ' AT '
+    let displayDate = ''
+    if(Object.keys(options).length > 0){
+        displayDate += new Intl.DateTimeFormat("en-US", options).format(requestedDate)
+        displayDate += ' at '
+    }
     displayDate += new Intl.DateTimeFormat(
         "en-US",
         { hour: '2-digit', minute: '2-digit'}
