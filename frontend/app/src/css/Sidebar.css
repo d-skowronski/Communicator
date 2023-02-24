@@ -15,8 +15,6 @@
     width: 100%;
 }
 .sidebar input{
-    align-self: center;
-    width: 90%;
-    margin-bottom: 2em;
+    margin: 0 1em 2em 1em;
     font-size: 0.9em;
 }
