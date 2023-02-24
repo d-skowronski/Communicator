@@ -5,6 +5,7 @@ import MessageGroup from './MessageGroup'
 import InfiniteScroll from "react-infinite-scroll-component"
 import BeatLoader from "react-spinners/BeatLoader"
 import { atom } from 'jotai'
+import { getDisplayDate } from '../utils/helperFunctions'
 
 function ChatArea({ currentRoom }) {
     const messagesQuery = useQueryMessagesForRoom(currentRoom.id)
@@ -56,7 +57,7 @@ function ChatArea({ currentRoom }) {
                         inverse={true}
                         style={{ display: 'flex', flexDirection: 'column-reverse' }}
                         scrollableTarget='chat-area'
-                        endMessage={<div className='chat-end-message'>Chat created at {new Date(currentRoom.created).toDateString()}</div>}
+                        endMessage={<div className='chat-end-message'>Chat created {getDisplayDate(currentRoom.created)}</div>}
                         loader={
                             <BeatLoader
                                 color="#f19c2b"
