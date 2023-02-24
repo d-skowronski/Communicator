@@ -9,7 +9,7 @@
  * @param {str} isoDate ISO 8601 string
  * @returns {str} Formatted date and time
  */
-export function getDisplayDate(isoDate) {
+export function getDisplayDate(isoDate, dateWithTime=true) {
     const requestedDate = new Date(isoDate)
     const currentDate = new Date()
     const dayInMiliseconds = 86400000
@@ -31,14 +31,22 @@ export function getDisplayDate(isoDate) {
     }
 
     let displayDate = ''
+    // Add date according to options if any
     if(Object.keys(options).length > 0){
         displayDate += new Intl.DateTimeFormat("en-US", options).format(requestedDate)
-        displayDate += ' at '
+        // Add prefix to time when date
+        if(dateWithTime){
+            displayDate += ' at '
+        }
     }
-    displayDate += new Intl.DateTimeFormat(
-        "en-US",
-        { hour: '2-digit', minute: '2-digit'}
-    ).format(requestedDate)
+
+    // Add time when dateWithTime is true or when there is no date
+    if(Object.keys(options).length > 0 && dateWithTime || Object.keys(options).length == 0){
+        displayDate += new Intl.DateTimeFormat(
+            "en-US",
+            { hour: '2-digit', minute: '2-digit'}
+        ).format(requestedDate)
+    }
 
     return displayDate
   }
