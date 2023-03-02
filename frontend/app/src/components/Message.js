@@ -14,7 +14,7 @@ function Message({message}) {
   const [detailsClasses, setDetailsClasses] = useState(null)
   useEffect(() => {
     let animationOffset
-    if(details == message.id){
+    if(details === message.id){
       setDetailsClasses('message-details grayed-text')
     }
     else if(details !== message.id && detailsClasses){
@@ -31,14 +31,14 @@ function Message({message}) {
         clearTimeout(animationOffset)
       }
     }
-  }, [details])
+  }, [details, detailsClasses, message.id])
 
   return (
     <>
       <div
         className='message'
         onClick={() => setDetails((prev) => {
-            if(prev == message.id){
+            if(prev === message.id){
               return null
             }
             return message.id
