@@ -5,7 +5,7 @@ import '../css/GlobalStyles.css'
 import { messageWithVisibleDetails } from './ChatArea'
 import { getDisplayDate } from '../utils/helperFunctions'
 
-function Message({message}) {
+function Message({message, senderData, displayProfilePic}) {
   // detailsClasses determines whether to display details as well as CSS classes for them.
   // When details have been displayed but no longer are needed, helper CSS class 'hidden'
   // provides hiding animation, after animation has finished, setDetailsClasses(null) results
@@ -35,6 +35,7 @@ function Message({message}) {
 
   return (
     <div className='message-wrapper'>
+      {displayProfilePic && <img className='profile-pic' src={senderData.profile_picture}></img>}
       <div
         className='message'
         onClick={() => setDetails((prev) => {
@@ -48,6 +49,7 @@ function Message({message}) {
       >
         <div className='text'>{message.content_text}</div>
       </div>
+      <div className='seen-by'>{message.read_by[0]}</div>
       {detailsClasses && <div className={detailsClasses}>{getDisplayDate(message.date)}</div>}
     </div>
 

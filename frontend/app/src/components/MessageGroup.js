@@ -9,21 +9,23 @@ import { getDisplayDate } from '../utils/helperFunctions'
 
 function MessageGroup({messages, timeSeparated}) {
     const { user:currentUser } = useContext(AuthContext)
-    const messagesToDisplay = messages.map(message => (
-        <Message key={message.id} message={message}/>
-    ))
     const user = useQueryUser(messages[0].sender)
     const isCurrentUser = currentUser.user_id === user.id
+    const messagesToDisplay = messages.map((message, index) => {
+        let displayProfilePic = false
+        if(index == 0 && !isCurrentUser){
+            displayProfilePic = true
+        }
+        return <Message key={message.id} message={message} senderData={user} displayProfilePic={displayProfilePic}/>
+    })
+
 
     return (
         <>
             <div
-                className={isCurrentUser ? 'group-wrapper current-user': 'group-wrapper'}
+                className={isCurrentUser ? 'message-group current-user': 'message-group'}
             >
-                {!isCurrentUser && <img className='profile-pic' src={user.profile_picture}></img>}
-                <div className='message-group'>
-                    {messagesToDisplay.reverse()}
-                </div>
+                {messagesToDisplay.reverse()}
             </div>
             {timeSeparated && <div className='grayed-text time-separator'>{getDisplayDate(messages[messages.length - 1].date)}</div>}
         </>

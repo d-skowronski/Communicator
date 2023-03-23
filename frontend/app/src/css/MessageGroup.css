@@ -10,21 +10,17 @@
 }
 
 /* x-axis transform for reversing border around message when on other side of screen */
-.group-wrapper.current-user .message{
+.message-group.current-user .message{
     background-color: rgb(241, 175, 41);
     transform: scaleX(-1);
 }
 
 /* reverse back content of message */
-.group-wrapper.current-user .message>*{
+.message-group.current-user .message>*{
     transform: scaleX(-1);
 }
 
-.group-wrapper.current-user .message-group{
-    align-items: flex-end;
-}
-
-.group-wrapper.current-user .message-wrapper{
+.message-group.current-user{
     align-items: flex-end;
 }
 
@@ -32,6 +28,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
 }
 
 .time-separator{
