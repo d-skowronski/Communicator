@@ -4,6 +4,7 @@ import '../css/Message.css'
 import '../css/GlobalStyles.css'
 import { messageWithVisibleDetails } from './ChatArea'
 import { getDisplayDate } from '../utils/helperFunctions'
+import ReadIcon from './ReadIcon'
 
 function Message({message, senderData, displayProfilePic}) {
   // detailsClasses determines whether to display details as well as CSS classes for them.
@@ -49,7 +50,7 @@ function Message({message, senderData, displayProfilePic}) {
       >
         <div className='text'>{message.content_text}</div>
       </div>
-      <div className='seen-by'>{message.read_by[0]}</div>
+      <div className='seen-by'>{message.readByToDisplay.map((user, index) => (<ReadIcon key={index} userId={user}/>))}</div>
       {detailsClasses && <div className={detailsClasses}>{getDisplayDate(message.date)}</div>}
     </div>
 
