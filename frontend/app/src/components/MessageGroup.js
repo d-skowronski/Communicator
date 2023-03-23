@@ -18,7 +18,7 @@ function MessageGroup({messages, timeSeparated}) {
     return (
         <>
             <div
-                className={isCurrentUser ? 'message-wrapper current-user': 'message-wrapper'}
+                className={isCurrentUser ? 'group-wrapper current-user': 'group-wrapper'}
             >
                 {!isCurrentUser && <img className='profile-pic' src={user.profile_picture}></img>}
                 <div className='message-group'>

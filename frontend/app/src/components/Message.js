@@ -34,7 +34,7 @@ function Message({message}) {
   }, [details, detailsClasses, message.id])
 
   return (
-    <>
+    <div className='message-wrapper'>
       <div
         className='message'
         onClick={() => setDetails((prev) => {
@@ -49,7 +49,7 @@ function Message({message}) {
         <div className='text'>{message.content_text}</div>
       </div>
       {detailsClasses && <div className={detailsClasses}>{getDisplayDate(message.date)}</div>}
-    </>
+    </div>
 
   )
 }

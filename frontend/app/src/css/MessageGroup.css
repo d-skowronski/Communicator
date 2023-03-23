@@ -1,33 +1,37 @@
-.message-wrapper{
+.group-wrapper{
     display: flex;
     align-items: flex-end;
     margin-top: 0.1rem;
     margin-bottom: 0.1rem;
-    margin-right: 4rem;
 }
-.message-wrapper.current-user{
+.group-wrapper.current-user{
     margin-right: 0;
-    margin-left: 6.8rem;
-    transform: scaleX(-1);
+    margin-left: auto;
 }
 
-.message-wrapper.current-user .message{
+/* x-axis transform for reversing border around message when on other side of screen */
+.group-wrapper.current-user .message{
     background-color: rgb(241, 175, 41);
-}
-
-.message-wrapper.current-user .message>*{
     transform: scaleX(-1);
 }
 
-.message-wrapper.current-user .message-details{
+/* reverse back content of message */
+.group-wrapper.current-user .message>*{
     transform: scaleX(-1);
+}
+
+.group-wrapper.current-user .message-group{
+    align-items: flex-end;
+}
+
+.group-wrapper.current-user .message-wrapper{
+    align-items: flex-end;
 }
 
 .message-group{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 100%;
 }
 
 .time-separator{

@@ -1,3 +1,8 @@
+.message-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
 .message{
     border-top-right-radius: 1.5rem;
     border-bottom-right-radius: 1.5rem;
@@ -12,19 +17,20 @@
     font-size: 1rem;
     max-width: 100%;
     cursor: pointer;
+    width: fit-content;
 }
 
-.message:first-of-type{
+.message-wrapper:first-child .message{
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 0.5rem;
 }
 
-.message:last-of-type{
+.message-wrapper:last-child .message{
     border-top-left-radius: 0.5rem;
     border-bottom-left-radius: 1.5rem;
 }
 
-.message:only-of-type{
+.message-wrapper:only-child .message{
     border-top-left-radius: 1.5rem;
     border-bottom-left-radius: 1.5rem;
 }
@@ -32,6 +38,10 @@
 .message .text {
     width: 100%;
     word-wrap: break-word;
+}
+
+.seen-by {
+    position: relative;
 }
 
 @keyframes smooth-show{
