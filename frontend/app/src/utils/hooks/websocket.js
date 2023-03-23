@@ -84,6 +84,7 @@ export default function useWebsocket() {
                         queryClient.invalidateQueries(['rooms'])
                     }
                     else if (informationType === 'message_read'){
+                        // update last_message in room
                         queryClient.setQueryData(['rooms'], (oldRooms) => {
                             let updatedRoomsResults = oldRooms.results.map(room => {
                                 if(room.id === receivedMessage.room) {
@@ -102,6 +103,7 @@ export default function useWebsocket() {
                             })
                             return {...oldRooms, results: updatedRoomsResults}
                         })
+                        // update message in room
                         queryClient.setQueryData(
                             ['messages', `messages-room-${receivedMessage.room}`],
                             (oldData) => {
@@ -109,7 +111,7 @@ export default function useWebsocket() {
                                     let pages = oldData.pages.map(page => {
                                         page.results.map(mess => {
                                             // includes() needed because of optimistic update in chat_message
-                                            if(mess.id === receivedMessage.message && !mess.read_by.includes(currentUser.user_id)){
+                                            if(mess.id === receivedMessage.message && !mess.read_by.includes(receivedMessage.read_user)){
                                                 mess.read_by.push(receivedMessage.read_user)
                                             }
                                             return mess
