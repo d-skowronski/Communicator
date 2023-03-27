@@ -20,6 +20,10 @@
     flex-direction: column-reverse;
 }
 
+.chat-area > * {
+    overflow: visible;
+}
+
 .chat-end-message{
     color: rgb(85, 85, 85);
     align-self: center;
