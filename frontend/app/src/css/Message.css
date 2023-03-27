@@ -1,7 +1,4 @@
 .message-wrapper {
-    /* display: flex;
-    flex-direction: column;
-    width: 100%; */
     display: grid;
     width: 100%;
     grid-template-columns: 3rem 1fr;
@@ -9,15 +6,9 @@
 
 .message{
     grid-column: 2;
-    border-top-right-radius: 1.5rem;
-    border-bottom-right-radius: 1.5rem;
-    border-top-left-radius: 0.5rem;
-    border-bottom-left-radius: 0.5rem;
+    border-radius: 0.5rem 1.5rem 1.5rem 0.5rem;
     margin: 0.2rem 0.1rem 0 0.1rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
     background-color: gainsboro;
     font-size: 1rem;
     max-width: fit-content;
