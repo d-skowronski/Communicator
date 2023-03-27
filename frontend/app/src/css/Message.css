@@ -20,9 +20,8 @@
     padding-right: 1rem;
     background-color: gainsboro;
     font-size: 1rem;
-    max-width: 100%;
+    max-width: fit-content;
     cursor: pointer;
-    width: fit-content;
 }
 
 .current-user .message-wrapper > *{
