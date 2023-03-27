@@ -4,8 +4,9 @@ import '../css/Message.css'
 import '../css/GlobalStyles.css'
 import { messageWithVisibleDetails } from './ChatArea'
 import { getDisplayDate } from '../utils/helperFunctions'
+import ReadIcon from './ReadIcon'
 
-function Message({message}) {
+function Message({message, senderData, displayProfilePic}) {
   // detailsClasses determines whether to display details as well as CSS classes for them.
   // When details have been displayed but no longer are needed, helper CSS class 'hidden'
   // provides hiding animation, after animation has finished, setDetailsClasses(null) results
@@ -14,7 +15,7 @@ function Message({message}) {
   const [detailsClasses, setDetailsClasses] = useState(null)
   useEffect(() => {
     let animationOffset
-    if(details == message.id){
+    if(details === message.id){
       setDetailsClasses('message-details grayed-text')
     }
     else if(details !== message.id && detailsClasses){
@@ -31,14 +32,15 @@ function Message({message}) {
         clearTimeout(animationOffset)
       }
     }
-  }, [details])
+  }, [details, detailsClasses, message.id])
 
   return (
-    <>
+    <div className='message-wrapper'>
+      {displayProfilePic && <img className='profile-pic' src={senderData.profile_picture}></img>}
       <div
         className='message'
         onClick={() => setDetails((prev) => {
-            if(prev == message.id){
+            if(prev === message.id){
               return null
             }
             return message.id
@@ -48,8 +50,9 @@ function Message({message}) {
       >
         <div className='text'>{message.content_text}</div>
       </div>
+      <div className='seen-by'>{message.readByToDisplay.map((user, index) => (<ReadIcon key={index} userId={user}/>))}</div>
       {detailsClasses && <div className={detailsClasses}>{getDisplayDate(message.date)}</div>}
-    </>
+    </div>
 
   )
 }

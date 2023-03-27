@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useQueryMessagesForRoom } from '../utils/hooks/queries'
 import '../css/ChatArea.css'
 import MessageGroup from './MessageGroup'
@@ -6,9 +6,11 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import BeatLoader from "react-spinners/BeatLoader"
 import { atom } from 'jotai'
 import { getDisplayDate } from '../utils/helperFunctions'
+import AuthContext from '../context/AuthContext'
 
 function ChatArea({ currentRoom }) {
     const messagesQuery = useQueryMessagesForRoom(currentRoom.id)
+    const { user:currentUser } = useContext(AuthContext)
 
     let messages = []
     if(messagesQuery.isSuccess) {
@@ -31,16 +33,32 @@ function ChatArea({ currentRoom }) {
         )
     }
     else if(messages.length > 0){
-        let messageGroupComponents = []
-        let prevMessage = messages[0]
-        let messageGroup = []
+        // Manage displaying read_by user only once per chat
+        let readByUsersToBeDisplayed = []
+        console.log("prev ", readByUsersToBeDisplayed)
 
         // Time between messages in ms, when new chat group with time header should be created
         const separationTime = 900000
         let addTimeHeader = false
 
+        // Separate messages to groups
+        let messageGroupComponents = []
+        let prevMessage = messages[0]
+        let messageGroup = []
+
         for(let i = 0; i < messages.length; i++){
             let currentMessage = messages[i]
+            currentMessage.readByToDisplay = []
+
+            // Display readBy when user has not been displayed, and user is not currentUser
+            for(let j = 0; j < currentMessage.read_by.length; j++){
+                let readUser = currentMessage.read_by[j]
+                if (readByUsersToBeDisplayed.find(element => element === readUser) === undefined){
+                    currentMessage.readByToDisplay.push(readUser)
+                    readByUsersToBeDisplayed.push(readUser)
+                    console.log("push ", readUser)
+                }
+            }
 
             if(Math.abs(new Date(prevMessage.date) - new Date(currentMessage.date)) > separationTime){
                 addTimeHeader = true

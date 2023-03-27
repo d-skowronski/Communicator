@@ -1,0 +1,15 @@
+.read-icon {
+    display: inline;
+}
+
+.read-icon .profile-pic{
+    max-height: 1rem;
+    min-height: 1rem;
+    min-width: 1rem;
+    max-width: 1rem;
+}
+
+.read-icon .tooltip{
+    font-size: 0.8rem;
+    padding:0.3rem;
+}
