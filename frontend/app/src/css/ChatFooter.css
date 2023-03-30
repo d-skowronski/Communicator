@@ -1,20 +1,5 @@
 .chat-footer{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 1rem;
-    overflow: hidden;
-    position: sticky;
-    bottom: 0;
-    flex-shrink: 0;
-    flex-grow: 0;
-    height: 4.5rem;
-    background-color: white;
-}
-
-.main.full .chat-footer{
-    position: absolute;
 }
 
 .chat-footer input{

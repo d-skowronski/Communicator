@@ -17,17 +17,21 @@ function Sidebar({sidebarOnlyDisplayed}) {
 
   return (
     <div className={sidebarOnlyDisplayed ? 'sidebar full':'sidebar'}>
-      <header className='service medium'>
-        <i className='bi bi-chat-left-fill logo'></i>
-        <div>Communicator</div>
+      <header className='app-header'>
+        <div className='service medium'>
+          <i className='bi bi-chat-left-fill logo'></i>
+          <div>Communicator</div>
+        </div>
+
+
+        <input
+          name='userSearch'
+          type='text'
+          placeholder='Search for people'
+          value={userSearch.queryText}
+          onChange={(event) => handleChange(event)}
+        ></input>
       </header>
-      <input
-        name='userSearch'
-        type='text'
-        placeholder='Search for people'
-        value={userSearch.queryText}
-        onChange={(event) => handleChange(event)}
-      ></input>
       {userSearch.queryText ? <UserSearchList userSearch={userSearch} setUserSearch={setUserSearch}/>:<RoomList/>}
       <UserBar/>
     </div>

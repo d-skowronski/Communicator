@@ -5,6 +5,7 @@ import '../css/RoomSelect.css'
 import { useMutationCreateRoom, useQueryFindUsers } from '../utils/hooks/queries'
 import AuthContext from '../context/AuthContext'
 import BarLoader from 'react-spinners/BarLoader'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 function UserSearchList({userSearch, setUserSearch}) {
     const {user:currentUser} = useContext(AuthContext)
@@ -56,15 +57,25 @@ function UserSearchList({userSearch, setUserSearch}) {
             )
         })
         return (
-            <div className='room-list'>
-                <div>Search results:</div>
-                {renderUsers.length > 0 ? renderUsers: <p className='grayed-text'> No one has been found</p>}
+            <div className='scroll-area room-list' id='search-list'>
+                {/* infinite scroll here has not been implemented, TODO, for now
+                    it serves for consistency across all scrollable lists in the app */}
+                <InfiniteScroll
+                    dataLength={renderUsers.length}
+                    next={userQuery.fetchNextPage}
+                    hasMore={userQuery.hasNextPage}
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                    scrollableTarget='search-list'
+                >
+                    <div>Search results:</div>
+                    {renderUsers.length > 0 ? renderUsers: <p className='grayed-text'> No one has been found</p>}
+                </InfiniteScroll>
             </div>
         )
     }
     else{
         return (
-            <div className='room-list'>
+            <div className='scroll-area room-list'>
                 <div>Search results:</div>
                 <div>
                     <BarLoader

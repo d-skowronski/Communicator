@@ -4,6 +4,7 @@ import { useQueryAllRooms } from '../utils/hooks/queries'
 import RoomSelect from './RoomSelect'
 import BarLoader from 'react-spinners/BarLoader'
 import AuthContext from '../context/AuthContext'
+import InfiniteScroll from "react-infinite-scroll-component"
 
 export default function RoomList() {
     const roomsQuery = useQueryAllRooms()
@@ -22,7 +23,26 @@ export default function RoomList() {
         ))
         if(allRooms.length > 0){
             return (
-                <div className='room-list'>{allRooms}</div>
+                <div className='scroll-area room-list' id='room-list'>
+                    {/* infinite scroll here has not been implemented, TODO, for now
+                        it serves for consistency across all scrollable lists in the app */}
+                    <InfiniteScroll
+                        dataLength={allRooms.length}
+                        next={roomsQuery.fetchNextPage}
+                        hasMore={roomsQuery.hasNextPage}
+                        style={{ display: 'flex', flexDirection: 'column' }}
+                        scrollableTarget='room-list'
+                        loader={
+                            <BarLoader
+                                color="#f19c2b"
+                                size={20}
+                                cssOverride={{display: 'flex', justifyContent: 'center', marginTop: '1rem'}}
+                            />}
+                    >
+                        {allRooms}
+
+                    </InfiniteScroll>
+                </div>
             )
         }
         else{
