@@ -2,8 +2,6 @@ import React, { useContext } from 'react'
 import AuthContext from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import '../css/UserBar.css'
-import '../css/GlobalStyles.css'
-
 
 function UserBar() {
   const {logoutUser, user} = useContext(AuthContext)

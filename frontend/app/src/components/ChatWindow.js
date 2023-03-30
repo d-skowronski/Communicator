@@ -3,7 +3,6 @@ import ChatArea from './ChatArea'
 import ChatHeader from './ChatHeader'
 import ChatFooter from './ChatFooter'
 import '../css/ChatWindow.css'
-import '../css/GlobalStyles.css'
 import useCurrentRoom from '../utils/hooks/currentRoom'
 import AuthContext from '../context/AuthContext'
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import '../css/Sidebar.css'
-import '../css/GlobalStyles.css'
 import UserBar from './UserBar'
 import "bootstrap-icons/font/bootstrap-icons.css"
 import RoomList from './RoomList'

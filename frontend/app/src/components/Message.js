@@ -1,7 +1,6 @@
 import { useAtom } from 'jotai'
 import React, { useState, useEffect } from 'react'
 import '../css/Message.css'
-import '../css/GlobalStyles.css'
 import { messageWithVisibleDetails } from './ChatArea'
 import { getDisplayDate } from '../utils/helperFunctions'
 import ReadIcon from './ReadIcon'

@@ -1,6 +1,5 @@
 import React from 'react'
 import '../css/ChatHeader.css'
-import '../css/GlobalStyles.css'
 import "bootstrap-icons/font/bootstrap-icons.css"
 import BackButton from './BackButton'
 
