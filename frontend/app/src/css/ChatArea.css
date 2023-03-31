@@ -10,7 +10,7 @@
     height: auto;
 }
 
-.chat-area{
+.chat-area-wrapper .chat-area{
     flex-direction: column-reverse;
 }
 
