@@ -35,7 +35,7 @@ function Message({message, senderData, displayProfilePic}) {
 
   return (
     <div className='message-wrapper'>
-      {displayProfilePic && <img className='profile-pic' src={senderData.profile_picture}></img>}
+      {displayProfilePic && <img className='profile-pic' src={senderData.profile_picture} alt={senderData.username}></img>}
       <div
         className='message'
         onClick={() => setDetails((prev) => {

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import ChatArea from '../components/ChatArea'
 import ChatHeader from '../components/ChatHeader'
 import ChatFooter from '../components/ChatFooter'

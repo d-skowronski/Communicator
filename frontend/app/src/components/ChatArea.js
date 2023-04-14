@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useQueryMessagesForRoom } from '../utils/hooks/queries'
 import '../css/ChatArea.css'
 import MessageGroup from './MessageGroup'
@@ -6,11 +6,9 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import BeatLoader from "react-spinners/BeatLoader"
 import { atom } from 'jotai'
 import { getDisplayDate } from '../utils/helperFunctions'
-import AuthContext from '../context/AuthContext'
 
 function ChatArea({ currentRoom }) {
     const messagesQuery = useQueryMessagesForRoom(currentRoom.id)
-    const { user:currentUser } = useContext(AuthContext)
 
     let messages = []
     if(messagesQuery.isSuccess) {
