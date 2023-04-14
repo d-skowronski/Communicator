@@ -68,7 +68,6 @@ function UserSearchList({userSearch, setUserSearch}) {
                         style={{ display: 'flex', flexDirection: 'column' }}
                         scrollableTarget='search-list'
                         >
-                        <div>Search results:</div>
                         {renderUsers.length > 0 ? renderUsers: <p className='grayed-text'> No one has been found</p>}
                     </InfiniteScroll>
                 </div>
