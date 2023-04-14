@@ -1,8 +1,6 @@
 .room-list{
     width: 100%;
     flex-direction: column;
-
-    height: calc(100vh - 4.5rem - 6.5rem);
 }
 
 .room-list-wrapper{
