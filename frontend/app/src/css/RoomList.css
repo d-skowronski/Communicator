@@ -1,13 +1,16 @@
 .room-list{
-    width: inherit;
-    scrollbar-width: thin;
-    scrollbar-color: gray;
-    display: flex;
+    width: 100%;
     flex-direction: column;
-    margin-bottom: auto;
 }
 
-.room-list > *{
-    padding-left: 0.8rem;
-    padding-right: 1rem;
+.room-list-wrapper{
+    width: 100%;
+    height: calc(100vh - 4.5rem - 6.5rem);
+}
+
+.sidebar.full .room-list{
+    position: absolute;
+    top: 6.5rem;
+    bottom: 4.5rem;
+    height: auto;
 }

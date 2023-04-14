@@ -2,7 +2,6 @@ import React from 'react'
 import Login from '../components/Login'
 import Signup from '../components/Signup'
 import '../css/StartPage.css'
-import '../css/GlobalStyles.css'
 
 function StartPage() {
   return (

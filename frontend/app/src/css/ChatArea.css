@@ -10,18 +10,8 @@
     height: auto;
 }
 
-.chat-area{
-    height: 99%;
-    overflow-y: auto;
-    overscroll-behavior-y: contain;
-    width: 100%;
-    padding: 0 1rem 0 1rem;
-    display: flex;
+.chat-area-wrapper .chat-area{
     flex-direction: column-reverse;
-}
-
-.chat-area > * {
-    overflow: visible;
 }
 
 .chat-end-message{

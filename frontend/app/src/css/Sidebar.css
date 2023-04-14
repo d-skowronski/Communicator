@@ -11,10 +11,17 @@
     overflow: hidden;
 }
 
-.sidebar.full{
+.sidebar header {
+    flex-direction: column;
+    align-items: flex-start;
+    height: 6.5rem;
+    font-size: 0.9em;
+}
+
+.sidebar header input {
     width: 100%;
 }
-.sidebar input{
-    margin: 0 1em 2em 1em;
-    font-size: 0.9em;
+
+.sidebar.full{
+    width: 100%;
 }

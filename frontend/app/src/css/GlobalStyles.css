@@ -20,6 +20,52 @@ header{
     width: 100%;
 }
 
+.app-header{
+    /* needs defining height whenever used */
+    /* needs parent with .full class depending on screensize */
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    z-index: 998;
+    background: white;
+}
+
+.full .app-header{
+    position: fixed;
+}
+
+.app-footer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    flex-grow: 0;
+    background-color: white;
+    z-index: 998;
+    position: sticky;
+    bottom: 0;
+    height: 4.5rem;
+}
+
+.full .app-footer{
+    position: absolute;
+}
+
+.scroll-area .infinite-scroll-component__outerdiv{
+    overflow: visible;
+}
+
+.scroll-area{
+    height: 99%;
+    overflow-y: auto !important;
+    overscroll-behavior-y: contain;
+    width: 100%;
+    padding: 0 1rem 0 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
 .profile-pic{
     object-fit: cover;
     min-height: 2.5em;

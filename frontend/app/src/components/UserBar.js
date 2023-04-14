@@ -2,14 +2,12 @@ import React, { useContext } from 'react'
 import AuthContext from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import '../css/UserBar.css'
-import '../css/GlobalStyles.css'
-
 
 function UserBar() {
   const {logoutUser, user} = useContext(AuthContext)
   const navigate = useNavigate()
   return (
-    <div className='user-bar'>
+    <div className='user-bar app-footer'>
         <div className='profile-pic action-overlay' onClick={() => navigate('/communicator/profile')}>
           <i className="bi bi-info-lg"></i>
         </div>

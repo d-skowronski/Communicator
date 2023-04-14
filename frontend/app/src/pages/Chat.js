@@ -3,7 +3,6 @@ import ChatArea from '../components/ChatArea'
 import ChatHeader from '../components/ChatHeader'
 import ChatFooter from '../components/ChatFooter'
 import '../css/Chat.css'
-import '../css/GlobalStyles.css'
 import useCurrentRoom from '../utils/hooks/currentRoom'
 
 function Chat() {

@@ -83,7 +83,7 @@ function ChatArea({ currentRoom }) {
         messageGroupComponents.push(<MessageGroup key={-1} messages={messageGroup} timeSeparated={false}/>)
         return (
             <div className='chat-area-wrapper'>
-                <div className='chat-area' id="chat-area">
+                <div className='scroll-area chat-area' id="chat-area">
                     <InfiniteScroll
                         dataLength={messages.length}
                         next={messagesQuery.fetchNextPage}
@@ -109,7 +109,7 @@ function ChatArea({ currentRoom }) {
     }
     else{
         return (
-            <div className='chat-area'>
+            <div className='scroll-area'>
             </div>
         )
     }

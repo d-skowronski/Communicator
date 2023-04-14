@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { useQueryUser } from '../utils/hooks/queries'
 import Message from './Message'
 import '../css/MessageGroup.css'
-import '../css/GlobalStyles.css'
 // temporary solution
 import AuthContext from '../context/AuthContext'
 import { getDisplayDate } from '../utils/helperFunctions'

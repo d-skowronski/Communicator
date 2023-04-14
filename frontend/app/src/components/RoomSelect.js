@@ -1,7 +1,6 @@
 import React, {useContext} from 'react'
 import AuthContext from '../context/AuthContext'
 import '../css/RoomSelect.css'
-import '../css/GlobalStyles.css'
 import { useQueryUser } from '../utils/hooks/queries'
 import { useNavigate } from 'react-router-dom'
 import useCurrentRoom from '../utils/hooks/currentRoom'

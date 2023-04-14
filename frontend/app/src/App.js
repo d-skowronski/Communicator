@@ -6,7 +6,6 @@ import LoggedInRoute from './utils/LoggedInRoute';
 import SmallScreenOnlyRoute from './utils/SmallScreenOnlyRoute'
 import SidebarAdderRoute from './utils/SidebarAdderRoute';
 import './css/App.css'
-import './css/GlobalStyles.css'
 import Sidebar from './components/Sidebar';
 import Profile from './pages/Profile';
 import Chat from './pages/Chat';

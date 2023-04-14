@@ -1,6 +1,5 @@
 import { React, useContext, useState, useEffect, useRef } from 'react'
 import AuthContext from '../context/AuthContext'
-import '../css/GlobalStyles.css'
 
 function Login() {
     const {authenticateUser} = useContext(AuthContext)

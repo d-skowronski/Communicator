@@ -22,7 +22,7 @@ function ChatFooter({ currentRoom }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className='chat-footer'>
+    <form onSubmit={handleSubmit} className='app-footer chat-footer'>
         <input
           type="text"
           placeholder="Aa"
