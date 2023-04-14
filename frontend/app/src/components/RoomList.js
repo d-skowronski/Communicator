@@ -23,25 +23,27 @@ export default function RoomList() {
         ))
         if(allRooms.length > 0){
             return (
-                <div className='scroll-area room-list' id='room-list'>
-                    {/* infinite scroll here has not been implemented, TODO, for now
-                        it serves for consistency across all scrollable lists in the app */}
-                    <InfiniteScroll
-                        dataLength={allRooms.length}
-                        next={roomsQuery.fetchNextPage}
-                        hasMore={roomsQuery.hasNextPage}
-                        style={{ display: 'flex', flexDirection: 'column' }}
-                        scrollableTarget='room-list'
-                        loader={
-                            <BarLoader
-                                color="#f19c2b"
-                                size={20}
-                                cssOverride={{display: 'flex', justifyContent: 'center', marginTop: '1rem'}}
-                            />}
-                    >
-                        {allRooms}
+                <div className='room-list-wrapper'>
+                    <div className='scroll-area room-list' id='room-list'>
+                        {/* infinite scroll here has not been implemented, TODO, for now
+                            it serves for consistency across all scrollable lists in the app */}
+                        <InfiniteScroll
+                            dataLength={allRooms.length}
+                            next={roomsQuery.fetchNextPage}
+                            hasMore={roomsQuery.hasNextPage}
+                            style={{ display: 'flex', flexDirection: 'column' }}
+                            scrollableTarget='room-list'
+                            loader={
+                                <BarLoader
+                                    color="#f19c2b"
+                                    size={20}
+                                    cssOverride={{display: 'flex', justifyContent: 'center', marginTop: '1rem'}}
+                                    />}
+                                    >
+                            {allRooms}
 
-                    </InfiniteScroll>
+                        </InfiniteScroll>
+                    </div>
                 </div>
             )
         }

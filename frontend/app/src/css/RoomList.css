@@ -5,10 +5,10 @@
     height: calc(100vh - 4.5rem - 6.5rem);
 }
 
-/* .room-list-wrapper{
+.room-list-wrapper{
     width: 100%;
     height: calc(100vh - 4.5rem - 6.5rem);
-} */
+}
 
 .sidebar.full .room-list{
     position: absolute;
