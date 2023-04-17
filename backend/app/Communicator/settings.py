@@ -22,13 +22,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9&jul%tknprw95u!g)q0u%ikpnd!+9_@p*t2$nd)%tpas%sov8'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'notsecretkey')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.environ.get('DEBUG', 0)))
 
-# To change
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
+ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+    # Running app in dev mode there is no nginx proxy serving Django and React on the same host,
+    # so for API to work Django needs to allow React app to connect on port 3000.
+    CORS_ALLOWED_ORIGIN_REGEXES = [r'^https?://.*:3000$']
+elif ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(','))
 
 
 # Application definition
@@ -49,16 +56,19 @@ INSTALLED_APPS = [
     'django_admin_inline_paginator',
 ]
 
+
 REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 30,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     )
 }
-
-# May be changed to something more secure
-CORS_ALLOW_ALL_ORIGINS = True
+if DEBUG:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -66,6 +76,9 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
+
+CSRF_COOKIE_SECURE=True
+SESSION_COOKIE_SECURE=True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -165,17 +178,12 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-MESSAGE_TAGS = {
-    messages.DEBUG: 'alert-info',
-    messages.INFO: 'alert-info',
-    messages.SUCCESS: 'alert-success',
-    messages.WARNING: 'alert-warning',
-    messages.ERROR: 'alert-danger',
-}
-
 # Base url to serve media files
+# Path where media is stored
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
-# Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+STATIC_ROOT = '/vol/static/'
+MEDIA_ROOT = '/vol/media/'
