@@ -1,17 +1,19 @@
-version: "3.9"
+version: '3.9'
 services:
   backend:
     build:
       context: ./backend
-      args:
-        - DEV=true
     ports:
       - '8000:8000'
     volumes:
       - ./backend/app:/app
-    command: sh -c 'python3 manage.py runserver 0.0.0.0:8000'
-#daphne -b 0.0.0.0 -p 8000 Communicator.asgi:application
+      - data:/vol
+    command: sh -c 'python manage.py runserver 0.0.0.0:8000'
+    environment:
+      - DEBUG=1
   frontend:
+    depends_on:
+      - backend
     build:
       context: ./frontend
     ports:
@@ -19,3 +21,6 @@ services:
     volumes:
       - ./frontend/app:/app
     command: sh -c 'npm start'
+
+volumes:
+  data:

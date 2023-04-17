@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - data:/vol
+    ports:
+      - "80:8080"
+    depends_on:
+      - backend
+      - frontend
+
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend/app:/app
+      - data:/vol
+    environment:
+      - DEBUG=0
+      # needs customizing
+      - SECRET_KEY=samplekey
+      - ALLOWED_HOSTS=127.0.0.1,localhost
+
+  frontend:
+    depends_on:
+      - backend
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend/app:/app
+    command: sh -c 'npm start'
+
+volumes:
+  data:
