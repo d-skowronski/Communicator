@@ -52,7 +52,6 @@ export const AuthProvider = ({children}) => {
     }, [queryClient])
 
     const updateToken = useCallback(async function () {
-        console.log("Token update")
         let body = JSON.stringify({refresh: authTokens?.refresh})
         if(body !== '{}'){
             const response = await fetch(`${APIURL}token/refresh/`, {

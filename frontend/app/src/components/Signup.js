@@ -51,7 +51,6 @@ function Signup() {
         authenticateUser(formData, true)
         .then(data => {
             if(data.password1 || data.password2){
-                console.log(data)
                 setFormData(prevFormData => {
                     return {
                         ...prevFormData,
@@ -98,7 +97,6 @@ function Signup() {
             })
         // Condition prevents clearing of errors when removing passwords in handleSubmit
         } else if(formData.password1 !== '' || formData.password2 !== ''){
-            console.log("CLEAN PASS")
             setFormErrors(prevFormErros => {
                 const {
                     password1,

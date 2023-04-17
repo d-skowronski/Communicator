@@ -18,8 +18,5 @@ export default function useScreenSize(){
         };
     }, [handleResizeWindow]);
 
-    // console.log(width, prevWidth.width)
-    // if(width < switchWidth) return "small"
-    // else return "big"
     return screenSize
 }

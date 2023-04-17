@@ -8,7 +8,6 @@ function SmallScreenOnlyRoute() {
     const screenSize = useScreenSize()
 
     if(roomsQuery.isSuccess){
-        console.log(roomsQuery)
         return (
             <>
                 {screenSize === 'small' ? <Outlet/> : roomsQuery.data.results[0] ?

@@ -33,7 +33,6 @@ function ChatArea({ currentRoom }) {
     else if(messages.length > 0){
         // Manage displaying read_by user only once per chat
         let readByUsersToBeDisplayed = []
-        console.log("prev ", readByUsersToBeDisplayed)
 
         // Time between messages in ms, when new chat group with time header should be created
         const separationTime = 900000
@@ -54,7 +53,6 @@ function ChatArea({ currentRoom }) {
                 if (readByUsersToBeDisplayed.find(element => element === readUser) === undefined){
                     currentMessage.readByToDisplay.push(readUser)
                     readByUsersToBeDisplayed.push(readUser)
-                    console.log("push ", readUser)
                 }
             }
 
