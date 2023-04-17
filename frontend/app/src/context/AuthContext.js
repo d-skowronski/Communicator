@@ -1,7 +1,6 @@
 import React, { useState, createContext, useEffect, useCallback } from 'react'
 import jwtDecode from 'jwt-decode'
 import {useQueryClient} from '@tanstack/react-query'
-import axios from 'axios'
 
 const AuthContext = createContext()
 
@@ -76,7 +75,7 @@ export const AuthProvider = ({children}) => {
         if(loading){
             setLoading(false)
         }
-    },[authTokens, logoutUser, loading])
+    },[authTokens, logoutUser, loading, APIURL])
 
     useEffect(()=>{
         // 4 minutes 30 seconds
