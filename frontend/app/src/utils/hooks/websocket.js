@@ -14,13 +14,11 @@ export default function useWebsocket() {
     useEffect(() => {
         let ws
         if(roomsQuery.isSuccess){
-            console.log("CREATING WS")
             ws = new WebSocket(`${process.env.REACT_APP_WEBSOCKET_URL}chat/?token=${authTokens.access}`)
             setWebsocket(ws)
         }
         return () => {
             if(ws) {
-                console.log("CLOSING WS")
                 ws.close()
             }
         }
@@ -32,7 +30,7 @@ export default function useWebsocket() {
                 let newWs = prevWs
                 newWs.onmessage = (event) => {
                     const data = JSON.parse(event.data)
-                    console.log("WEBSOCKET INCOMING: ", data)
+                    // Useful for websocket debugging: console.log("WEBSOCKET INCOMING: ", data)
                     const informationType = data.information_type
                     let receivedMessage = data
                     // last_message and messages-room-id need to be reworked to have single source of truth

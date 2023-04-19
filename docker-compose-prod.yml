@@ -1,15 +1,19 @@
 version: "3.9"
 services:
-  proxy:
+  proxywithfrontend:
     build:
-      context: ./proxy
+      context: ./
+      dockerfile: ./proxy/Dockerfile
     volumes:
       - data:/vol
     ports:
-      - "80:8080"
+      - "80:80"
     depends_on:
       - backend
-      - frontend
+    environment:
+      # needs customizing to run on server
+      - API_URL=http://localhost/api/
+      - WEBSOCKET_URL=ws://localhost/ws/
 
   backend:
     build:
@@ -19,18 +23,9 @@ services:
       - data:/vol
     environment:
       - DEBUG=0
-      # needs customizing
+      # needs customizing to run on server
       - SECRET_KEY=samplekey
-      - ALLOWED_HOSTS=127.0.0.1,localhost
-
-  frontend:
-    depends_on:
-      - backend
-    build:
-      context: ./frontend
-    volumes:
-      - ./frontend/app:/app
-    command: sh -c 'npm start'
+      - ALLOWED_HOSTS=localhost
 
 volumes:
   data:

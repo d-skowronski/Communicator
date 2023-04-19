@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { useQueryMessagesForRoom } from '../utils/hooks/queries'
 import '../css/ChatArea.css'
 import MessageGroup from './MessageGroup'
@@ -6,11 +6,9 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import BeatLoader from "react-spinners/BeatLoader"
 import { atom } from 'jotai'
 import { getDisplayDate } from '../utils/helperFunctions'
-import AuthContext from '../context/AuthContext'
 
 function ChatArea({ currentRoom }) {
     const messagesQuery = useQueryMessagesForRoom(currentRoom.id)
-    const { user:currentUser } = useContext(AuthContext)
 
     let messages = []
     if(messagesQuery.isSuccess) {
@@ -35,7 +33,6 @@ function ChatArea({ currentRoom }) {
     else if(messages.length > 0){
         // Manage displaying read_by user only once per chat
         let readByUsersToBeDisplayed = []
-        console.log("prev ", readByUsersToBeDisplayed)
 
         // Time between messages in ms, when new chat group with time header should be created
         const separationTime = 900000
@@ -56,7 +53,6 @@ function ChatArea({ currentRoom }) {
                 if (readByUsersToBeDisplayed.find(element => element === readUser) === undefined){
                     currentMessage.readByToDisplay.push(readUser)
                     readByUsersToBeDisplayed.push(readUser)
-                    console.log("push ", readUser)
                 }
             }
 

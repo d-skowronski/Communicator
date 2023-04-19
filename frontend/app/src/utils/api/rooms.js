@@ -6,5 +6,5 @@ export async function getRooms() {
 }
 
 export async function createRoom(usersId) {
-    const response = await authedAxios.post(`rooms/`, JSON.stringify({'users_id': usersId}))
+    await authedAxios.post(`rooms/`, JSON.stringify({'users_id': usersId}))
 }

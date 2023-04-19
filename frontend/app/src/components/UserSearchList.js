@@ -24,7 +24,7 @@ function UserSearchList({userSearch, setUserSearch}) {
               }, 700)
         }
         return () => {queryDelay && clearTimeout(queryDelay)}
-    }, [userSearch.queryText])
+    }, [userSearch.queryText, setUserSearch])
 
     if(userQuery.isSuccess && !userQuery.isStale){
         let users = userQuery.data.results.filter((user) => {return user.id !== currentUser.user_id})
@@ -77,7 +77,6 @@ function UserSearchList({userSearch, setUserSearch}) {
     else{
         return (
             <div className='scroll-area room-list'>
-                <div>Search results:</div>
                 <div>
                     <BarLoader
                         color="#f19c2b"

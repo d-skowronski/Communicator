@@ -12,7 +12,7 @@ function MessageGroup({messages, timeSeparated}) {
     const isCurrentUser = currentUser.user_id === user.id
     const messagesToDisplay = messages.map((message, index) => {
         let displayProfilePic = false
-        if(index == 0 && !isCurrentUser){
+        if(index === 0 && !isCurrentUser){
             displayProfilePic = true
         }
         return <Message key={message.id} message={message} senderData={user} displayProfilePic={displayProfilePic}/>

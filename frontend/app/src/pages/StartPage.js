@@ -2,6 +2,7 @@ import React from 'react'
 import Login from '../components/Login'
 import Signup from '../components/Signup'
 import '../css/StartPage.css'
+import previewImg from '../content/preview.png'
 
 function StartPage() {
   return (
@@ -29,7 +30,7 @@ function StartPage() {
         </div>
 
         <div className='start-page-preview'>
-          <img src={`${process.env.REACT_APP_BACKEND_URL}media/preview.png`} alt='preview'></img>
+          <img src={previewImg} alt='preview'></img>
         </div>
 
       </div>

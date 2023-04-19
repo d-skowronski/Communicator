@@ -41,7 +41,7 @@ export function getDisplayDate(isoDate, dateWithTime=true) {
     }
 
     // Add time when dateWithTime is true or when there is no date
-    if(Object.keys(options).length > 0 && dateWithTime || Object.keys(options).length == 0){
+    if((Object.keys(options).length > 0 && dateWithTime) || Object.keys(options).length === 0){
         displayDate += new Intl.DateTimeFormat(
             "en-US",
             { hour: '2-digit', minute: '2-digit'}

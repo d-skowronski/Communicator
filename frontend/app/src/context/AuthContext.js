@@ -1,7 +1,6 @@
 import React, { useState, createContext, useEffect, useCallback } from 'react'
 import jwtDecode from 'jwt-decode'
 import {useQueryClient} from '@tanstack/react-query'
-import axios from 'axios'
 
 const AuthContext = createContext()
 
@@ -53,7 +52,6 @@ export const AuthProvider = ({children}) => {
     }, [queryClient])
 
     const updateToken = useCallback(async function () {
-        console.log("Token update")
         let body = JSON.stringify({refresh: authTokens?.refresh})
         if(body !== '{}'){
             const response = await fetch(`${APIURL}token/refresh/`, {
@@ -76,7 +74,7 @@ export const AuthProvider = ({children}) => {
         if(loading){
             setLoading(false)
         }
-    },[authTokens, logoutUser, loading])
+    },[authTokens, logoutUser, loading, APIURL])
 
     useEffect(()=>{
         // 4 minutes 30 seconds
