@@ -20,9 +20,11 @@ services:
       - DB_NAME=devdb
       - DB_USER=developer
       - DB_PASS=insecurepassword
-      - SUPER_USER_NAME=admin
-      - SUPER_USER_EMAIL=admin@example.com
-      - SUPER_USER_PASSWORD=insecurepassword
+      # Super user is created automaticly only once on the first run. If you want to create another one
+      # with those settings, use python manage.py createsuperuser --noinput in a container.
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@example.com
+      - DJANGO_SUPERUSER_PASSWORD=changeme
 
   frontend:
     depends_on:
