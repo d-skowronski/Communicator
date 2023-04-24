@@ -49,7 +49,7 @@ export default function RoomList() {
         }
         else{
             return (
-                <div className='room-list'>
+                <div className='room-list-wrapper'>
                     <div className='helper-text'>
                         <h1>Hello {currentUser.username}!</h1>
                         <p>
