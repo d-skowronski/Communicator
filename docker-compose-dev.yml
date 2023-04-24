@@ -22,5 +22,15 @@ services:
       - ./frontend/app:/app
     command: sh -c 'npm start'
 
+  database:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=developer
+      - POSTGRES_PASSWORD=insecurepassword
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+
 volumes:
   data:
+  dev-db-data:
