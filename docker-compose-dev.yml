@@ -11,6 +11,11 @@ services:
     command: sh -c 'python manage.py runserver 0.0.0.0:8000'
     environment:
       - DEBUG=1
+      - DB_HOST=database
+      - DB_NAME=devdb
+      - DB_USER=developer
+      - DB_PASS=insecurepassword
+
   frontend:
     depends_on:
       - backend

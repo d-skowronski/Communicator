@@ -23,7 +23,11 @@ services:
       - data:/vol
     environment:
       - DEBUG=0
+      - DB_HOST=database
+      - DB_NAME=proddb
+      - DB_USER=admin
       # needs customizing before run on a server
+      - DB_PASS=changeme
       - SECRET_KEY=changeme
       - ALLOWED_HOSTS=localhost
 
