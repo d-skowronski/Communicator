@@ -30,6 +30,9 @@ services:
       - DB_USER=admin
       # needs customizing before run on a server
       - DB_PASS=changeme
+      - SUPER_USER_NAME=admin
+      - SUPER_USER_EMAIL=admin@example.com
+      - SUPER_USER_PASSWORD=changeme
       - SECRET_KEY=changeme
       - ALLOWED_HOSTS=localhost
 
