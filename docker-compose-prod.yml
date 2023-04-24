@@ -11,21 +11,43 @@ services:
     depends_on:
       - backend
     environment:
-      # needs customizing to run on server
+      # needs customizing before run on a server
       - API_URL=http://localhost/api/
       - WEBSOCKET_URL=ws://localhost/ws/
 
   backend:
     build:
       context: ./backend
+    depends_on:
+      - database
     volumes:
       - ./backend/app:/app
       - data:/vol
     environment:
       - DEBUG=0
-      # needs customizing to run on server
-      - SECRET_KEY=samplekey
+      - DB_HOST=database
+      - DB_NAME=proddb
+      - DB_USER=admin
+      # needs customizing before run on a server
+      - DB_PASS=changeme
+      - SECRET_KEY=changeme
       - ALLOWED_HOSTS=localhost
+      # Super user is created automaticly only once on the first run. If you want to create another one
+      # with those settings, use python manage.py createsuperuser --noinput in a container.
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@example.com
+      - DJANGO_SUPERUSER_PASSWORD=changeme
+
+  database:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_DB=proddb
+      - POSTGRES_USER=admin
+      # needs customizing before run on a server
+      - POSTGRES_PASSWORD=changeme
+    volumes:
+      - prod-db-data:/var/lib/postgresql/data
 
 volumes:
   data:
+  prod-db-data:

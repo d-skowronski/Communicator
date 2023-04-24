@@ -18,7 +18,7 @@ WORKDIR /app
 EXPOSE 8000
 
 RUN chmod +x /scripts/* && \
-    apk add --update --no-cache gcc musl-dev jpeg-dev zlib-dev libjpeg libffi-dev && \
+    apk add --update --no-cache gcc musl-dev jpeg-dev zlib-dev libjpeg libffi-dev libpq-dev&& \
     python -m venv /py && \
     /py/bin/pip install --upgrade pip setuptools wheel && \
     /py/bin/pip install --use-pep517 -r /tmp/requirements.txt && \

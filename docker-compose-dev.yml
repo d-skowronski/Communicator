@@ -1,6 +1,8 @@
 version: '3.9'
 services:
   backend:
+    depends_on:
+      - database
     build:
       context: ./backend
     ports:
@@ -8,9 +10,22 @@ services:
     volumes:
       - ./backend/app:/app
       - data:/vol
-    command: sh -c 'python manage.py runserver 0.0.0.0:8000'
+    command: sh -c 'python manage.py makemigrations &&
+                    python manage.py migrate &&
+                    python manage.py shell < createsuperuser.py &&
+                    python manage.py runserver 0.0.0.0:8000'
     environment:
       - DEBUG=1
+      - DB_HOST=database
+      - DB_NAME=devdb
+      - DB_USER=developer
+      - DB_PASS=insecurepassword
+      # Super user is created automaticly only once on the first run. If you want to create another one
+      # with those settings, use python manage.py createsuperuser --noinput in a container.
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@example.com
+      - DJANGO_SUPERUSER_PASSWORD=changeme
+
   frontend:
     depends_on:
       - backend
@@ -22,5 +37,15 @@ services:
       - ./frontend/app:/app
     command: sh -c 'npm start'
 
+  database:
+    image: postgres:13-alpine
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=developer
+      - POSTGRES_PASSWORD=insecurepassword
+    volumes:
+      - dev-db-data:/var/lib/postgresql/data
+
 volumes:
   data:
+  dev-db-data:
