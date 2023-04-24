@@ -1,6 +1,8 @@
 version: '3.9'
 services:
   backend:
+    depends_on:
+      - database
     build:
       context: ./backend
     ports:
@@ -8,7 +10,8 @@ services:
     volumes:
       - ./backend/app:/app
       - data:/vol
-    command: sh -c 'python manage.py runserver 0.0.0.0:8000'
+    command: sh -c 'python manage.py migrate &&
+                    python manage.py runserver 0.0.0.0:8000'
     environment:
       - DEBUG=1
       - DB_HOST=database

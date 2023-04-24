@@ -18,6 +18,8 @@ services:
   backend:
     build:
       context: ./backend
+    depends_on:
+      - database
     volumes:
       - ./backend/app:/app
       - data:/vol
