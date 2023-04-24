@@ -6,3 +6,4 @@ django-admin-inline-paginator>=0.3.0, <0.4
 channels>=4.0.0,<4.1
 Pillow>=9.4.0,<9.5
 daphne>=4.0.0,<4.1
+psycopg2>=2.9.6,<2.10
