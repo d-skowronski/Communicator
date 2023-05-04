@@ -7,8 +7,8 @@ WORKDIR /app
 
 ARG API_URL
 ARG WEBSOCKET_URL
-ENV REACT_APP_API_URL $API_URL http://localhost/api/
-ENV REACT_APP_WEBSOCKET_URL $WEBSOCKET_URL ws://localhost/ws/
+ENV REACT_APP_API_URL $API_URL
+ENV REACT_APP_WEBSOCKET_URL $WEBSOCKET_URL
 
 RUN npm install --silent && \
     npm run build
