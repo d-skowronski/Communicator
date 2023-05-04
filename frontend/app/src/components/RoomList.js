@@ -44,17 +44,19 @@ export default function RoomList() {
         else{
             return (
                 <div className='room-list-wrapper'>
-                    <div className='helper-text'>
-                        <h1>Hello {currentUser.username}!</h1>
-                        <p>
-                            I would like to welcome you to Communicator.
-                            Here, you can chat live with other people and have fun.
-                        </p>
-                        <p>
-                            I am constantly working on this app. If you find any issues you
-                            can hit me up here. Feel free to also add me as your first friend!
-                        </p>
-                        <b>dawidskowronski</b>
+                    <div className='room-list'>
+                        <div className='helper-text'>
+                            <h1>Hello {currentUser.username}!</h1>
+                            <p>
+                                I would like to welcome you to Communicator.
+                                Here, you can chat live with other people and have fun.
+                            </p>
+                            <p>
+                                I am constantly working on this app. If you find any issues you
+                                can hit me up here. Feel free to also add me as your first friend!
+                            </p>
+                            <b>dawidskowronski</b>
+                        </div>
                     </div>
                 </div>
             )
