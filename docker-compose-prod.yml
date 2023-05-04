@@ -4,16 +4,16 @@ services:
     build:
       context: ./
       dockerfile: ./proxy/Dockerfile
+      args:
+        # needs customizing before run on a server
+        - API_URL=http://localhost/api/
+        - WEBSOCKET_URL=ws://localhost/ws/
     volumes:
       - data:/vol
     ports:
       - "80:80"
     depends_on:
       - backend
-    environment:
-      # needs customizing before run on a server
-      - API_URL=http://localhost/api/
-      - WEBSOCKET_URL=ws://localhost/ws/
 
   backend:
     build:

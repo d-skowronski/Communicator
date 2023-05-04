@@ -7,6 +7,8 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from ..models import Message, User
+from django.db.models import Max, F
+from django.db.models.functions import Coalesce
 from .pagiation import DateCursorPagination
 from .serializers import (MessageSerializer,
                           MyTokenObtainPairSerializer, RoomSerializer,
@@ -60,11 +62,13 @@ class RoomListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return user.chat_rooms.all()
+        return user.chat_rooms.all().annotate(
+            latest_message_date=Coalesce(Max('messages__date'), F('created'))
+        ).order_by(F('latest_message_date').desc())
 
     def create(self, request, *args, **kwargs):
         request.data['users_id'].append(self.request.user.id)
-        return super().create(request, *args, **kwargs)
+        return super().create(request, *args, **kwargs) 
 
 
 class RoomDetail(generics.RetrieveUpdateAPIView):

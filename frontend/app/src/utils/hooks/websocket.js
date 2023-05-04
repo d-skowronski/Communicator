@@ -74,7 +74,14 @@ export default function useWebsocket() {
                                     }
                                     return room
                                 })
-                                return {...oldData, results: updatedDataResults}
+                                let updatedRooms = {...oldData, results: updatedDataResults}
+                                updatedRooms.results.sort(function(a, b) {
+                                    let aCompare = a.last_message.date ?? a.created
+                                    let bCompare = b.last_message.date ?? b.created
+
+                                    return (aCompare < bCompare) ? 1 : ((aCompare > bCompare) ? -1 : 0)
+                                })
+                                return updatedRooms
                             }
                         )
                     }
