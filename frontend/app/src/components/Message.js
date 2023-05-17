@@ -36,18 +36,20 @@ function Message({message, senderData, displayProfilePic}) {
   return (
     <div className='message-wrapper'>
       {displayProfilePic && <img className='profile-pic' src={senderData.profile_picture} alt={senderData.username}></img>}
-      <div
-        className='message'
-        onClick={() => setDetails((prev) => {
-            if(prev === message.id){
-              return null
-            }
-            return message.id
-            }
-          )
-        }
-      >
-        <div className='text'>{message.content_text}</div>
+      <div className='message-bubble-wrapper'>
+        <div
+          className='message'
+          onClick={() => setDetails((prev) => {
+              if(prev === message.id){
+                return null
+              }
+              return message.id
+              }
+            )
+          }
+        >
+          <div className='text'>{message.content_text}</div>
+        </div>
       </div>
       <div className='seen-by'>{message.readByToDisplay.map((user, index) => (<ReadIcon key={index} userId={user}/>))}</div>
       {detailsClasses && <div className={detailsClasses}>{getDisplayDate(message.date)}</div>}

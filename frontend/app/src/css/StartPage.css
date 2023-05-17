@@ -3,11 +3,25 @@
     flex-direction: column;
     max-width: 1200px;
     padding: 1rem;
+    min-height: 100vh;
 }
 
 nav {
     align-self: flex-start;
     margin-bottom: 2rem;
+}
+
+footer{
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer .link {
+    font-size: 1.5em;
+    margin: 0.4em;
+    color: black;
 }
 
 .start-page-content{
