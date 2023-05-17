@@ -6,8 +6,8 @@ services:
       dockerfile: ./proxy/Dockerfile
       args:
         # needs customizing before run on a server
-        - API_URL=http://localhost/api/
-        - WEBSOCKET_URL=ws://localhost/ws/
+        - API_URL=${FRONTEND_API_URL}
+        - WEBSOCKET_URL=${FRONTEND_WEBSOCKET_URL}
     volumes:
       - data:/vol
     ports:
@@ -28,23 +28,21 @@ services:
       - DB_HOST=database
       - DB_NAME=proddb
       - DB_USER=admin
-      # needs customizing before run on a server
-      - DB_PASS=changeme
-      - SECRET_KEY=changeme
-      - ALLOWED_HOSTS=localhost
+      - DB_PASS=${DATABASE_PASSWORD}
+      - SECRET_KEY=${BACKEND_SECRET_KEY}
+      - ALLOWED_HOSTS=${BACKEND_ALLOWED_HOSTS}
       # Super user is created automaticly only once on the first run. If you want to create another one
       # with those settings, use python manage.py createsuperuser --noinput in a container.
+      # For security reasons, I recommend removing this information after super user has been created
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@example.com
       - DJANGO_SUPERUSER_PASSWORD=changeme
-
   database:
     image: postgres:13-alpine
     environment:
       - POSTGRES_DB=proddb
       - POSTGRES_USER=admin
-      # needs customizing before run on a server
-      - POSTGRES_PASSWORD=changeme
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
     volumes:
       - prod-db-data:/var/lib/postgresql/data
 
