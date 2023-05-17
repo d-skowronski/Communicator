@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
-from django.contrib import messages
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,7 +25,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'notsecretkey')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DEBUG', 0)))
-
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS')
 if DEBUG:
@@ -69,6 +68,9 @@ REST_FRAMEWORK = {
 }
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append('rest_framework.renderers.BrowsableAPIRenderer')
+else:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
@@ -76,9 +78,6 @@ SIMPLE_JWT = {
     'ROTATE_REFRESH_TOKENS': True,
     'BLACKLIST_AFTER_ROTATION': True,
 }
-
-CSRF_COOKIE_SECURE=True
-SESSION_COOKIE_SECURE=True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
