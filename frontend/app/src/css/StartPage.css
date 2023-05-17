@@ -10,6 +10,18 @@ nav {
     margin-bottom: 2rem;
 }
 
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer .link {
+    font-size: 1.5em;
+    margin: 0.4em;
+    color: black;
+}
+
 .start-page-content{
     display: flex;
 }

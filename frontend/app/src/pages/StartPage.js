@@ -34,6 +34,12 @@ function StartPage() {
         </div>
 
       </div>
+      <footer>
+        <div className='grayed-text'>Made by Dawid Skowroński</div>
+        <a className='link' href='https://github.com/d-skowronski/'>
+          <i class="bi bi-github"></i>
+        </a>
+      </footer>
     </div>
   )
 }
