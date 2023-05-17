@@ -22,7 +22,6 @@ services:
     depends_on:
       - database
     volumes:
-      - ./backend/app:/app
       - data:/vol
     environment:
       - DEBUG=0
