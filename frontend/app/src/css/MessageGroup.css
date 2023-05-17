@@ -4,10 +4,6 @@
     margin-top: 0.1rem;
     margin-bottom: 0.1rem;
 }
-.group-wrapper.current-user{
-    margin-right: 0;
-    margin-left: auto;
-}
 
 /* x-axis transform for reversing border around message when on other side of screen */
 .message-group.current-user .message{

@@ -1,17 +1,33 @@
 .message-wrapper {
     display: grid;
-    width: 100%;
+    width: inherit;
     grid-template-columns: 3rem 1fr;
 }
 
-.message{
+.message-bubble-wrapper {
+    width: 100%;
     grid-column: 2;
+    padding-right: 2rem;
+}
+
+.current-user .message-bubble-wrapper{
+    padding-left: 2rem;
+    padding-right: 0;
+}
+
+.current-user .message {
+    margin-left: auto;
+}
+
+
+.message{
     border-radius: 0.5rem 1.5rem 1.5rem 0.5rem;
     margin: 0.2rem 0.1rem 0 0.1rem;
     padding: 0.5rem 1rem 0.5rem 1rem;
     background-color: gainsboro;
     font-size: 1rem;
-    max-width: fit-content;
+    width: fit-content;
+    max-width: 100%;
     cursor: pointer;
 }
 
@@ -35,7 +51,8 @@
 }
 
 .message .text {
-    width: 100%;
+    width: fit-content;
+    max-width: 100%;
     word-wrap: break-word;
 }
 
