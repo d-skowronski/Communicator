@@ -3,6 +3,7 @@
     flex-direction: column;
     max-width: 1200px;
     padding: 1rem;
+    min-height: 100vh;
 }
 
 nav {
@@ -11,6 +12,7 @@ nav {
 }
 
 footer{
+    margin-top: auto;
     display: flex;
     justify-content: center;
     align-items: center;
