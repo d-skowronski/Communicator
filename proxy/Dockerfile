@@ -19,6 +19,7 @@ LABEL maintainer="github.com/d-skowronski"
 
 COPY --from=react_build /app/build /usr/share/nginx/html
 COPY ./proxy/default.conf /etc/nginx/conf.d/default.conf
+COPY ./proxy/certs /etc/nginx/certs
 
 USER root
 RUN mkdir -p /vol/static && \
