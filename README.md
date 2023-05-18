@@ -16,8 +16,12 @@ Fullstack web application. Facebook Messenger clone. Made in Django and React wi
 - nginx reverse proxy serving static and media files in production
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
-
+![Login page](readme_images/login_page.png)
+![App desktop view](readme_images/desktop_view.png)
+<p align="center">
+  <img src="readme_images/mobile_view_1.png" alt="App mobile view - chat list" />
+  <img src="readme_images/mobile_view_2.png" alt="App mobile view - chat" />
+</p>
 
 ## Technology stack
 
