@@ -3,6 +3,7 @@
 
 Fullstack web application. Facebook Messenger clone. Made in Django and React with PostreSQL database. 
 
+Live deployment: https://communicator.website/
 
 ## Features
 
